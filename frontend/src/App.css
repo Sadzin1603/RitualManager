@@ -1,0 +1,13 @@
+.title {
+  background: linear-gradient(180deg, #363467 0%, rgba(30, 29, 79, 0.8) 100%);
+}
+
+.div{
+    background-color: #292647;
+}
+.input{
+    background: #a4a0ac31;
+}
+.input[type=submit]{
+    background-color: rgb(137, 127, 224);
+}
