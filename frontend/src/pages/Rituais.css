@@ -1,0 +1,227 @@
+body {
+    background: linear-gradient(180deg, #363467 0%, rgba(30, 29, 79, 0.8) 100%);
+}
+
+/* Layout principal */
+.editor {
+    padding: 20px;
+    background-color: #292647;
+    color: #eee;
+    min-height: 100vh;
+}
+
+.editor_principal {
+    max-width: 800px;
+    margin: 3% auto;
+    border-radius: 6px;
+}
+
+/* Formulários e inputs */
+.formulario_edicao {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.formulario_edicao label {
+    font-weight: 600;
+    color: #fff;
+    margin-top: 15px;
+    display: block;
+}
+
+.digitacao {
+    width: 100%;
+    padding: 10px;
+    background-color: #a4a0ac31;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #eee;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.digitacao:focus {
+    outline: none;
+    border-color: #8f7fe0;
+    box-shadow: 0 0 5px rgba(143, 127, 224, 0.5);
+}
+
+textarea.digitacao {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Upload de imagem */
+.upload {
+    display: block;
+    margin: 10px 0;
+    color: #eee;
+}
+
+/* Botão escolher imagem */
+.botao.escolher_imagem {
+    background-color: rgb(137, 127, 224);
+    color: #fff;
+    font-weight: 600;
+    margin: 10px 0;
+}
+
+/* Preview de imagem */
+.preview {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #292647;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.preview_img {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 4px;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    background-color: #1a1a2e;
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 500px;
+    color: #eee;
+}
+
+.modal-content h2 {
+    font-size: 20px;
+    margin-top: 0;
+    color: #fff;
+}
+
+.modal-content button {
+    margin-top: 0;
+    background-color: rgb(137, 127, 224);
+    color: #fff;
+    font-weight: 600;
+}
+
+#modal-img {
+    max-width: 100%;
+    max-height: 400px;
+    margin: 20px 0;
+    border-radius: 4px;
+}
+
+/* Botões gerais */
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    opacity: 0.8;
+    transform: translateY(-2px);
+}
+
+/* Botões de lista dropdown */
+.botao_lista {
+    width: 100%;
+    background-color: rgb(137, 127, 224);
+    color: #fff;
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 15px;
+}
+
+.botao_lista:hover {
+    background-color: rgb(155, 145, 242);
+}
+
+/* Listas dropdown */
+.lista {
+    display: none;
+    background-color: #292647;
+    border: 1px solid #555;
+    border-radius: 4px;
+    margin: 10px 0 20px 0;
+    overflow: hidden;
+}
+
+.lista.show {
+    display: block;
+}
+
+.lista button {
+    width: 100%;
+    background-color: transparent;
+    color: #eee;
+    border: none;
+    border-bottom: 1px solid #555;
+    border-radius: 0;
+    padding: 12px 15px;
+    text-align: left;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.lista button:last-child {
+    border-bottom: none;
+}
+
+.lista button:hover {
+    background-color: rgb(137, 127, 224);
+    transform: none;
+}
+
+/* Botão voltar ao menu */
+.botao.salvar {
+    display: block;
+    width: 100%;
+    background-color: #555;
+    color: #fff;
+    margin-top: 30px;
+    font-weight: 600;
+    padding: 12px;
+}
+
+.botao.salva:hover {
+    background-color: #666;
+}
+
+/* Layout labels */
+label {
+    display: block;
+    margin: 20px 0 10px 0;
+    font-weight: 600;
+    color: #fff;
+}
+
+/* Espaçamento */
+br {
+    display: block;
+    content: "";
+    margin: 5px 0;
+}
