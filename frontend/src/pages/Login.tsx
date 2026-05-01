@@ -24,6 +24,8 @@ function Login(){
             }) 
             const data = await response.json();
             localStorage.setItem("token",data.token)
+            setEmail("")
+            setPassword("")
         }catch(e){
             console.log(e)
         }
@@ -32,10 +34,15 @@ function Login(){
         
         const token = localStorage.getItem("token");
         if(token){
-            await fetch("http://localhost:3000/protegida",{
+            const res = await fetch("http://localhost:3000/protegida",{
                 headers:{Authorization: `Bearer ${token}`}
             })
-           navigate("/") //MUDAR A ROTA PARA ONDE EU QUERO IR
+            console.log(res)
+            if(res.ok){
+                navigate("/principal") //MUDAR A ROTA PARA ONDE EU QUERO IR
+            }else{
+                console.log("aq é onde o frontend vai entrar com coisinha bonita para a tela")
+            }
         }
         
     
