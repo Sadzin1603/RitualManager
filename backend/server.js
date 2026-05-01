@@ -76,17 +76,9 @@ app.get("/protegida", authToken,(req,res)=>{
     res.json({message:"Entrando em area protegida"})
 })
 
-
-// app.get('/cadastros',async(req,res)=>{
-//     const {data,error} = await supabase
-//                     .from('Clients')
-//                     .select('*')
-//     if(error){
-//         return res.status(500).json({error:error.message})
-//     }
-
-//     return res.status(201).json({message:"Clientes resgatados com sucesso",data})
-// })
+app.get("/principal", authToken, (req, res) => {
+  res.json({ msg: "Bem-vindo" });
+});
 
 
 

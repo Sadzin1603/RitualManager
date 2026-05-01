@@ -3,21 +3,25 @@ import Cadastro from "./pages/Cadastro";
 import Login from "./pages/Login"
 import "./App.css";
 import Principal from "./pages/Principal"
-import { useState,useEffect } from 'react';
+import {Navigate} from "react-router-dom"
 import { jwtDecode } from "jwt-decode";
 
 
 function App() {
-  // const [name,setName] = useState("")
+  function isAuthenticated() {
+    const token = localStorage.getItem("token");
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
+    if (!token) return false;
 
-  //   if (token) {
-  //     const decoded = jwtDecode(token);
-  //     setName(decoded.name);
-  //   }
-  // }, []);
+    const decoded = jwtDecode(token);
+
+    const isExpired = decoded.exp * 1000 < Date.now();
+
+    return !isExpired;
+  }
+  function PrivateRoute({ children} ) {
+    return isAuthenticated() ? children : <Navigate to="/" />;
+  }
 
   return (
     <div className="App">
@@ -33,7 +37,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Cadastro />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/principal" element={<Principal />} />
+          
+          <Route path="/principal" element={<PrivateRoute route="/principal"><Principal /></PrivateRoute>} />
           
         </Routes>
       </main>
