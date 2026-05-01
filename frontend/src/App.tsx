@@ -5,7 +5,7 @@ import "./App.css";
 import Principal from "./pages/Principal"
 import {Navigate} from "react-router-dom"
 import { jwtDecode } from "jwt-decode";
-
+import Rituais from './pages/Rituais';
 
 function App() {
   function isAuthenticated() {
@@ -31,12 +31,14 @@ function App() {
           <Link to="/" className="hover:text-red-400">Home</Link>
           <Link to="/login" className="hover:text-red-400">Login</Link>
           <Link to="/principal" className="hover:text-red-400">Principal</Link>
+          <Link to="/rituais" className="hover:text-red-400">Rituais</Link>
         </nav>
       </header>
       <main>
         <Routes>
           <Route path="/" element={<Cadastro />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/rituais" element={<Rituais />} />
           
           <Route path="/principal" element={<PrivateRoute route="/principal"><Principal /></PrivateRoute>} />
           
