@@ -2,6 +2,7 @@ import { Routes, Route,Link } from 'react-router-dom';
 import Cadastro from "./pages/Cadastro"; 
 import Login from "./pages/Login"
 import "./App.css";
+import Rituais from './pages/Rituais';
 import Principal from "./pages/Principal"
 import {Navigate} from "react-router-dom"
 import { jwtDecode } from "jwt-decode";
@@ -31,6 +32,7 @@ function App() {
           <Link to="/" className="hover:text-red-400">Home</Link>
           <Link to="/login" className="hover:text-red-400">Login</Link>
           <Link to="/principal" className="hover:text-red-400">Principal</Link>
+          <Link to="/rituais" className="hover:text-red-400">Rituais</Link>
         </nav>
       </header>
       <main>
