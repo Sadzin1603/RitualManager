@@ -39,8 +39,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Cadastro />} />
           <Route path="/login" element={<Login />} />
-          
-          <Route path="/principal" element={<PrivateRoute route="/principal"><Principal /></PrivateRoute>} />
+          <Route path="/rituais" element={<Rituais />} />
+          <Route path="/principal" element={<PrivateRoute><Principal /></PrivateRoute>} />
           
         </Routes>
       </main>
