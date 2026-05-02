@@ -205,7 +205,7 @@ function Rituais() {
             <label htmlFor="DescricaoVerdadeiro">Descrição Verdadeiro:</label>
                 <textarea className="digitacao" name="DescriçãoVerdadeiro" id="DescricaoVerdadeiro"></textarea>
             <br />
-            <button type="button" className="botao salvar" onClick={() => navigate("/")} >
+            <button type="button" className="botao salvar" onClick={() => navigate("/principal")} >
                 Salvar Ritual
             </button>
         </div>
