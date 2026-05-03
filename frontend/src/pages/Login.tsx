@@ -88,7 +88,7 @@ function Login({setLogado}){
                 >
                     Logar
                 </button>
-                <button
+                {/*<button
                     className="input px-4 py-2 rounded-2xl placeholder-gray-400 text-white cursor-pointer"
                     type="submit"
                     onClick={
@@ -96,7 +96,7 @@ function Login({setLogado}){
                     }
                 >
                     acessar o desconhecido
-                </button>
+                </button>*/}
             </div>
         </div>
     </div>

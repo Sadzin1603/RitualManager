@@ -10,19 +10,35 @@ import { useState,useEffect } from 'react';
 
 
 function App() {
-  const [islogado,setLogado] = useState(false)
-  useEffect( ()=> {
+  const [islogado,setLogado] = useState(()=>{
+    const token = localStorage.getItem("token");
+    if (!token) return false;
+
+    try {
+      const decoded = jwtDecode(token);
+      return decoded.exp * 1000 > Date.now();
+    } catch {
+      return false;
+    }
+  })
+  useEffect(()=> {
+    
     const token = localStorage.getItem("token");
 
     if (!token) return ()=>{};
+    try{
+      const decoded = jwtDecode(token);
 
-    const decoded = jwtDecode(token);
+      const isExpired = decoded.exp * 1000 < Date.now();
+      
+      setLogado(!isExpired)
+    }catch(e){
 
-    const isExpired = decoded.exp * 1000 < Date.now();
-    setLogado(!isExpired)
+    }
     
   },[islogado])
   function PrivateRoute({ children} ) {
+    
     return islogado ? children : <Navigate to="/" />;
   }
 

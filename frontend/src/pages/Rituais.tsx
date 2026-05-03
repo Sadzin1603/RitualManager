@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 function Rituais() {
     const uploadRef = useRef<HTMLInputElement | null>(null);
-    const [previewSrc, setPreviewSrc] = useState("");
-    const [modalSrc, setModalSrc] = useState("");
+    const [img, setImg] = useState();
+    const [previewSrc, setPreviewSrc] = useState();
+    const [modalSrc, setModalSrc] = useState();
     const [showModal, setShowModal] = useState(false);
     const [openList, setOpenList] = useState<string | null>(null);
     const [elemento, setElemento] = useState("Elemento");
@@ -21,7 +22,7 @@ function Rituais() {
     const handleUploadChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (!file) return;
-
+        setImg(file)
         const reader = new FileReader();
         reader.onload = (e) => {
             const src = e.target?.result as string;
@@ -43,6 +44,17 @@ function Rituais() {
     const selectOption = (setter: (value: string) => void, value: string) => {
         setter(value);
         setOpenList(null);
+    };
+
+    async function cadastrar (){
+        const formData = new FormData();
+        formData.append("file", img);
+        
+        await fetch("http://localhost:3000/ritual", {
+            method: "POST",
+            body: formData
+        })
+        //navigate("/principal")
     };
 
     return (
@@ -205,7 +217,7 @@ function Rituais() {
             <label htmlFor="DescricaoVerdadeiro">Descrição Verdadeiro:</label>
                 <textarea className="digitacao" name="DescriçãoVerdadeiro" id="DescricaoVerdadeiro"></textarea>
             <br />
-            <button type="button" className="botao salvar" onClick={() => navigate("/principal")} >
+            <button type="button" className="botao salvar" onClick={ cadastrar } >
                 Salvar Ritual
             </button>
         </div>

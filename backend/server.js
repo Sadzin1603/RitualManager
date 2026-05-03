@@ -4,6 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 import cors from "cors";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import multer from "multer";
 import authToken from"./middleware.js"
 
 const port = 3000
@@ -66,7 +67,7 @@ app.post("/login",async (req,res)=>{
         name:data.name
      },
     process.env.JWT_SECRET,
-    { expiresIn: "10m" }
+    { expiresIn: "1d" }
     );
 
     res.status(200).json({ token });
@@ -79,6 +80,32 @@ app.get("/protegida", authToken,(req,res)=>{
 app.get("/principal", authToken, (req, res) => {
   res.json({ msg: "Bem-vindo" });
 });
+
+const upload = multer({ storage: multer.memoryStorage() });
+
+app.post("/ritual",upload.single("file"),async (req,res)=>{
+    const file = req.file;
+
+    if (!file) {
+        return res.status(400).send("Nenhum arquivo enviado");
+    }
+    const { data, error } = await supabase.storage
+        .from("fotos_rituais")
+        .upload(`public/${file.originalname}`, file.buffer);
+
+    if (error) {
+        return res.status(500).json(error);
+    }
+    const { data: publicUrlData } = supabase
+        .storage
+        .from("fotos_rituais")
+        .getPublicUrl(path);
+
+    const imageUrl = publicUrlData.publicUrl;
+    
+    res.json(data);
+
+})
 
 
 
