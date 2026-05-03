@@ -3,7 +3,7 @@ import { EyeIcon, EyeOffIcon } from "lucide-react";
 import {useNavigate} from "react-router-dom"
 import Input from "../components/Input"
 
-function Login(){
+function Login({setLogado}){
     const navigate = useNavigate();
 
     const [email,setEmail] = useState<String>("")
@@ -24,6 +24,8 @@ function Login(){
             }) 
             const data = await response.json();
             localStorage.setItem("token",data.token)
+            setLogado(true)
+            navigate("/principal")
             setEmail("")
             setPassword("")
         }catch(e){
@@ -86,7 +88,7 @@ function Login(){
                 >
                     Logar
                 </button>
-                <button
+                {/*<button
                     className="input px-4 py-2 rounded-2xl placeholder-gray-400 text-white cursor-pointer"
                     type="submit"
                     onClick={
@@ -94,7 +96,7 @@ function Login(){
                     }
                 >
                     acessar o desconhecido
-                </button>
+                </button>*/}
             </div>
         </div>
     </div>
