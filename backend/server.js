@@ -19,7 +19,8 @@ app.use(cors());
 //DELETE -deleta
 //PUT -updeita
 
-
+//======================================================
+//rota para cadastrar os clientes
 app.post('/cadastro',async (req,res)=>{
 
     const {name,email,password} = req.body
@@ -41,7 +42,9 @@ app.post('/cadastro',async (req,res)=>{
     return res.status(201).json({message:"Cliente salvo com sucesso",data})
 
 })
+//======================================================
 
+//rota de login de usuarios
 app.post("/login",async (req,res)=>{
     const {email,password} = req.body
     const {data,error} = await supabase
@@ -73,22 +76,27 @@ app.post("/login",async (req,res)=>{
     res.status(200).json({ token });
 })
 
+//======================================================
 app.get("/protegida", authToken,(req,res)=>{
     res.json({message:"Entrando em area protegida"})
 })
 
+//======================================================
 app.get("/principal", authToken, (req, res) => {
   res.json({ msg: "Bem-vindo" });
 });
+//======================================================
 
 const upload = multer({ storage: multer.memoryStorage() });
-
+//rota para adicionar o ritual no banco de dados
 app.post("/ritual",upload.single("file"),async (req,res)=>{
     const file = req.file;
-
+    const {name,element,circle,exec,range,area,target,effect,resistence,dices,description,discent_description,truly_description,discent_dices,truly_dices,creator} = req.body
+    
     if (!file) {
         return res.status(400).send("Nenhum arquivo enviado");
     }
+
     const { data, error } = await supabase.storage
         .from("fotos_rituais")
         .upload(`public/${file.originalname}`, file.buffer);
@@ -99,11 +107,17 @@ app.post("/ritual",upload.single("file"),async (req,res)=>{
     const { data: publicUrlData } = supabase
         .storage
         .from("fotos_rituais")
-        .getPublicUrl(path);
+        .getPublicUrl(`public/${file.originalname}`);
 
     const imageUrl = publicUrlData.publicUrl;
+    const {data:data2,error:error2} = await supabase
+        .from("Rituais")
+        .insert([{name,img:imageUrl,element,circle,exec,range,area,target,effect,resistence,dices,description,discent_description,truly_description,discent_dices,truly_dices,creator}])
     
-    res.json(data);
+    if(error2){
+        return res.status(500).json(error);
+    }
+    res.status(201).json(data2);
 
 })
 

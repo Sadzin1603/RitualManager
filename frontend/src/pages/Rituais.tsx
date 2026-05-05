@@ -1,10 +1,12 @@
-import { ChangeEvent, useRef, useState } from "react"
+import { ChangeEvent, use, useRef, useState } from "react"
 import "./Rituais.css"
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 function Rituais() {
     const uploadRef = useRef<HTMLInputElement | null>(null);
-    const [img, setImg] = useState();
+    const [name,setName] = useState("")
+    const [img, setImg] = useState<File | null>(null);
     const [previewSrc, setPreviewSrc] = useState();
     const [modalSrc, setModalSrc] = useState();
     const [showModal, setShowModal] = useState(false);
@@ -73,20 +75,52 @@ function Rituais() {
 
     async function cadastrar() {
         const formData = new FormData();
+        const token = localStorage.getItem('token');
+
+        if (!token) return;
+
+        const decoded: any = jwtDecode(token);
+
+        if (!img) {
+            console.log("Sem imagem");
+            return;
+        }
+
+        formData.append("name", name);
         formData.append("file", img);
+        formData.append("element", elemento);
+        formData.append("circle", circuloText[circulo]);
+        formData.append("exec", execucaoText[execucao]);
+        formData.append("range", alcanceText[alcance]);
+        // aqui você tá sem state — ponto cego
+        formData.append("area", (document.getElementById("Area") as HTMLInputElement).value);
+        formData.append("target", (document.getElementById("Alvo") as HTMLInputElement).value);
+        formData.append("effect", (document.getElementById("Efeito") as HTMLInputElement).value);
+        formData.append("resistence", (document.getElementById("Resistencia") as HTMLInputElement).value);
+        formData.append("dices", (document.getElementById("Dados") as HTMLInputElement).value);
+        formData.append("description", (document.getElementById("Descricao") as HTMLTextAreaElement).value);
+        formData.append("discent_description", (document.getElementById("DescricaoDiscente") as HTMLTextAreaElement).value);
+        formData.append("truly_description", (document.getElementById("DescricaoVerdadeiro") as HTMLTextAreaElement).value);
+        formData.append("discent_dices", (document.getElementById("DadosDiscente") as HTMLInputElement).value);
+        formData.append("truly_dices", (document.getElementById("DadosVerdadeiro") as HTMLInputElement).value);
+        formData.append("creator", decoded.id);
+
+        /* DEBUG REAL
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+        }*/
 
         await fetch("http://localhost:3000/ritual", {
             method: "POST",
             body: formData
-        })
-        //navigate("/principal")
-    };
+        });
+    }
 
     return (
         <div className="editor editor_principal">
             <form className="formulario_edicao" action="">
                 <label htmlFor="Nome">Nome:</label>
-                <input className="digitacao" type="text" name="Nome" id="Nome" />
+                <input className="digitacao" type="text" name="Nome" id="Nome" value={name} onChange={(e) => setName(e.target.value)} />
             </form>
 
             <label htmlFor="upload">Imagem:</label>
