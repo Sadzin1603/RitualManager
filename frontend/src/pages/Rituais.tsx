@@ -46,10 +46,35 @@ function Rituais() {
         setOpenList(null);
     };
 
-    async function cadastrar (){
+    const circuloText: Record<string, string> = {
+        "1° Circulo (1 PE)": "circulo_1",
+        "2° Circulo (3 PE)": "circulo_2",
+        "3° Circulo (6 PE)": "circulo_3",
+        "4° Circulo (10 PE)": "circulo_4",
+    };
+
+    const execucaoText: Record<string, string> = {
+        "Padrão": "execucao_padrao",
+        "Movimento": "execucao_movimento",
+        "Completa": "execucao_completa",
+        "Reação": "execucao_reacao",
+        "Livre": "execucao_livre",
+    };
+
+    const alcanceText: Record<string, string> = {
+        "Pessoal": "alcance_pessoal",
+        "Toque": "alcance_toque",
+        "Curto (9m)": "alcance_curto",
+        "Médio (18m)": "alcance_medio",
+        "Longo (36m)": "alcance_longo",
+        "Extremo (90m)": "alcance_extremo",
+        "Ilimitado": "alcance_ilimitado",
+    };
+
+    async function cadastrar() {
         const formData = new FormData();
         formData.append("file", img);
-        
+
         await fetch("http://localhost:3000/ritual", {
             method: "POST",
             body: formData
@@ -74,105 +99,119 @@ function Rituais() {
                 onChange={handleUploadChange}
                 style={{ display: 'none' }}
             />
-            <button type="button" className="botao escolher_imagem" onClick={handlePreviewClick}>Escolher imagem</button>
+            <div className="div_img_drop_ladolado">
+                <div className="div_imagem">
+                    <button type="button" className="botao escolher_imagem" onClick={handlePreviewClick}>Escolher imagem</button>
 
-            <div className="preview" onClick={handlePreviewClick}>
-                <img className="preview_img" src={previewSrc}/>
-            </div>
+                    <div className="preview" onClick={handlePreviewClick}>
+                        <img className="preview_img" src={previewSrc} />
+                    </div>
 
-            <div id="crop-modal" className={`modal ${showModal ? "show" : ""}`}>
-                <div className="modal-content">
-                    <h2>Imagem</h2>
-                    <img id="modal-img" src={modalSrc} alt="Imagem selecionada" />
-                    <button id="confirmar" type="button" onClick={handleConfirm}>Confirmar</button>
+                    <div id="crop-modal" className={`modal ${showModal ? "show" : ""}`}>
+                        <div className="modal-content">
+                            <h2>Imagem</h2>
+                            <img id="modal-img" src={modalSrc} alt="Imagem selecionada" />
+                            <button id="confirmar" type="button" onClick={handleConfirm}>Confirmar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="div_dropdowns">
+                    <label htmlFor="Elemento">Elemento:</label>
+                    <div style={{ position: "relative" }}>
+                        <button
+                            id="Elemento"
+                            className={" botao_lista " + (elemento !== "Elemento" ? `elemento_${elemento.toLowerCase()}` : "")}
+                            data-target=".lista_elemento"
+                            type="button"
+                            aria-expanded={openList === "elemento"}
+                            aria-controls="lista_elemento"
+                            onClick={() => toggleList("elemento")}
+                        >
+                            {elemento}
+                        </button>
+
+                        <div id="lista_elemento" className={`lista lista_elemento ${openList === "elemento" ? "show" : ""}`}>
+                            <button className="elemento_sangue" type="button" onClick={() => selectOption(setElemento, "Sangue")}>Sangue</button>
+                            <button className="elemento_morte" type="button" onClick={() => selectOption(setElemento, "Morte")}>Morte</button>
+                            <button className="elemento_conhecimento" type="button" onClick={() => selectOption(setElemento, "Conhecimento")}>Conhecimento</button>
+                            <button className="elemento_energia" type="button" onClick={() => selectOption(setElemento, "Energia")}>Energia</button>
+                            <button className="elemento_medo" type="button" onClick={() => selectOption(setElemento, "Medo")}>Medo</button>
+                            <button className="elemento_varia" type="button" onClick={() => selectOption(setElemento, "Varia")}>Varia</button>
+                        </div>
+                    </div>
+
+                    <label htmlFor="Circulo">Circulo:</label>
+                    <div style={{ position: "relative" }}>
+                        <button
+                            id="Circulo"
+                            className={" botao_lista " + (circuloText[circulo] || "")}
+                            data-target=".lista_circulo"
+                            type="button"
+                            aria-expanded={openList === "circulo"}
+                            aria-controls="lista_circulo"
+                            onClick={() => toggleList("circulo")}
+                        >
+                            {circulo}
+                        </button>
+
+                        <div id="lista_circulo" className={`lista lista_circulo ${openList === "circulo" ? "show" : ""}`}>
+                            <button className="circulo_1" type="button" onClick={() => selectOption(setCirculo, "1° Circulo (1 PE)")}>1° Circulo (1 PE)</button>
+                            <button className="circulo_2" type="button" onClick={() => selectOption(setCirculo, "2° Circulo (3 PE)")}>2° Circulo (3 PE)</button>
+                            <button className="circulo_3" type="button" onClick={() => selectOption(setCirculo, "3° Circulo (6 PE)")}>3° Circulo (6 PE)</button>
+                            <button className="circulo_4" type="button" onClick={() => selectOption(setCirculo, "4° Circulo (10 PE)")}>4° Circulo (10 PE)</button>
+                        </div>
+                    </div>
+
+                    <label htmlFor="Execucao">Execução:</label>
+                    <div style={{ position: "relative" }}>
+                        <button
+                            id="Execucao"
+                            className={"botao_lista " + (execucaoText[execucao] || "")}
+                            data-target=".lista_execucao"
+                            type="button"
+                            aria-expanded={openList === "execucao"}
+                            aria-controls="lista_execucao"
+                            onClick={() => toggleList("execucao")}
+                        >
+                            {execucao}
+                        </button>
+
+                        <div id="lista_execucao" className={`lista lista_execucao ${openList === "execucao" ? "show" : ""}`}>
+                            <button className="execucao_completa" type="button" onClick={() => selectOption(setExecucao, "Completa")}>Completa</button>
+                            <button className="execucao_padrao" type="button" onClick={() => selectOption(setExecucao, "Padrão")}>Padrão</button>
+                            <button className="execucao_movimento" type="button" onClick={() => selectOption(setExecucao, "Movimento")}>Movimento</button>
+                            <button className="execucao_reacao" type="button" onClick={() => selectOption(setExecucao, "Reação")}>Reação</button>
+                            <button className="execucao_livre" type="button" onClick={() => selectOption(setExecucao, "Livre")}>Livre</button>
+                        </div>
+                    </div>
+
+                    <label htmlFor="Alcance">Alcance:</label>
+                    <div style={{ position: "relative" }}>
+                        <button
+                            id="Alcance"
+                            className={"botao_lista " + (alcanceText[alcance] || "")}
+                            data-target=".lista_alcance"
+                            type="button"
+                            aria-expanded={openList === "alcance"}
+                            aria-controls="lista_alcance"
+                            onClick={() => toggleList("alcance")}
+                        >
+                            {alcance}
+                        </button>
+
+                        <div id="lista_alcance" className={`lista lista_alcance ${openList === "alcance" ? "show" : ""}`}>
+                            <button className="alcance_pessoal" type="button" onClick={() => selectOption(setAlcance, "Pessoal")}>Pessoal</button>
+                            <button className="alcance_toque" type="button" onClick={() => selectOption(setAlcance, "Toque")}>Toque</button>
+                            <button className="alcance_curto" type="button" onClick={() => selectOption(setAlcance, "Curto (9m)")}>Curto (9m)</button>
+                            <button className="alcance_medio" type="button" onClick={() => selectOption(setAlcance, "Médio (18m)")}>Médio (18m)</button>
+                            <button className="alcance_longo" type="button" onClick={() => selectOption(setAlcance, "Longo (36m)")}>Longo (36m)</button>
+                            <button className="alcance_extremo" type="button" onClick={() => selectOption(setAlcance, "Extremo (90m)")}>Extremo (90m)</button>
+                            <button className="alcance_ilimitado" type="button" onClick={() => selectOption(setAlcance, "Ilimitado")}>Ilimitado</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <label htmlFor="Elemento">Elemento:</label>
-            <button
-                id="Elemento"
-                className="botao_lista"
-                data-target=".lista_elemento"
-                type="button"
-                aria-expanded={openList === "elemento"}
-                aria-controls="lista_elemento"
-                onClick={() => toggleList("elemento")}
-            >
-                {elemento}
-            </button>
-            <div id="lista_elemento" className={`lista lista_elemento ${openList === "elemento" ? "show" : ""}`}>
-                <button type="button" onClick={() => selectOption(setElemento, "Sangue")}>Sangue</button>
-                <button type="button" onClick={() => selectOption(setElemento, "Morte")}>Morte</button>
-                <button type="button" onClick={() => selectOption(setElemento, "Conhecimento")}>Conhecimento</button>
-                <button type="button" onClick={() => selectOption(setElemento, "Energia")}>Energia</button>
-                <button type="button" onClick={() => selectOption(setElemento, "Medo")}>Medo</button>
-                <button type="button" onClick={() => selectOption(setElemento, "Varia")}>Varia</button>
-            </div>
-            <br />
-
-            <label htmlFor="Circulo">Circulo:</label>
-            <button
-                id="Circulo"
-                className="botao_lista"
-                data-target=".lista_circulo"
-                type="button"
-                aria-expanded={openList === "circulo"}
-                aria-controls="lista_circulo"
-                onClick={() => toggleList("circulo")}
-            >
-                {circulo}
-            </button>
-            <div id="lista_circulo" className={`lista lista_circulo ${openList === "circulo" ? "show" : ""}`}>
-                <button type="button" onClick={() => selectOption(setCirculo, "1° Circulo (1 PE)")}>1° Circulo (1 PE)</button>
-                <button type="button" onClick={() => selectOption(setCirculo, "2° Circulo (3 PE)")}>2° Circulo (3 PE)</button>
-                <button type="button" onClick={() => selectOption(setCirculo, "3° Circulo (6 PE)")}>3° Circulo (6 PE)</button>
-                <button type="button" onClick={() => selectOption(setCirculo, "4° Circulo (10 PE)")}>4° Circulo (10 PE)</button>
-            </div>
-            <br />
-
-            <label htmlFor="Execucao">Execução:</label>
-            <button
-                id="Execucao"
-                className="botao_lista"
-                data-target=".lista_execucao"
-                type="button"
-                aria-expanded={openList === "execucao"}
-                aria-controls="lista_execucao"
-                onClick={() => toggleList("execucao")}
-            >
-                {execucao}
-            </button>
-            <div id="lista_execucao" className={`lista lista_execucao ${openList === "execucao" ? "show" : ""}`}>
-                <button type="button" onClick={() => selectOption(setExecucao, "Padrão")}>Padrão</button>
-                <button type="button" onClick={() => selectOption(setExecucao, "Movimento")}>Movimento</button>
-                <button type="button" onClick={() => selectOption(setExecucao, "Completa")}>Completa</button>
-                <button type="button" onClick={() => selectOption(setExecucao, "Reação")}>Reação</button>
-                <button type="button" onClick={() => selectOption(setExecucao, "Livre")}>Livre</button>
-            </div>
-            <br />
-
-            <label htmlFor="Alcance">Alcance:</label>
-            <button
-                id="Alcance"
-                className="botao_lista"
-                data-target=".lista_alcance"
-                type="button"
-                aria-expanded={openList === "alcance"}
-                aria-controls="lista_alcance"
-                onClick={() => toggleList("alcance")}
-            >
-                {alcance}
-            </button>
-            <div id="lista_alcance" className={`lista lista_alcance ${openList === "alcance" ? "show" : ""}`}>
-                <button type="button" onClick={() => selectOption(setAlcance, "Pessoal")}>Pessoal</button>
-                <button type="button" onClick={() => selectOption(setAlcance, "Toque")}>Toque</button>
-                <button type="button" onClick={() => selectOption(setAlcance, "Curto (9m)")}>Curto (9m)</button>
-                <button type="button" onClick={() => selectOption(setAlcance, "Médio (18m)")}>Médio (18m)</button>
-                <button type="button" onClick={() => selectOption(setAlcance, "Longo (36m)")}>Longo (36m)</button>
-                <button type="button" onClick={() => selectOption(setAlcance, "Extremo (90m)")}>Extremo (90m)</button>
-                <button type="button" onClick={() => selectOption(setAlcance, "Ilimitado")}>Ilimitado</button>
-            </div>
-            <br />
 
             <label htmlFor="Area">Área:</label>
             <input className="digitacao" type="text" name="Área" id="Area"></input>
@@ -199,7 +238,7 @@ function Rituais() {
             <br />
 
             <label htmlFor="Descricao">Descrição:</label>
-                <textarea className="digitacao" name="Descrição" id="Descricao" ></textarea>
+            <textarea className="digitacao" name="Descrição" id="Descricao" ></textarea>
             <br />
 
             <label htmlFor="DadosDiscente">Dados Discente:</label>
@@ -207,7 +246,7 @@ function Rituais() {
             <br />
 
             <label htmlFor="DescricaoDiscente">Descrição Discente:</label>
-                <textarea className="digitacao" name="DescriçãoDiscente" id="DescricaoDiscente" ></textarea>
+            <textarea className="digitacao" name="DescriçãoDiscente" id="DescricaoDiscente" ></textarea>
             <br />
 
             <label htmlFor="DadosVerdadeiro">Dados Verdadeiro:</label>
@@ -215,9 +254,9 @@ function Rituais() {
             <br />
 
             <label htmlFor="DescricaoVerdadeiro">Descrição Verdadeiro:</label>
-                <textarea className="digitacao" name="DescriçãoVerdadeiro" id="DescricaoVerdadeiro"></textarea>
+            <textarea className="digitacao" name="DescriçãoVerdadeiro" id="DescricaoVerdadeiro"></textarea>
             <br />
-            <button type="button" className="botao salvar" onClick={ cadastrar } >
+            <button type="button" className="botao salvar" onClick={cadastrar} >
                 Salvar Ritual
             </button>
         </div>
