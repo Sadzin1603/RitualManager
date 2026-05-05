@@ -107,6 +107,18 @@ app.post("/ritual",upload.single("file"),async (req,res)=>{
 
 })
 
+app.get("/ritual", async (req,res)=>{
+    const {data, error} = await supabase
+                            .from("Rituais")
+                            .select("*")
+
+    if(error){
+        return res.status(400).json({message:erro})
+    }
+    
+    return res.json(data)
+})
+
 
 
 
