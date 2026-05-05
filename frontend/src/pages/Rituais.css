@@ -53,6 +53,11 @@ textarea.digitacao {
     min-height: 100px;
 }
 
+/* Imagem */
+.div_imagem {
+    flex-shrink: 0;
+}
+
 /* Upload de imagem */
 .upload {
     display: block;
@@ -161,8 +166,19 @@ button:hover {
 }
 
 /* Listas dropdown */
+.div_dropdowns {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+}
+
 .lista {
+    width: 100%;
     display: none;
+    position: absolute;
+    z-index: 10;
+    margin-top: 10px;
     background-color: #292647;
     border: 1px solid #555;
     border-radius: 4px;
@@ -175,6 +191,7 @@ button:hover {
 }
 
 .lista button {
+    display: block;
     width: 100%;
     background-color: transparent;
     color: #eee;
@@ -217,6 +234,7 @@ label {
     margin: 20px 0 10px 0;
     font-weight: 600;
     color: #fff;
+    max-width: 22%;
 }
 
 /* Espaçamento */
@@ -224,4 +242,132 @@ br {
     display: block;
     content: "";
     margin: 5px 0;
+}
+
+/* Arrume lateral da imagem e dropdowns */
+.div_img_drop_ladolado {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.div_dropdowns,
+.div_imagem {
+    width: 50%;
+}
+
+/* Cor dos botões elementos */
+.lista button.elemento_sangue:hover,
+.botao_lista.elemento_sangue {
+    background-color: #D81218;
+}
+
+.lista button.elemento_morte:hover,
+.botao_lista.elemento_morte {
+    background-color: #222222;
+}
+
+.lista button.elemento_conhecimento:hover,
+.botao_lista.elemento_conhecimento {
+    background-color: #946810;
+}
+
+.lista button.elemento_energia:hover,
+.botao_lista.elemento_energia {
+    background-color: #9557B5;
+}
+
+.lista button.elemento_medo:hover,
+.botao_lista.elemento_medo {
+    background-color: #005186;
+}
+
+.lista button.elemento_varia:hover,
+.botao_lista.elemento_varia {
+    background: linear-gradient(90deg, #005186 20%, #D81218 40%, #946810 60%, #9557B5 80%, #222222 100%);
+}
+
+/* Cor dos botões círculos */
+.lista button.circulo_1:hover,
+.botao_lista.circulo_1 {
+    background: linear-gradient(90deg, #24638d 0%, transparent 60%);
+}
+
+.lista button.circulo_2:hover,
+.botao_lista.circulo_2 {
+    background: linear-gradient(90deg, #24638d 0%, transparent 85%);
+}
+
+.lista button.circulo_3:hover,
+.botao_lista.circulo_3 {
+    background: linear-gradient(90deg, #24638d 0%, transparent 110%);
+}
+
+.lista button.circulo_4:hover,
+.botao_lista.circulo_4 {
+    background: #24638d;
+}
+
+/* Cor dos botões execução */
+.lista button.execucao_padrao:hover,
+.botao_lista.execucao_padrao {
+    background-color: #0B0F58;
+}
+
+.lista button.execucao_movimento:hover,
+.botao_lista.execucao_movimento {
+    background-color: #4E2F10;
+}
+
+.lista button.execucao_completa:hover,
+.botao_lista.execucao_completa {
+    background-color: #3E020E;
+}
+
+.lista button.execucao_reacao:hover,
+.botao_lista.execucao_reacao {
+    background-color: #1B053E;
+}
+
+.lista button.execucao_livre:hover,
+.botao_lista.execucao_livre {
+    background-color: #0A556F;
+}
+
+/* Cor dos botões alcance */
+.lista button.alcance_pessoal:hover,
+.botao_lista.alcance_pessoal {
+    background-color: transparent;
+    background: linear-gradient(90deg, transparent 10%, #131bac 40%, #131bac 60%, transparent 100%);
+}
+
+.lista button.alcance_toque:hover,
+.botao_lista.alcance_toque {
+    background-color: transparent;
+    background: linear-gradient(90deg, #131bac 10%, transparent 40%, transparent 60%, #131bac 100%);
+}
+
+.lista button.alcance_curto:hover,
+.botao_lista.alcance_curto {
+    background: linear-gradient(90deg, #131bac 0%, transparent 60%);
+}
+
+.lista button.alcance_medio:hover,
+.botao_lista.alcance_medio {
+    background: linear-gradient(90deg, #131bac 0%, transparent 70%);
+}
+
+.lista button.alcance_longo:hover,
+.botao_lista.alcance_longo {
+    background: linear-gradient(90deg, #131bac 0%, transparent 85%);
+}
+
+.lista button.alcance_extremo:hover,
+.botao_lista.alcance_extremo {
+    background: linear-gradient(90deg, #131bac 0%, transparent 110%);
+}
+
+.lista button.alcance_ilimitado:hover,
+.botao_lista.alcance_ilimitado {
+    background: #131bac;
 }
