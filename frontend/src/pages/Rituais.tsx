@@ -1,15 +1,52 @@
-import { ChangeEvent, use, useRef, useState } from "react"
+import { ChangeEvent, useRef, useState, useCallback } from "react"
 import "./Rituais.css"
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import ReactCrop, { Crop, PixelCrop, centerCrop, makeAspectCrop } from "react-image-crop";
+import "react-image-crop/dist/ReactCrop.css";
+
+/* Função para gerar a imagem recortada */
+function getCroppedImg(image: HTMLImageElement, crop: PixelCrop): Promise<Blob> {
+    const canvas = document.createElement("canvas");
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
+
+    // tamanho do canvas em pixels NATURAIS da imagem, não da renderizada
+    canvas.width = Math.round(crop.width * scaleX);
+    canvas.height = Math.round(crop.height * scaleY);
+
+    const ctx = canvas.getContext("2d")!;
+
+    ctx.drawImage(
+        image,
+        crop.x * scaleX,
+        crop.y * scaleY,
+        crop.width * scaleX,
+        crop.height * scaleY,
+        0,
+        0,
+        canvas.width,   
+        canvas.height,
+    );
+
+    return new Promise((resolve) => {
+        canvas.toBlob((blob) => {
+            resolve(blob!);
+        }, "image/jpeg");
+    });
+}
 
 function Rituais() {
     const uploadRef = useRef<HTMLInputElement | null>(null);
-    const [name,setName] = useState("")
+    const imgRef = useRef<HTMLImageElement>(null);
+    const [name, setName] = useState("")
     const [img, setImg] = useState<File | null>(null);
-    const [previewSrc, setPreviewSrc] = useState();
-    const [modalSrc, setModalSrc] = useState();
+    const [previewSrc, setPreviewSrc] = useState<string>("");
+    const [modalSrc, setModalSrc] = useState<string>("");
+    const [originalSrc, setOriginalSrc] = useState<string>("");
     const [showModal, setShowModal] = useState(false);
+    const [crop, setCrop] = useState<Crop>();
+    const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
     const [openList, setOpenList] = useState<string | null>(null);
     const [elemento, setElemento] = useState("Elemento");
     const [circulo, setCirculo] = useState("Circulo");
@@ -17,25 +54,61 @@ function Rituais() {
     const [alcance, setAlcance] = useState("Alcance");
     const navigate = useNavigate();
 
-    const handlePreviewClick = () => {
+    // Botão "Escolher imagem" — sempre abre o file picker para trocar a foto
+    const handleChooseClick = () => {
+        if (uploadRef.current) {
+            uploadRef.current.value = "";
+        }
         uploadRef.current?.click();
+    };
+
+    // Clicar no preview — reabre o modal com a imagem original para recortar de novo
+    const handlePreviewClick = () => {
+        if (!originalSrc) {
+            uploadRef.current?.click();
+            return;
+        }
+        setModalSrc(originalSrc + `#${Date.now()}`);
+        setCrop(undefined);
+        setCompletedCrop(undefined);
+        setShowModal(true);
     };
 
     const handleUploadChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (!file) return;
-        setImg(file)
         const reader = new FileReader();
         reader.onload = (e) => {
             const src = e.target?.result as string;
-            setPreviewSrc(src);
-            setModalSrc(src);
+            setOriginalSrc(src);
+            setModalSrc(src + `#${Date.now()}`);
+            setCrop(undefined);
+            setCompletedCrop(undefined);
             setShowModal(true);
         };
         reader.readAsDataURL(file);
     };
 
-    const handleConfirm = () => {
+    const onImageLoad = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
+        const { width, height } = e.currentTarget;
+        const initialCrop = centerCrop(
+            makeAspectCrop({ unit: "%", width: 80 }, 1, width, height),
+            width,
+            height
+        );
+        setCrop(initialCrop);
+    }, []);
+
+    const handleConfirm = async () => {
+        if (!completedCrop || !imgRef.current) return;
+
+        const blob = await getCroppedImg(imgRef.current, completedCrop);
+        const croppedUrl = URL.createObjectURL(blob);
+        setPreviewSrc(croppedUrl);
+
+        const croppedFile = new File([blob], "ritual_img.jpg", { type: "image/jpeg" });
+        setImg(croppedFile);
+
         setShowModal(false);
     };
 
@@ -92,7 +165,6 @@ function Rituais() {
         formData.append("circle", circuloText[circulo]);
         formData.append("exec", execucaoText[execucao]);
         formData.append("range", alcanceText[alcance]);
-        // aqui você tá sem state — ponto cego
         formData.append("area", (document.getElementById("Area") as HTMLInputElement).value);
         formData.append("target", (document.getElementById("Alvo") as HTMLInputElement).value);
         formData.append("effect", (document.getElementById("Efeito") as HTMLInputElement).value);
@@ -104,11 +176,6 @@ function Rituais() {
         formData.append("discent_dices", (document.getElementById("DadosDiscente") as HTMLInputElement).value);
         formData.append("truly_dices", (document.getElementById("DadosVerdadeiro") as HTMLInputElement).value);
         formData.append("creator", decoded.id);
-
-        /* DEBUG REAL
-        for (let [key, value] of formData.entries()) {
-            console.log(key, value);
-        }*/
 
         await fetch("http://localhost:3000/ritual", {
             method: "POST",
@@ -135,16 +202,36 @@ function Rituais() {
             />
             <div className="div_img_drop_ladolado">
                 <div className="div_imagem">
-                    <button type="button" className="botao escolher_imagem" onClick={handlePreviewClick}>Escolher imagem</button>
+                    {}
+                    <button type="button" className="botao escolher_imagem" onClick={handleChooseClick}>Escolher imagem</button>
 
+                    {}
                     <div className="preview" onClick={handlePreviewClick}>
-                        <img className="preview_img" src={previewSrc} />
+                        <img
+                            className="preview_img"
+                            src={previewSrc}
+                            style={{ objectFit: "cover" }}
+                        />
                     </div>
 
                     <div id="crop-modal" className={`modal ${showModal ? "show" : ""}`}>
                         <div className="modal-content">
-                            <h2>Imagem</h2>
-                            <img id="modal-img" src={modalSrc} alt="Imagem selecionada" />
+                            <h2>Recortar Imagem</h2>
+                            <ReactCrop
+                                crop={crop}
+                                onChange={(c) => setCrop(c)}
+                                onComplete={(c) => setCompletedCrop(c)}
+                                aspect={1}
+                            >
+                                <img
+                                    ref={imgRef}
+                                    id="modal-img"
+                                    src={modalSrc}
+                                    alt="Imagem selecionada"
+                                    onLoad={onImageLoad}
+                                    style={{ margin: 0 }}
+                                />
+                            </ReactCrop>
                             <button id="confirmar" type="button" onClick={handleConfirm}>Confirmar</button>
                         </div>
                     </div>
