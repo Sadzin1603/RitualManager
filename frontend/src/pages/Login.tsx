@@ -17,41 +17,25 @@ function Login({setLogado}){
     
     async function logar(){
         try{
-            const response = await fetch("http://localhost:3000/login",{
+            const response = await fetch("http://localhost:3000/auth/login",{
                 method:"POST",
                 headers:{ 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email,password })
             }) 
             const data = await response.json();
-            localStorage.setItem("token",data.token)
+            localStorage.setItem("token",data)
             setLogado(true)
             navigate("/principal")
             setEmail("")
             setPassword("")
         }catch(e){
+            setLogado(false)
             console.log(e)
         }
     }
-    async function teste(){
-        
-        const token = localStorage.getItem("token");
-        if(token){
-            const res = await fetch("http://localhost:3000/protegida",{
-                headers:{Authorization: `Bearer ${token}`}
-            })
-            console.log(res)
-            if(res.ok){
-                navigate("/principal") //MUDAR A ROTA PARA ONDE EU QUERO IR
-            }else{
-                console.log("aq é onde o frontend vai entrar com coisinha bonita para a tela")
-            }
-        }
-        
-    
-    }
 
     return( 
-    <div className="title w-screen min-h-screen flex justify-center p-6">
+    <div className="title w-auto min-h-screen flex justify-center p-6">
         <div className="w-[500px] space-y-4"> 
             <div className="div space-y-6 p-6 rounded-md shadow flex flex-col">
                 <h1 className="text-white text-center font-black text-3xl">

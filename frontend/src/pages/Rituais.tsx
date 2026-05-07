@@ -177,10 +177,16 @@ function Rituais() {
         formData.append("truly_dices", (document.getElementById("DadosVerdadeiro") as HTMLInputElement).value);
         formData.append("creator", decoded.id);
 
-        await fetch("http://localhost:3000/ritual", {
-            method: "POST",
-            body: formData
-        });
+        try{
+            await fetch("http://localhost:3000/ritual", {
+                method: "POST",
+                body: formData
+            })
+            navigate("/principal")
+
+        }catch(err){
+            console.log(err)
+        }
     }
 
     return (

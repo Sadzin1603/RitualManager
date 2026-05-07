@@ -18,7 +18,7 @@ function Principal(){
     const navigate = useNavigate();
     
     return(
-        <div className="title w-screen min-h-screen flex justify-center p-6">
+        <div className="title w-auto min-h-screen flex justify-center p-6">
             <div className="space-y-4">
                 {rituais.map((ritual) => ( 
                         <Card key={ritual.id} ritual={ritual}></Card>
