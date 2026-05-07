@@ -33,7 +33,7 @@ function Cadastro( ) {
 
 
   return (
-    <div className='title w-screen min-h-screen flex justify-center p-6'>
+    <div className='title w-auto min-h-screen flex justify-center p-6'>
       <div className="w-[500px] space-y-4">
         
     <div className="div space-y-6 p-6 rounded-md shadow flex flex-col">

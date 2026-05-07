@@ -109,11 +109,16 @@ function Rituais() {
         for (let [key, value] of formData.entries()) {
             console.log(key, value);
         }*/
+        try{
+            await fetch("http://localhost:3000/ritual", {
+                method: "POST",
+                body: formData
+            })
+            navigate("/principal")
 
-        await fetch("http://localhost:3000/ritual", {
-            method: "POST",
-            body: formData
-        });
+        }catch(err){
+            console.log(err)
+        }
     }
 
     return (

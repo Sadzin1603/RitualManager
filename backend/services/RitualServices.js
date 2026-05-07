@@ -4,14 +4,13 @@ export const create = async (file,{ name,element,circle,exec,range,area,target,e
     if (!name) {
         throw new Error("Missing fields");
     }
-    console.log(file)
     //verificação se ja existe algum ritual com aquele nome?
     // const {data,error} = await findByEmail(email);
     // if (data) {
     //      throw new Error("Email already exists");
     // }
 
-    return await createRitualModel({ name,element,circle,exec,range,area,target,effect,resistence,dices,description,discent_description,truly_description,discent_dices,truly_dices,creator });
+    return await createRitualModel(file,{ name,element,circle,exec,range,area,target,effect,resistence,dices,description,discent_description,truly_description,discent_dices,truly_dices,creator });
 };
 export const pegar = async () => {
 
