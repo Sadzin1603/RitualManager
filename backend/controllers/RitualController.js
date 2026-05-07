@@ -3,14 +3,14 @@ export default {
     post: async (req,res) =>{
             try {
                 const rituais = await create(req.file,req.body);
-                return res.status(204).json(token);
+                return res.status(201).json(token);
             } catch (err) {
                 return res.status(400).json({ error: err.message });
             }
         },
         get: async(req,res) =>{
             try{
-                const rituais = await pegar();
+                const rituais = await pegar(req.query.status);
                 return res.json(rituais);
             }catch (err){
                 return res.status(400).json({error: err.message})

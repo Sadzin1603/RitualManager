@@ -25,12 +25,28 @@ export const create = async (file,user) => {
     return {data2,error2}
 };
 
-export const getAll = async (email) => {
-
-    const {data,error} = await supabase
+export const getAll = async (status) => {
+    const query = supabase
                     .from('Rituais')
                     .select('*')
                     .order("id")
+
+    if(status) query.eq("status",status)
+
+    const {data,error} = await query
+                    
+                    
+    return {data,error}
+};
+
+export const changeOne = async (id,corpo) => {
+    const query = supabase
+                    .from('Rituais')
+                    .update(corpo)
+                    .eq("id",id)
+        
+    const {data,error} = await query
+                    
                     
     return {data,error}
 };

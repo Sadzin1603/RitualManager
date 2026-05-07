@@ -9,5 +9,9 @@ router
     .route("/users/:id")
     .delete(verifyToken,verifyAdmin,controller.deleteUser)    
 
+router
+    .route("/ritual/:id")
+    .put(verifyToken,verifyAdmin,controller.updateRitual)
+    //.delete(verifyToken,verifyAdmin,controller.deleteRitual)    
 
 export default router;
