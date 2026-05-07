@@ -6,16 +6,19 @@ import Cadastro from "./pages/Cadastro";
 import Login from "./pages/Login";
 import Principal from "./pages/Principal";
 import Rituais from './pages/Rituais';
+import Admin from './pages/Admin';
 
 import "./App.css";
 
 function App() {
 
   const [loading, setLoading] = useState(true);
-
   const [islogado, setLogado] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
+
+  async function verifyLogin() {
 
     const token = localStorage.getItem("token");
 
@@ -27,25 +30,26 @@ function App() {
 
     try {
 
-      const decoded = jwtDecode(token);
+      const response = await fetch(
+        "http://localhost:3000/auth/me",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
 
-      const isExpired =
-        decoded.exp * 1000 < Date.now();
-
-      if (isExpired) {
-
-        localStorage.removeItem("token");
-
-        setLogado(false);
-
-      } else {
-
-        setLogado(true);
-
+      if (!response.ok) {
+        throw new Error();
       }
 
+      const user = await response.json();
+      setUser(user);
+
+      setLogado(true);
+
     } catch (e) {
-      console.log(e)
+
       localStorage.removeItem("token");
 
       setLogado(false);
@@ -56,12 +60,14 @@ function App() {
 
     }
 
-  }, []);
+  }
+
+  verifyLogin();
+
+}, []);
 
   function logout() {
-
     localStorage.removeItem("token");
-
     setLogado(false);
 
   }
@@ -75,6 +81,16 @@ function App() {
     return islogado
       ? children
       : <Navigate to="/login" replace />;
+  }
+
+  function AdminRoute({children}){
+    if(loading) return <p className='text-xl'>Carregando ...</p>
+
+    if(!islogado) return <Navigate to="/login" />
+
+    if(!user.admin) return <Navigate to="/principal" />
+
+    return children
   }
 
   return (
@@ -145,6 +161,13 @@ function App() {
               <PrivateRoute>
                 <Rituais />
               </PrivateRoute>
+            }
+          />
+
+          <Route path="/admin" element={
+              <AdminRoute>
+                <Admin />
+              </AdminRoute>
             }
           />
           <Route path='/*' element={<Navigate to="/principal" replace />} />
