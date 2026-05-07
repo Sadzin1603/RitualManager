@@ -1,13 +1,12 @@
 import { Routes, Route, Link, Navigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 import { useState, useEffect } from 'react';
-
 import Cadastro from "./pages/Cadastro";
 import Login from "./pages/Login";
 import Principal from "./pages/Principal";
 import Rituais from './pages/Rituais';
 import Admin from './pages/Admin';
-
+import Ritual from './pages/Ritual';
 import "./App.css";
 
 function App() {
@@ -161,8 +160,16 @@ function App() {
               <PrivateRoute>
                 <Rituais />
               </PrivateRoute>
-            }
+            } 
           />
+          
+          <Route path="/ritual/:id" element={
+              <PrivateRoute>
+                <Ritual />
+              </PrivateRoute>
+            } 
+          />
+
 
           <Route path="/admin" element={
               <AdminRoute>
