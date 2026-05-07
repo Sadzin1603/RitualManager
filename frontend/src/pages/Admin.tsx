@@ -4,16 +4,40 @@ import { useEffect, useState } from "react";
 
 function Admin(){
     const [rituais, setRituais] = useState([]);
-
+    //aq na primeira vez ele carrega os rituais pendentes
     useEffect(() => {
-        async function fetchData() {
-            const res = await fetch("http://localhost:3000/ritual?staus=pendente");
-            const data = await res.json();
-            setRituais(data);
-        }
-
         fetchData();
     }, []);
+
+    async function fetchData() {
+        const res = await fetch(
+            "http://localhost:3000/ritual?status=pendente"
+        );
+
+        const data = await res.json();
+
+        setRituais(data);
+    }
+
+    async function changeAproved(id,status){
+        try{
+            const token = localStorage.getItem("token");
+            await fetch(`http://localhost:3000/admin/ritual/${id}`,{
+                method:"PUT",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status })
+            })
+            
+        }catch(err){
+            console.log(err.message)
+        }
+
+        fetchData()
+        
+    }
 
     const navigate = useNavigate();
     
@@ -21,12 +45,12 @@ function Admin(){
         <div className="title w-auto min-h-screen flex justify-center p-6">
             <div className="space-y-4">
                 {rituais.map((ritual) => ( 
-                        <div className="flex p-1">
-                        <Card key={ritual.id} ritual={ritual}></Card>
-                        <div className="flex flex-col justify-center pl-4 space-y-20">
-                            <button className="bg-green-300">Aprovar</button>
-                            <button className="bg-red-300">Reprovar</button>
-                        </div>
+                        <div className="flex p-1" key={ritual.id}>
+                            <Card key={ritual.id} ritual={ritual}></Card>
+                            <div className="flex flex-col justify-center pl-4 space-y-20">
+                                <button className="bg-green-300" onClick={()=>{changeAproved(ritual.id,"aprovado")}}>Aprovar</button>
+                                <button className="bg-red-300" onClick={()=>{changeAproved(ritual.id,"reprovado")}}>Reprovar</button>
+                            </div>
                         </div>
                     ))}
             </div>

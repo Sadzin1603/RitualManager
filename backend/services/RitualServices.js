@@ -12,9 +12,9 @@ export const create = async (file,{ name,element,circle,exec,range,area,target,e
 
     return await createRitualModel(file,{ name,element,circle,exec,range,area,target,effect,resistence,dices,description,discent_description,truly_description,discent_dices,truly_dices,creator });
 };
-export const pegar = async () => {
+export const pegar = async (status) => {
 
-    const {data,error} = await getAll();
+    const {data,error} = await getAll(status);
 
     return await data;
 };

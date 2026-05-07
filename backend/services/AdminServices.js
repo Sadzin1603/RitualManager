@@ -1,5 +1,6 @@
 import 'dotenv/config'; 
 import {findById} from '../models/UserModel.js'
+import {changeOne} from '../models/RitualModel.js'
 
 export const deleteUser = async ({ id }) => {
     if (!id) {
@@ -16,3 +17,9 @@ export const deleteUser = async ({ id }) => {
     return await user;
 };
 
+export const updateRitual = async (id,corpo) => {
+
+    const {data,error} = await changeOne(id,corpo);
+
+    return await data;
+};
