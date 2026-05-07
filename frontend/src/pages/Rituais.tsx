@@ -25,7 +25,7 @@ function getCroppedImg(image: HTMLImageElement, crop: PixelCrop): Promise<Blob> 
         crop.height * scaleY,
         0,
         0,
-        canvas.width,   
+        canvas.width,
         canvas.height,
     );
 
@@ -200,12 +200,12 @@ function Rituais() {
                 onChange={handleUploadChange}
                 style={{ display: 'none' }}
             />
-            <div className="div_img_drop_ladolado">
+            <div className="div_visual">
                 <div className="div_imagem">
-                    {}
+                    { }
                     <button type="button" className="botao escolher_imagem" onClick={handleChooseClick}>Escolher imagem</button>
 
-                    {}
+                    { }
                     <div className="preview" onClick={handlePreviewClick}>
                         <img
                             className="preview_img"
@@ -334,29 +334,38 @@ function Rituais() {
                 </div>
             </div>
 
-            <label htmlFor="Area">Área:</label>
-            <input className="digitacao" type="text" name="Área" id="Area"></input>
-            <br />
+            <div className="div_info">
+                <div className="div_area">
+                    <label htmlFor="Area">Área:</label>
+                    <input className="digitacao_info" type="text" name="Área" id="Area"></input>
+                </div>
 
-            <label htmlFor="Alvo">Alvo:</label>
-            <input className="digitacao" type="text" name="Alvo" id="Alvo"></input>
-            <br />
+                <div className="div_alvo">
+                    <label htmlFor="Alvo">Alvo:</label>
+                    <input className="digitacao_info" type="text" name="Alvo" id="Alvo"></input>
+                </div>
 
-            <label htmlFor="Duracao">Duração:</label>
-            <input className="digitacao" type="text" name="Duração" id="Duracao"></input>
-            <br />
+                <div className="div_duracao">
+                    <label htmlFor="Duracao">Duração:</label>
+                    <input className="digitacao_info" type="text" name="Duração" id="Duracao"></input>
+                </div>
 
-            <label htmlFor="Efeito">Efeito:</label>
-            <input className="digitacao" type="text" name="Efeito" id="Efeito"></input>
-            <br />
+                <div className="div_efeito">
+                    <label htmlFor="Efeito">Efeito:</label>
+                    <input className="digitacao_info" type="text" name="Efeito" id="Efeito"></input>
+                </div>
 
-            <label htmlFor="Resistencia">Resistência:</label>
-            <input className="digitacao" type="text" name="Resistência" id="Resistencia"></input>
-            <br />
+                <div className="div_dados">
+                    <label htmlFor="Dados">Dados:</label>
+                    <input className="digitacao_info" type="text" name="Dados" id="Dados"></input>
+                </div>
 
-            <label htmlFor="Dados">Dados:</label>
-            <input className="digitacao" type="text" name="Dados" id="Dados"></input>
-            <br />
+                <div className="div_resistencia">
+                    <label htmlFor="Resistencia">Resistência:</label>
+                    <input className="digitacao_info" type="text" name="Resistência" id="Resistencia"></input>
+                </div>
+
+            </div>
 
             <label htmlFor="Descricao">Descrição:</label>
             <textarea className="digitacao" name="Descrição" id="Descricao" ></textarea>

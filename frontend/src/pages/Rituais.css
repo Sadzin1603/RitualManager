@@ -20,7 +20,6 @@ body {
 .formulario_edicao {
     display: flex;
     flex-direction: column;
-    gap: 15px;
     margin-bottom: 30px;
 }
 
@@ -51,6 +50,42 @@ body {
 textarea.digitacao {
     resize: vertical;
     min-height: 100px;
+}
+
+/* Inputs de informação */
+.digitacao_info {
+    width: 100%;
+    padding: 10px;
+    background-color: #a4a0ac31;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #eee;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.digitacao_info:focus {
+    outline: none;
+    border-color: #8f7fe0;
+    box-shadow: 0 0 5px rgba(143, 127, 224, 0.5);
+}
+
+.div_info {
+    padding-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 24px;
+}
+
+.div_area,
+.div_alvo,
+.div_duracao,
+.div_efeito,
+.div_resistencia,
+.div_dados {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 /* Imagem */
@@ -248,7 +283,7 @@ br {
 }
 
 /* Arrume lateral da imagem e dropdowns */
-.div_img_drop_ladolado {
+.div_visual {
     display: flex;
     gap: 30px;
     align-items: flex-start;
@@ -341,13 +376,13 @@ br {
 .lista button.alcance_pessoal:hover,
 .botao_lista.alcance_pessoal {
     background-color: transparent;
-    background: linear-gradient(90deg, transparent 10%, #131bac 40%, #131bac 60%, transparent 100%);
+    background: linear-gradient(90deg, transparent 10%, #131bac 40%, #131bac 60%, transparent 90%);
 }
 
 .lista button.alcance_toque:hover,
 .botao_lista.alcance_toque {
     background-color: transparent;
-    background: linear-gradient(90deg, #131bac 10%, transparent 40%, transparent 60%, #131bac 100%);
+    background: linear-gradient(90deg, transparent 30%, #131bac 100%);
 }
 
 .lista button.alcance_curto:hover,
