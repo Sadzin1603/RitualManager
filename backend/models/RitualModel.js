@@ -25,15 +25,18 @@ export const create = async (file,user) => {
     return {data2,error2}
 };
 
-export const getAll = async (status) => {
+export const getAll = async (params) => {
     const query = supabase
-                    .from('Rituais')
-                    .select('*')
-                    .order("id")
-
-    if(status) query.eq("status",status)
-
-    const {data,error} = await query
+        .from('Rituais')
+        .select(`*,creator:Clients (id,name)`)
+        .order('id')
+    
+    if (params) {    
+        Object.entries(params).forEach(([key, value]) => {
+            query.eq(key, value)
+        })
+    }
+    const { data, error } = await query
                     
                     
     return {data,error}
