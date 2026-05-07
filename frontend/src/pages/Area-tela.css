@@ -1,0 +1,232 @@
+/* =============================================================================
+   AREA SELECTOR — painel flutuante de seleção de área de efeito
+   ============================================================================= */
+
+/* Wrapper do campo — âncora do painel flutuante */
+.area-selector-wrap {
+    position: relative;
+    display: flex;
+    width: 100%;
+}
+
+/* Input somente-leitura que dispara o painel */
+.area-selector-input {
+    cursor: text;
+    flex: 1;
+    min-width: 0;
+    width: auto !important;
+}
+
+.area-input-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 90%;
+}
+
+.area-open-btn {
+    background: #5b8fc9;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 0;
+    width: 42px;
+    height: 42px;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s;
+}
+
+.area-open-btn:hover {
+    background: #6a9fd8;
+    opacity: 1;
+    transform: none;
+}
+
+/* Painel flutuante */
+.area-tela {
+    position: absolute;
+    top: 150%;
+    left: 4%;
+    z-index: 100;
+    background: #3d3a6e;
+    border: 1px solid #555;
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 300px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* Grid 2x2 de formas */
+.area-shapes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+/* Botão de cada forma no grid */
+.area-shape-btn {
+    background: #5b8fc9;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 0;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: opacity 0.2s;
+    width: 100%;
+}
+
+.area-shape-btn:hover {
+    opacity: 0.8;
+    transform: none;
+}
+
+.area-shape-btn canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Painel do editor */
+.area-editor-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Linha do canvas */
+.area-grade-row {
+    display: flex;
+    align-items: stretch;
+    gap: 4px;
+}
+
+/* Wrapper azul do canvas */
+.area-grade-wrap {
+    background: #5b8fc9;
+    border-radius: 8px;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+/* Canvas interativo */
+.area-grade-canvas {
+    display: block;
+    border-radius: 4px;
+    width: 100%;
+    height: auto;
+    max-width: 220px;
+}
+
+/* Rodapé */
+.area-bottom-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Botão confirmar */
+.area-confirmar-btn {
+    background: #5b8fc9;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    flex: 1;
+    transition: opacity 0.2s;
+}
+
+.area-confirmar-btn:hover {
+    opacity: 0.85;
+    transform: none;
+}
+
+/* Wrapper do stepper de metros */
+.area-m-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+/* Input de metros */
+.area-m-input {
+    width: 46px;
+    padding: 4px 6px;
+    background: rgba(164, 160, 172, 0.25);
+    border: 1px solid #777;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    outline: none;
+    text-align: center;
+}
+
+.area-m-input:focus {
+    border-color: #8f7fe0;
+    box-shadow: 0 0 4px rgba(143, 127, 224, 0.5);
+}
+
+/* Coluna de setas */
+.area-m-arrows {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* Botão de seta individual */
+.area-m-arrow {
+    background: #4a6fa5;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding: 0;
+    width: 20px;
+    height: 16px;
+    font-size: 9px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+}
+
+.area-m-arrow:hover {
+    background: #6a8fc5;
+    opacity: 1;
+    transform: none;
+}
+
+.area-m-arrow:active {
+    background: #3a5f95;
+    transform: none;
+}
+
+/* Label "m" */
+.area-m-label {
+    color: #ccc;
+    font-size: 14px;
+    font-weight: 600;
+    user-select: none;
+    flex-shrink: 0;
+}
