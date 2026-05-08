@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 function Card({ ritual }) {
+    const navigate = useNavigate();
     return (
         <div className="w-[600px] bg-zinc-900 text-white rounded-xl shadow-lg overflow-hidden border border-zinc-800 hover:scale-[1.02] transition">
 
@@ -38,7 +41,9 @@ function Card({ ritual }) {
                         Execução: {ritual.exec}
                     </span>
 
-                    <button className="bg-purple-600 hover:bg-purple-700 px-4 py-1 rounded-md text-sm">
+                    <button className="bg-purple-600 hover:bg-purple-700 px-4 py-1 rounded-md text-sm"
+                        onClick={()=>{navigate(`/ritual/${ritual.id}`)}}
+                    >
                         Ver mais
                     </button>
                 </div>

@@ -10,7 +10,7 @@ export default {
         },
         get: async(req,res) =>{
             try{
-                const rituais = await pegar(req.query.status);
+                const rituais = await pegar(req.query);
                 return res.json(rituais);
             }catch (err){
                 return res.status(400).json({error: err.message})
