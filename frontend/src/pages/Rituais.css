@@ -457,3 +457,8 @@ br {
 .botao_lista.alcance_ilimitado {
     background: #131bac;
 }
+
+/* Aviso Obrigatorio */
+.campo-invalido {
+    border: 2px solid red !important;
+}
