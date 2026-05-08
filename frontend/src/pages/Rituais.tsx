@@ -473,7 +473,6 @@ function AreaSelector({ value, onChange }: AreaSelectorProps) {
                 className="digitacao_info area-selector-input"
                 type="text"
                 value={value}
-                placeholder=""
                 onChange={(e) => onChange(e.target.value)}
             />
             <button
@@ -481,8 +480,7 @@ function AreaSelector({ value, onChange }: AreaSelectorProps) {
                 type="button"
                 onClick={() => (isOpen ? closePanel() : openPanel())}
                 aria-label="Abrir seletor de área"
-                title="Abrir seletor de área"
-            >⊞</button>
+            >▦</button>
 
             {/* Painel flutuante: grid de formas ou editor de tamanho */}
             {isOpen && (
@@ -643,6 +641,9 @@ function Rituais() {
     const [execucao, setExecucao] = useState("Execução");
     const [alcance, setAlcance] = useState("Alcance");
 
+    const [alvoInput, setAlvoInput] = useState("");
+    const [duracaoInput, setDuracaoInput] = useState("");
+
     // ---- Estado do seletor de área ----
     const [area, setArea] = useState("");
 
@@ -737,6 +738,16 @@ function Rituais() {
         setOpenList(null);
     };
 
+    const selectAlvo = (valor: string) => {
+        setAlvoInput(valor);
+        setOpenList(null);
+    };
+
+    const selectDuracao = (valor: string) => {
+        setDuracaoInput(valor);
+        setOpenList(null);
+    };
+
     // -------------------------------------------------------------------------
     // SUBMIT
     // -------------------------------------------------------------------------
@@ -766,14 +777,14 @@ function Rituais() {
         formData.append("truly_dices", (document.getElementById("DadosVerdadeiro") as HTMLInputElement).value);
         formData.append("creator", decoded.id);
 
-        try{
+        try {
             await fetch("http://localhost:3000/ritual", {
                 method: "POST",
                 body: formData
             })
             navigate("/principal")
 
-        }catch(err){
+        } catch (err) {
             console.log(err)
         }
     }
@@ -944,29 +955,81 @@ function Rituais() {
                     <AreaSelector value={area} onChange={setArea} />
                 </div>
 
-                <div className="info div_alvo">
-                    <label htmlFor="Alvo">Alvo:</label>
-                    <input className="digitacao_info" type="text" name="Alvo" id="Alvo" />
-                </div>
-
-                <div className="info div_duracao">
-                    <label htmlFor="Duracao">Duração:</label>
-                    <input className="digitacao_info" type="text" name="Duração" id="Duracao" />
-                </div>
-
                 <div className="info div_efeito">
                     <label htmlFor="Efeito">Efeito:</label>
                     <input className="digitacao_info" type="text" name="Efeito" id="Efeito" />
                 </div>
 
+                <div className="info div_alvo" style={{ position: "relative" }}>
+                    <label htmlFor="Alvo">Alvo:</label>
+                    <div className="input_botao">
+                        <input
+                            className="digitacao_info alvo"
+                            type="text"
+                            name="Alvo"
+                            id="Alvo"
+                            value={alvoInput}
+                            onChange={(e) => setAlvoInput(e.target.value)}
+                        />
+                        <button
+                            className={"botao_lista"}
+                            type="button"
+                            aria-expanded={openList === "alvo"}
+                            aria-controls="lista_alvo"
+                            onClick={() => toggleList("alvo")}
+                        >
+                            ∨
+                        </button>
+                    </div>
+                    <div id="lista_alvo" className={`lista lista_alvo ${openList === "alvo" ? "show" : ""}`}>
+                        <button className="alvo_pessoal" type="button" onClick={() => selectAlvo("1 Pessoa")}>1 Pessoa</button>
+                        <button className="alvo_toque" type="button" onClick={() => selectAlvo("1 Ser")}>1 Ser</button>
+                        <button className="alvo_curto" type="button" onClick={() => selectAlvo("1 Objeto")}>1 Objeto</button>
+                        <button className="alvo_medio" type="button" onClick={() => selectAlvo("1 Arma Corpo a Corpo")}>1 Arma Corpo a Corpo</button>
+                        <button className="alvo_longo" type="button" onClick={() => selectAlvo("1 Arma de Fogo")}>1 Arma de Fogo</button>
+                        <button className="alvo_extremo" type="button" onClick={() => selectAlvo("1 Arma")}>1 Arma</button>
+                        <button className="alvo_ilimitado" type="button" onClick={() => selectAlvo("2 Seres Escolhidos")}>2 Seres Escolhidos</button>
+                    </div>
+                </div>
+
+                <div className="info div_duracao" style={{ position: "relative" }}>
+                    <label htmlFor="Duracao">Duração:</label>
+                    <div className="input_botao">
+                        <input
+                            className="digitacao_info duracao"
+                            type="text"
+                            name="Duração"
+                            id="Duracao"
+                            value={duracaoInput}
+                            onChange={(e) => setDuracaoInput(e.target.value)}
+                        />
+                        <button
+                            className={"botao_lista"}
+                            type="button"
+                            aria-expanded={openList === "duracao"}
+                            aria-controls="lista_duracao"
+                            onClick={() => toggleList("duracao")}
+                        >
+                            ∨
+                        </button>
+                    </div>
+                    <div id="lista_duracao" className={`lista lista_duracao ${openList === "duracao" ? "show" : ""}`}>
+                        <button className="alvo_pessoal" type="button" onClick={() => selectDuracao("Cena")}>Cena</button>
+                        <button className="alvo_toque" type="button" onClick={() => selectDuracao("Instantânea")}>Instantânea</button>
+                        <button className="alvo_curto" type="button" onClick={() => selectDuracao("Sustentada")}>Sustentada</button>
+                        <button className="alvo_medio" type="button" onClick={() => selectDuracao("1 Rodada")}>1 Rodada</button>
+                        <button className="alvo_longo" type="button" onClick={() => selectDuracao("1 Dia")}>1 Dia</button>
+                    </div>
+                </div>
+
                 <div className="info div_dados">
                     <label htmlFor="Dados">Dados:</label>
-                    <input className="digitacao_info" type="text" name="Dados" id="Dados" />
+                    <input className="digitacao_info" type="text" name="Dados" id="Dados" placeholder="Ex: 2d6+5" />
                 </div>
 
                 <div className="info div_resistencia">
                     <label htmlFor="Resistencia">Resistência:</label>
-                    <input className="digitacao_info" type="text" name="Resistência" id="Resistencia" />
+                    <input className="digitacao_info" type="text" name="Resistência" id="Resistencia" placeholder="Ex: Fortitude (DT 18)" />
                 </div>
             </div>
 
@@ -980,7 +1043,7 @@ function Rituais() {
             <br />
 
             <label htmlFor="DescricaoDiscente">Descrição Discente:</label>
-            <textarea className="digitacao" name="DescriçãoDiscente" id="DescricaoDiscente" />
+            <textarea className="digitacao" name="DescriçãoDiscente" id="DescricaoDiscente" placeholder="Ex: Discente (+2PE):"/>
             <br />
 
             <label htmlFor="DadosVerdadeiro">Dados Verdadeiro:</label>
@@ -988,7 +1051,7 @@ function Rituais() {
             <br />
 
             <label htmlFor="DescricaoVerdadeiro">Descrição Verdadeiro:</label>
-            <textarea className="digitacao" name="DescriçãoVerdadeiro" id="DescricaoVerdadeiro" />
+            <textarea className="digitacao" name="DescriçãoVerdadeiro" id="DescricaoVerdadeiro" placeholder="Ex: Verdadeiro (+5PE):"/>
             <br />
 
             <button type="button" className="botao salvar" onClick={cadastrar}>

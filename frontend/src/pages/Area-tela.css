@@ -6,7 +6,7 @@
 .area-selector-wrap {
     position: relative;
     display: flex;
-    width: 100%;
+    width: 90%;
 }
 
 /* Input somente-leitura que dispara o painel */
@@ -25,27 +25,24 @@
 }
 
 .area-open-btn {
-    background: #5b8fc9;
-    color: #fff;
+    background: transparent;
     border: none;
+    color: #C1C1C1;
+    font-size: 30px;
+    transition: color 0.15s;
+    position: absolute;
+    right: 0;
+
     border-radius: 4px;
     padding: 0;
     width: 42px;
     height: 42px;
-    font-size: 18px;
     line-height: 1;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    transition: background 0.15s;
-}
-
-.area-open-btn:hover {
-    background: #6a9fd8;
-    opacity: 1;
-    transform: none;
 }
 
 /* Painel flutuante */
