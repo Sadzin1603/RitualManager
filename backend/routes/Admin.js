@@ -15,7 +15,7 @@ router
     
 router
     .route("/users")
-    .get(controller.getAll)
+    .get(verifyToken,verifyAdmin,controller.getAll)
 
 export default router;
 
