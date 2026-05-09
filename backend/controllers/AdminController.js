@@ -1,28 +1,28 @@
-import {deleteUser,updateRitual} from '../services/AdminServices.js'
+import {getUsers,updateRitual,getRituals} from '../services/AdminServices.js'
 
 export default {
-    deleteUser: async(req,res) =>{
+    getPendingRituals: async(req,res) =>{
         try{
-            const user = await deleteUser(req.user);
-            return res.json(user);
+            const users = await getRituals();
+            return res.json(users);
         }catch (err){
             return res.status(400).json({error: err.message})
         }
     },
     updateRitual: async(req,res) =>{
         try{
-            const ritual = await updateRitual(req.params.id,req.body)
+            const ritual = await updateRitual(req.params.id,req.params.status)
             return res.send(200)
         } catch (err){
             return res.status(400).json({error:err.message})
         }
     },
-    /*deleteRitual: async(req,res) =>{
+    getAll: async(req,res) =>{
         try{
-            const ritual = await atualizar(req.params.id,req.body)
-            return res.status(204)
+            const users = await getUsers()
+            return res.json(users);
         } catch (err){
             return res.status(400).json({error:err.message})
         }
-    },*/
+    },
 }

@@ -1,25 +1,25 @@
 import 'dotenv/config'; 
-import {findById} from '../models/UserModel.js'
-import {changeOne} from '../models/RitualModel.js'
+import {findById,findAll} from '../models/UserModel.js'
+import {changeOne,getAll} from '../models/RitualModel.js'
 
-export const deleteUser = async ({ id }) => {
-    if (!id) {
-        throw new Error("Missing fields");
-    }
+export const getRituals = async () => {
 
-    const {data,error} = await findById(id);
+    const {data,error} = await getAll({status:"pendente"});
     
-    if (!data) {
-        throw new Error("Usuario não existe");
-    }
-    const user = data[0]
     
-    return await user;
+    return await data;
 };
 
-export const updateRitual = async (id,corpo) => {
+export const updateRitual = async (id,status) => {
+    const {data,error} = await changeOne(id,status);
 
-    const {data,error} = await changeOne(id,corpo);
+    return await data;
+};
 
+export const getUsers = async () => {
+
+    const {data,error} = await findAll();
+    
+    
     return await data;
 };

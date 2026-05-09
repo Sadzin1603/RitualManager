@@ -6,12 +6,16 @@ import { verifyAdmin } from '../middlewares/AdminMiddleware.js';
 const router = express.Router();
 
 router
-    .route("/users/:id")
-    .delete(verifyToken,verifyAdmin,controller.deleteUser)    
+    .route("/rituals/pending")
+    .get(verifyToken,verifyAdmin,controller.getPendingRituals)    
 
 router
-    .route("/ritual/:id")
-    .put(verifyToken,verifyAdmin,controller.updateRitual)
-    //.delete(verifyToken,verifyAdmin,controller.deleteRitual)    
+    .route("/ritual/:id/:status")
+    .patch(verifyToken,verifyAdmin,controller.updateRitual)
+    
+router
+    .route("/users")
+    .get(controller.getAll)
 
 export default router;
+
