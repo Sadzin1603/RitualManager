@@ -1,7 +1,23 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import 'dotenv/config'; 
-import {findByEmail,findById} from '../models/UserModel.js'
+import {findByEmail,findById,create} from '../models/UserModel.js'
+
+export const registerUser = async({name,email,password}) =>{
+    if (!name || !email || !password) {
+        throw new Error("Missing fields");
+    }
+
+    const {data,error} = await findByEmail(email);
+    if (data.length) {
+            throw new Error("Email already exists");
+    }
+    
+    const passHash = await bcrypt.hash(password, 12);
+
+
+    return await create({ name, email,password:passHash });
+}
 
 export const verify = async ({ email,password }) => {
     if (!email || !password) {
