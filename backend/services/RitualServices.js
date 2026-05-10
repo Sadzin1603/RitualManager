@@ -1,7 +1,7 @@
 import {create as createRitualModel,getAll} from '../models/RitualModel.js'
 
-export const create = async (file,{ name,element,circle,exec,range,area,target,effect,resistence,dices,description,discent_description,truly_description,discent_dices,truly_dices,creator }) => {
-    if (!name) {
+export const create = async (file,ritual) => {
+    if (!ritual) {
         throw new Error("Missing fields");
     }
     //verificação se ja existe algum ritual com aquele nome?
@@ -10,7 +10,7 @@ export const create = async (file,{ name,element,circle,exec,range,area,target,e
     //      throw new Error("Email already exists");
     // }
 
-    return await createRitualModel(file,{ name,element,circle,exec,range,area,target,effect,resistence,dices,description,discent_description,truly_description,discent_dices,truly_dices,creator });
+    return await createRitualModel(file,ritual);
 };
 export const pegar = async (params) => {
     

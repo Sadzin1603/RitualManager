@@ -1,0 +1,29 @@
+/* Organização do card */
+.Card{
+    width: 600px;
+    background: #18181A;
+    color:#dadada; 
+    border-radius: 12px;
+    box-shadow:  0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    overflow: hidden;
+    border: #28272B solid 1px; 
+}
+
+.Card:hover{
+    scale: 1.02;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Informações do ritual */
+.info_ritual{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    font-size: 15px;
+    color: #a3a3a3;
+}
+
+/* Conteudo dentro do card */
+.Conteudo{
+    padding: 15px;
+}

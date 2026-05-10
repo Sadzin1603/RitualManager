@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
+import "./Card.css";
 
 function Card({ ritual }) {
     const navigate = useNavigate();
     return (
-        <div className="w-[600px] bg-zinc-900 text-white rounded-xl shadow-lg overflow-hidden border border-zinc-800 hover:scale-[1.02] transition">
+        <div className="Card">
 
             {/* Imagem */}
             <div className="h-40 bg-zinc-800">
@@ -21,15 +22,14 @@ function Card({ ritual }) {
             </div>
 
             {/* Conteúdo */}
-            <div className="p-5 space-y-3">
+            <div className="Conteudo">
                 <h2 className="text-xl font-bold">{ritual.name}</h2>
 
-                <div className="flex flex-col gap-2 text-sm text-zinc-400">
-                    <p>Elemento: <span className={ritual.element=="sangue"?"text-red-900":"text-white"}>{ritual.element}</span></p>
+                <div className="info_ritual">
+                    <p>Circulo: {ritual.circle}°</p>
+                    <p>Execução: {ritual.exec}</p>
                     <p>Alcance: {ritual.range}</p>
-                    {ritual.area ? '<p>Area {ritual.area}</p><p>Area {ritual.area}</p>' : ""}
-
-                    
+                    <p>Duração: {ritual.duration}</p>
                 </div>
 
                 <p className="text-sm text-zinc-300 line-clamp-2">
@@ -38,7 +38,7 @@ function Card({ ritual }) {
 
                 <div className="flex justify-between items-center pt-2">
                     <span className="text-xs text-zinc-500">
-                        Execução: {ritual.exec}
+                        Criado por: {ritual.creator.name}
                     </span>
 
                     <button className="bg-purple-600 hover:bg-purple-700 px-4 py-1 rounded-md text-sm"

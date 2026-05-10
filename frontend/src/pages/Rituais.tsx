@@ -204,6 +204,7 @@ function Rituais() {
         formData.append("circle", circuloText[circulo]);
         formData.append("exec", execucaoText[execucao]);
         formData.append("range", alcanceText[alcance]);
+        formData.append("duration", duracaoInput);
         formData.append("area", area);
         formData.append("target", (document.getElementById("Alvo") as HTMLInputElement).value);
         formData.append("effect", (document.getElementById("Efeito") as HTMLInputElement).value);
