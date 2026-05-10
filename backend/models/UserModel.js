@@ -10,6 +10,15 @@ export const create = async (user) => {
     return {data,error}
 };
 
+export const findAll = async () => {
+
+    const {data,error} = await supabase
+                    .from('Clients')
+                    .select('*')
+                    
+    return {data,error}
+};
+
 export const findByEmail = async (email) => {
 
     const {data,error} = await supabase
@@ -25,5 +34,23 @@ export const findById = async (id) => {
                     .from('Clients')
                     .select('*')
                     .eq('id',id)
+                    
     return {data,error}
 };
+
+export const changeById = async (id,user) =>{
+    const {data,error} = await supabase
+                        .from("Clients")
+                        .upsert({"id":id,...user})
+
+    return {data,error}
+}
+
+export const deleteById = async (id) => {
+    const response = await supabase
+                        .from("Clients")
+                        .delete()
+                        .eq('id',id)
+    
+    return {"message":"ok"}
+}

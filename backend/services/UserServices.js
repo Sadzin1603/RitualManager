@@ -1,18 +1,34 @@
-import bcrypt from "bcrypt";
-import {create as createUserModel,findByEmail} from '../models/UserModel.js'
+import {findById,changeById,deleteById} from '../models/UserModel.js'
+import {getAll} from '../models/RitualModel.js'
 
-export const create = async ({ name, email,password }) => {
-    if (!name || !email || !password) {
+export const getById = async ( id ) => {
+    if (!id) {
         throw new Error("Missing fields");
     }
 
-    const {data,error} = await findByEmail(email);
-    if (data) {
-         throw new Error("Email already exists");
-    }
-    
-    const passHash = await bcrypt.hash(password, 12);
-
-
-    return await createUserModel({ name, email,password:passHash });
+    return await findById( id );
 };
+
+export const changeOne = async (id,user) => {
+    if(!id || !user){
+        throw new Error("Missing fields")
+    }
+
+    return await changeById(id,user)
+}
+
+export const deleteOne = async (id) => {
+    if(!id){
+        throw new Error("Missing fields");
+    }
+
+    return await deleteById(id)
+}
+
+export const getRituais = async (id) => {
+    if(!id){
+        throw new Error("Missing fields");
+    }
+
+    return await getAll({creator:id})
+}

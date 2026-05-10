@@ -5,8 +5,12 @@ import { verifyToken } from '../middlewares/AuthMiddleware.js';
 const router = express.Router();
 
 router
+    .route("/register")
+    .post(controller.register)
+
+router
     .route("/login")
-    .post(controller.post)
+    .post(controller.login)
     
 router
     .route("/me")
