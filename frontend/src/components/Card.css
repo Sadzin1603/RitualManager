@@ -45,7 +45,7 @@
    SANGUE — Red Color Palettes
    ============================================================ */
 .elemento-sangue {
-    background: #250a15;
+    background: #250814;
     border: 2px solid #980100;
     box-shadow: 0 0 12px 1px #98010055;
 }
@@ -56,7 +56,7 @@
     color: #b51128;
 }
 .elemento-sangue .info-titulo {
-    color: #4b0208;
+    color: #97071a;
 }
 
 /* ============================================================
@@ -131,21 +131,47 @@
     color: #0a3083;
 }
 
-/*   VARIA — mix de todas as paletas */
+/* ============================================================
+   VARIA — Animated multi-element color cycling
+   ============================================================ */
+
+@keyframes varia-border-glow {
+    0%   { border-color: #980100; box-shadow: 0 0 14px 2px #98010055; }
+    25%  { border-color: #42109D; box-shadow: 0 0 14px 2px #42109D55; }
+    50%  { border-color: #0f427e; box-shadow: 0 0 14px 2px #0f427e55; }
+    75%  { border-color: #9e8123; box-shadow: 0 0 14px 2px #9e812355; }
+    100% { border-color: #980100; box-shadow: 0 0 14px 2px #98010055; }
+}
+
+@keyframes varia-conteudo-border {
+    0%   { border-top-color: #980100; }
+    25%  { border-top-color: #42109D; }
+    50%  { border-top-color: #0f427e; }
+    75%  { border-top-color: #9e8123; }
+    100% { border-top-color: #980100; }
+}
+
+@keyframes varia-nome-color {
+    0%   { color: #b51128; }
+    25%  { color: #91207E; }
+    50%  { color: #0075c4; }
+    75%  { color: #9e8123; }
+    100% { color: #b51128; }
+}
+
 .elemento-varia {
     background: #19171b;
     border: 2px solid #42109D;
     box-shadow: 0 0 14px 2px #91207E44;
+    animation: varia-border-glow 6s linear infinite;
 }
 .elemento-varia .Conteudo {
     border-top: 2px solid #9e8123;
+    animation: varia-conteudo-border 6s linear infinite;
 }
 .elemento-varia .Card-nome {
-    background: linear-gradient(90deg, #980100, #42109D, #0f427e, #9e8123);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    animation: varia-nome-color 6s linear infinite;
 }
 .elemento-varia .info-titulo {
-    color: #563a17;
+    animation: varia-nome-color 6s linear infinite;
 }

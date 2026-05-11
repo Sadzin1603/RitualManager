@@ -131,12 +131,12 @@ function App() {
         </nav>
         <div className="flex items-center gap-4">
           {islogado && (
-            <button
+            <Link
               className='bg-red-900 px-4 py-2 rounded text-white'
               onClick={logout}
             >
               Deslogar
-            </button>
+            </Link>
           )}
 
           {islogado && user && (

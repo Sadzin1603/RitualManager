@@ -19,6 +19,7 @@ export default function Ritual() {
     }
     fetchData();
   }, []);
+  
   return (
     <div
       className="pagina"
@@ -37,7 +38,7 @@ export default function Ritual() {
 
           <div className="header-info">
             <span className="badge">
-              {ritual.element} {ritual.circle}°
+              {ritual.element} {ritual.circle}
             </span>
 
             <h1 className="header-titulo">

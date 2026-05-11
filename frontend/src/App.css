@@ -1,5 +1,5 @@
 .title {
-  background: linear-gradient(180deg, #363467 0%, rgba(30, 29, 79, 0.8) 100%);
+  background: linear-gradient(180deg, #121a4d 0%, #0D1433 100%);
 }
 
 .div{
@@ -10,4 +10,11 @@
 }
 .input[type=submit]{
     background-color: rgb(137, 127, 224);
+}
+
+header {
+    background: linear-gradient(180deg, #07104d 0%, #050d35 100%);
+    border-bottom: 2px solid #0f427e;
+    box-shadow: 0 0 12px 1px #0f427e66;
+    font-size: 20px;
 }
