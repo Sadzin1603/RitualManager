@@ -67,26 +67,26 @@ function Rituais() {
 
     // Mapeamentos de classe
     const circuloText: Record<string, string> = {
-        "1° Circulo (1 PE)": "circulo_1",
-        "2° Circulo (3 PE)": "circulo_2",
-        "3° Circulo (6 PE)": "circulo_3",
-        "4° Circulo (10 PE)": "circulo_4",
+        "1° Circulo (1 PE)": "1°",
+        "2° Circulo (3 PE)": "2°",
+        "3° Circulo (6 PE)": "3°",
+        "4° Circulo (10 PE)": "4°",
     };
     const execucaoText: Record<string, string> = {
-        "Padrão": "execucao_padrao",
-        "Movimento": "execucao_movimento",
-        "Completa": "execucao_completa",
-        "Reação": "execucao_reacao",
-        "Livre": "execucao_livre",
+        "Padrão": "Padrão",
+        "Movimento": "Movimento",
+        "Completa": "Completa",
+        "Reação": "Reação",
+        "Livre": "Livre",
     };
     const alcanceText: Record<string, string> = {
-        "Pessoal": "alcance_pessoal",
-        "Toque": "alcance_toque",
-        "Curto (9m)": "alcance_curto",
-        "Médio (18m)": "alcance_medio",
-        "Longo (36m)": "alcance_longo",
-        "Extremo (90m)": "alcance_extremo",
-        "Ilimitado": "alcance_ilimitado",
+        "Pessoal": "Pessoal",
+        "Toque": "Toque",
+        "Curto (9m)": "Curto (9m)",
+        "Médio (18m)": "Médio (18m)",
+        "Longo (36m)": "Longo (36m)",
+        "Extremo (90m)": "Extremo (90m)",
+        "Ilimitado": "Ilimitado",
     };
 
     // VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS
@@ -428,6 +428,7 @@ function Rituais() {
                         <button className="alvo_longo" type="button" onClick={() => selectAlvo("1 Arma de Fogo")}>1 Arma de Fogo</button>
                         <button className="alvo_extremo" type="button" onClick={() => selectAlvo("1 Arma")}>1 Arma</button>
                         <button className="alvo_ilimitado" type="button" onClick={() => selectAlvo("2 Seres Escolhidos")}>2 Seres Escolhidos</button>
+                        <button className="alvo_area" type="button" onClick={() => selectAlvo("Seres na Área")}>Seres na Área</button>
                     </div>
                 </div>
 

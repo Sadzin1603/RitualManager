@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Card from "../components/Card"
 import { useEffect, useState } from "react";
 
-function Admin(){
+function Admin() {
     const [rituais, setRituais] = useState([]);
     //aq na primeira vez ele carrega os rituais pendentes
     useEffect(() => {
@@ -10,52 +10,57 @@ function Admin(){
     }, []);
 
     async function fetchData() {
+        const token = localStorage.getItem("token");
         const res = await fetch(
-            "http://localhost:3000/ritual?status=pendente"
+            "http://localhost:3000/admin/rituals/pending",
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
         );
+
 
         const data = await res.json();
 
         setRituais(data);
     }
 
-    async function changeAproved(id,status){
-        try{
+    async function changeAproved(id, status) {
+        try {
             const token = localStorage.getItem("token");
-            await fetch(`http://localhost:3000/admin/ritual/${id}`,{
-                method:"PUT",
+            await fetch(`http://localhost:3000/admin/ritual/${id}/${status}`, {
+                method: "PATCH",
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ status })
             })
-            
-        }catch(err){
+
+        } catch (err) {
             console.log(err.message)
         }
 
         fetchData()
-        
+
     }
 
     const navigate = useNavigate();
-    
-    return(
+
+    return (
         <div className="title w-auto min-h-screen flex justify-center p-6">
             <div className="space-y-4">
-                {rituais.map((ritual) => ( 
-                        <div className="flex p-1" key={ritual.id}>
-                            <Card key={ritual.id} ritual={ritual}></Card>
-                            <div className="flex flex-col justify-center pl-4 space-y-20">
-                                <button className="bg-green-300" onClick={()=>{changeAproved(ritual.id,"aprovado")}}>Aprovar</button>
-                                <button className="bg-red-300" onClick={()=>{changeAproved(ritual.id,"reprovado")}}>Reprovar</button>
-                            </div>
+                {rituais.map((ritual) => (
+                    <div className="flex p-1" key={ritual.id}>
+                        <Card key={ritual.id} ritual={ritual}></Card>
+                        <div className="flex flex-col justify-center pl-4 space-y-20">
+                            <button className="bg-green-300" onClick={() => { changeAproved(ritual.id, "aprovado") }}>Aprovar</button>
+                            <button className="bg-red-300" onClick={() => { changeAproved(ritual.id, "reprovado") }}>Reprovar</button>
                         </div>
-                    ))}
+                    </div>
+                ))}
             </div>
         </div>
-        
+
     )
 }
 

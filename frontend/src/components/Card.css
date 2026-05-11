@@ -1,29 +1,151 @@
-/* Organização do card */
-.Card{
+/* CARD BASE */
+.Card {
     width: 600px;
     background: #18181A;
-    color:#dadada; 
+    color: #dadada;
     border-radius: 12px;
-    box-shadow:  0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     overflow: hidden;
-    border: #28272B solid 1px; 
+    border: 2px solid #28272B;
 }
 
-.Card:hover{
+.Card:hover {
     scale: 1.02;
     transition: all 0.2s ease-in-out;
 }
 
+/* Título do ritual */
+.Card-nome {
+    color: #dadada;
+    margin-bottom: 10px;
+}
+
+/* Label das infos (Círculo:, Execução:, etc.) */
+.info-titulo {
+    color: #a3a3a3;
+    font-weight: 600;
+}
+
 /* Informações do ritual */
-.info_ritual{
+.info_ritual {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.5rem;
     font-size: 15px;
-    color: #a3a3a3;
+    color: #dadada;
+    margin-bottom: 10px;
 }
 
 /* Conteudo dentro do card */
-.Conteudo{
+.Conteudo {
     padding: 15px;
+}
+
+/* ============================================================
+   SANGUE — Red Color Palettes
+   ============================================================ */
+.elemento-sangue {
+    background: #250a15;
+    border: 2px solid #980100;
+    box-shadow: 0 0 12px 1px #98010055;
+}
+.elemento-sangue .Conteudo {
+    border-top: 2px solid #980100;
+}
+.elemento-sangue .Card-nome {
+    color: #b51128;
+}
+.elemento-sangue .info-titulo {
+    color: #4b0208;
+}
+
+/* ============================================================
+   MORTE — Black Color Palettes
+   ============================================================ */
+.elemento-morte {
+    background: #0f131b;
+    border: 2px solid #383b42;
+    box-shadow: 0 0 12px 1px #383b4266;
+}
+.elemento-morte .Conteudo {
+    border-top: 2px solid #383b42;
+}
+.elemento-morte .Card-nome {
+    color: #b8bcc3;
+}
+.elemento-morte .info-titulo {
+    color: #4e4d52;
+}
+
+/* ============================================================
+   ENERGIA — Fantastic Color Palettes
+   ============================================================ */
+.elemento-energia {
+    background: #02022c;
+    border: 2px solid #42109D;
+    box-shadow: 0 0 12px 1px #42109D66;
+}
+.elemento-energia .Conteudo {
+    border-top: 2px solid #91207E;
+}
+.elemento-energia .Card-nome {
+    color: #91207E;
+}
+.elemento-energia .info-titulo {
+    color: #14499e;
+}
+
+/* ============================================================
+   CONHECIMENTO — Gold Color Palettes
+   ============================================================ */
+.elemento-conhecimento {
+    background: #19171b;
+    border: 2px solid #9e8123;
+    box-shadow: 0 0 12px 1px #9e812366;
+}
+.elemento-conhecimento .Conteudo {
+    border-top: 2px solid #9e8123;
+}
+.elemento-conhecimento .Card-nome {
+    color: #9e8123;
+}
+.elemento-conhecimento .info-titulo {
+    color: #8d540f;
+}
+
+/* ============================================================
+   MEDO — Deep Blue Color Palettes
+   ============================================================ */
+.elemento-medo {
+    background: #011324;
+    border: 2px solid #0f427e;
+    box-shadow: 0 0 12px 1px #0f427e66;
+}
+.elemento-medo .Conteudo {
+    border-top: 2px solid #0f427e;
+}
+.elemento-medo .Card-nome {
+    color: #005186;
+}
+.elemento-medo .info-titulo {
+    color: #0a3083;
+}
+
+/*   VARIA — mix de todas as paletas */
+.elemento-varia {
+    background: #19171b;
+    border: 2px solid #42109D;
+    box-shadow: 0 0 14px 2px #91207E44;
+}
+.elemento-varia .Conteudo {
+    border-top: 2px solid #9e8123;
+}
+.elemento-varia .Card-nome {
+    background: linear-gradient(90deg, #980100, #42109D, #0f427e, #9e8123);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.elemento-varia .info-titulo {
+    color: #563a17;
 }
