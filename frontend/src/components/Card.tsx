@@ -36,7 +36,7 @@ function Card({ ritual }) {
                 <h2 className="Card-nome text-xl font-bold">{ritual.name}</h2>
 
                 <div className="info_ritual">
-                    <p><span className="info-titulo">Círculo:</span> {ritual.circle}°</p>
+                    <p><span className="info-titulo">Círculo:</span> {ritual.circle}</p>
                     <p><span className="info-titulo">Execução:</span> {ritual.exec}</p>
                     <p><span className="info-titulo">Alcance:</span> {ritual.range}</p>
                     <p><span className="info-titulo">Duração:</span> {ritual.duration}</p>

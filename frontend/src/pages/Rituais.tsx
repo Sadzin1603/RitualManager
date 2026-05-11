@@ -65,7 +65,31 @@ function Rituais() {
     // Estado do seletor de área 
     const [area, setArea] = useState("");
 
-    // Mapeamentos de classe
+    // Mapeamentos de classe CSS para os botões principais dos dropdowns
+    const circuloClasse: Record<string, string> = {
+        "1° Circulo (1 PE)": "circulo_1",
+        "2° Circulo (3 PE)": "circulo_2",
+        "3° Circulo (6 PE)": "circulo_3",
+        "4° Circulo (10 PE)": "circulo_4",
+    };
+    const execucaoClasse: Record<string, string> = {
+        "Padrão": "execucao_padrao",
+        "Movimento": "execucao_movimento",
+        "Completa": "execucao_completa",
+        "Reação": "execucao_reacao",
+        "Livre": "execucao_livre",
+    };
+    const alcanceClasse: Record<string, string> = {
+        "Pessoal": "alcance_pessoal",
+        "Toque": "alcance_toque",
+        "Curto (9m)": "alcance_curto",
+        "Médio (18m)": "alcance_medio",
+        "Longo (36m)": "alcance_longo",
+        "Extremo (90m)": "alcance_extremo",
+        "Ilimitado": "alcance_ilimitado",
+    };
+
+    // Mapeamentos de valor para o formData (mantidos separados)
     const circuloText: Record<string, string> = {
         "1° Circulo (1 PE)": "1°",
         "2° Circulo (3 PE)": "2°",
@@ -325,7 +349,7 @@ function Rituais() {
                     <div style={{ position: "relative" }}>
                         <button
                             id="Circulo"
-                            className={`botao_lista ${circuloText[circulo] || ""} ${inv("circulo") ? "campo-invalido" : ""}`}
+                            className={`botao_lista ${circuloClasse[circulo] || ""} ${inv("circulo") ? "campo-invalido" : ""}`}
                             type="button"
                             aria-expanded={openList === "circulo"}
                             aria-controls="lista_circulo"
@@ -345,7 +369,7 @@ function Rituais() {
                     <div style={{ position: "relative" }}>
                         <button
                             id="Execucao"
-                            className={`botao_lista ${execucaoText[execucao] || ""} ${inv("execucao") ? "campo-invalido" : ""}`}
+                            className={`botao_lista ${execucaoClasse[execucao] || ""} ${inv("execucao") ? "campo-invalido" : ""}`}
                             type="button"
                             aria-expanded={openList === "execucao"}
                             aria-controls="lista_execucao"
@@ -366,7 +390,7 @@ function Rituais() {
                     <div style={{ position: "relative" }}>
                         <button
                             id="Alcance"
-                            className={`botao_lista ${alcanceText[alcance] || ""} ${inv("alcance") ? "campo-invalido" : ""}`}
+                            className={`botao_lista ${alcanceClasse[alcance] || ""} ${inv("alcance") ? "campo-invalido" : ""}`}
                             type="button"
                             aria-expanded={openList === "alcance"}
                             aria-controls="lista_alcance"

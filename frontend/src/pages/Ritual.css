@@ -73,15 +73,64 @@
     --cor-glow: #0f427e55;
 }
 
-.pagina[data-element="varia"] {
-    --cor-fundo: #100e13;
-    --cor-card: #19171b;
-    --cor-borda: #42109D;
-    --cor-badge: #42109D;
-    --cor-badge-texto: #f5d0ff;
-    --cor-secao-titulo: #9e8123;
-    --cor-info-titulo: #563a17;
-    --cor-glow: #91207E44;
+
+
+/* ── Animações do elemento varia ───────────────────────────────────────────── */
+
+@keyframes varia-header-glow {
+    0%   { border-color: #980100; box-shadow: 0 0 24px 2px #98010055; }
+    25%  { border-color: #42109D; box-shadow: 0 0 24px 2px #42109D55; }
+    50%  { border-color: #0f427e; box-shadow: 0 0 24px 2px #0f427e55; }
+    75%  { border-color: #9e8123; box-shadow: 0 0 24px 2px #9e812355; }
+    100% { border-color: #980100; box-shadow: 0 0 24px 2px #98010055; }
+}
+
+@keyframes varia-secao-glow {
+    0%   { border-color: #980100; }
+    25%  { border-color: #42109D; }
+    50%  { border-color: #0f427e; }
+    75%  { border-color: #9e8123; }
+    100% { border-color: #980100; }
+}
+
+@keyframes varia-secao-titulo {
+    0%   { color: #b51128; }
+    25%  { color: #91207E; }
+    50%  { color: #0075c4; }
+    75%  { color: #9e8123; }
+    100% { color: #b51128; }
+}
+
+@keyframes varia-badge-bg {
+    0%   { background-color: #980100; }
+    25%  { background-color: #42109D; }
+    50%  { background-color: #0f427e; }
+    75%  { background-color: #9e8123; }
+    100% { background-color: #980100; }
+}
+
+.pagina[data-element="varia"] .header {
+    animation: varia-header-glow 6s linear infinite;
+}
+
+.pagina[data-element="varia"] .secao {
+    animation: varia-secao-glow 6s linear infinite;
+}
+
+.pagina[data-element="varia"] .secao-titulo {
+    animation: varia-secao-titulo 6s linear infinite;
+}
+
+.pagina[data-element="varia"] .info-card-titulo {
+    animation: varia-secao-titulo 6s linear infinite;
+}
+
+.pagina[data-element="varia"] .badge {
+    animation: varia-badge-bg 6s linear infinite;
+}
+
+.pagina[data-element="varia"] .info-card {
+    animation: varia-secao-glow 6s linear infinite;
 }
 
 

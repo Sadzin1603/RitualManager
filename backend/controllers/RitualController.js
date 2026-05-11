@@ -3,7 +3,7 @@ export default {
     post: async (req,res) =>{
         try {
             const rituais = await create(req.file,req.body);
-            return res.status(201);
+            return res.json({"message":"ritual criado"});
         } catch (err) {
             return res.status(400).json({ error: err.message });
         }
