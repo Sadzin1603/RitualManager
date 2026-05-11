@@ -1,74 +1,65 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import "./Ritual.css";
 
 export default function Ritual() {
   const { id } = useParams();
-  const [ritual, setRitual] = useState({"name":"loading","img":"loading","creator":{"name":"loading"}});
-  console.log(ritual)
-  
-  useEffect(() => {
-      async function fetchData() {  
-          const res = await fetch(`http://localhost:3000/ritual?id=${id}`);
-          const data = await res.json();
-          
-          setRitual(data[0]);
-      }
+  const [ritual, setRitual] = useState<any>({ name: "loading", img: "", creator: { name: "loading" }, element: "loading" });
 
-      fetchData();
+  useEffect(() => {
+    async function fetchData() {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`http://localhost:3000/ritual/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      const data = await res.json();
+      setRitual(data[0]);
+    }
+    fetchData();
   }, []);
-  
-  
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 p-6">
-      <div className="max-w-4xl mx-auto">
+    <div
+      className="pagina"
+      data-element={ritual.element.toLowerCase()}
+    >
+      <div className="conteudo">
 
         {/* HEADER */}
-        <div className="relative overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900">
-          <img
-            src={ritual.img}
-            alt={ritual.name}
-            className="w-full h-72 object-cover opacity-60"
-          />
+        <div className="header">
+          {ritual.img
+            ? <img className="header-imagem" src={ritual.img} alt={ritual.name} />
+            : <div className="header-imagem-placeholder" />
+          }
 
-          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 to-transparent" />
+          <div className="header-gradiente" />
 
-          <div className="absolute bottom-0 left-0 p-6">
-            <span className="bg-red-700 px-3 py-1 rounded-full text-sm font-semibold uppercase">
-              {ritual.element}
+          <div className="header-info">
+            <span className="badge">
+              {ritual.element} {ritual.circle}°
             </span>
 
-            <h1 className="text-4xl font-bold mt-4">
+            <h1 className="header-titulo">
               {ritual.name}
             </h1>
 
-            <p className="text-zinc-400 mt-2">
-              Criado por {ritual.creator.name}
+            <p className="header-criador">
+              Criado por {ritual.creator?.name}
             </p>
           </div>
         </div>
 
-        {/* INFO */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-
-          <InfoCard
-            title="Círculo"
-            value={`${ritual.circle}°`}
-          />
-
-          <InfoCard
-            title="Execução"
-            value={ritual.exec}
-          />
-
-          <InfoCard
-            title="Alcance"
-            value={ritual.range}
-          />
-
-          <InfoCard
-            title="Alvo"
-            value={ritual.target}
-          />
+        {/* INFO GRID */}
+        <div className="info-grid">
+          <InfoCard title="Execução" value={ritual.exec} />
+          <InfoCard title="Alcance" value={ritual.range} />
+          <InfoCard title="Alvo" value={ritual.target} />
+          <InfoCard title="Duração" value={ritual.duration} />
+          <InfoCard title="Efeito" value={ritual.effect} />
+          <InfoCard title="Resistência" value={ritual.resistence} />
+          <InfoCard title="Área" value={ritual.area} />
+          <InfoCard title="Dados" value={ritual.dices} />
         </div>
 
         {/* DESCRIÇÃO */}
@@ -77,6 +68,11 @@ export default function Ritual() {
         </Section>
 
         {/* DISCENTE */}
+        {ritual.dice_discent && (
+          <div className="extra-dado">
+            <InfoCard title="Dados Discente" value={ritual.discent_dices} />
+          </div>
+        )}
         {ritual.discent_description && (
           <Section title="Discente">
             {ritual.discent_description}
@@ -84,6 +80,11 @@ export default function Ritual() {
         )}
 
         {/* VERDADEIRO */}
+        {ritual.dice_truly && (
+          <div className="extra-dado">
+            <InfoCard title="Dados Verdadeiro" value={ritual.truly_dices} />
+          </div>
+        )}
         {ritual.truly_description && (
           <Section title="Verdadeiro">
             {ritual.truly_description}
@@ -91,43 +92,30 @@ export default function Ritual() {
         )}
 
         {/* RODAPÉ */}
-        <div className="mt-10 text-sm text-zinc-500 border-t border-zinc-800 pt-4">
+        <div className="rodape">
           <p>Status: {ritual.status}</p>
-          <p>
-            Criado em{" "}
-            {new Date(ritual.created_at).toLocaleDateString("pt-BR")}
-          </p>
+          <p>Criado em {new Date(ritual.created_at).toLocaleDateString("pt-BR")}</p>
         </div>
+
       </div>
     </div>
-  
-  )
+  );
 }
 
 function Section({ title, children }) {
   return (
-    <div className="mt-8 bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
-      <h2 className="text-2xl font-bold mb-4">
-        {title}
-      </h2>
-
-      <p className="text-zinc-300 leading-relaxed">
-        {children}
-      </p>
+    <div className="secao">
+      <h2 className="secao-titulo">{title}</h2>
+      <p className="secao-texto">{children}</p>
     </div>
   );
 }
 
 function InfoCard({ title, value }) {
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-      <p className="text-zinc-500 text-sm">
-        {title}
-      </p>
-
-      <p className="text-lg font-semibold mt-1">
-        {value || "-"}
-      </p>
+    <div className="info-card">
+      <p className="info-card-titulo">{title}</p>
+      <p className="info-card-valor">{value || "-"}</p>
     </div>
   );
 }

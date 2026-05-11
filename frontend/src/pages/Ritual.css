@@ -1,0 +1,237 @@
+/* ── Variáveis padrão ──────────────────────────────────────────────────────── */
+
+/* Forte  → borda, badge, títulos de seção                                     */
+/* Médio  → títulos dos InfoCards                                               */
+/* Neutro → fundo da página e dos cards                                        */
+
+.pagina {
+    --cor-fundo: #09090b;
+    --cor-card: #18181b;
+    --cor-borda: #3f3f46;
+    --cor-badge: #3f3f46;
+    --cor-badge-texto: #e4e4e7;
+    --cor-secao-titulo: #e4e4e7;
+    --cor-info-titulo: #71717a;
+    --cor-glow: transparent;
+}
+
+
+/* ── Paletas por elemento ──────────────────────────────────────────────────── */
+
+.pagina[data-element="sangue"] {
+    --cor-fundo: #1a0008;
+    --cor-card: #250a15;
+    --cor-borda: #980100;
+    --cor-badge: #980100;
+    --cor-badge-texto: #ffd0d0;
+    --cor-secao-titulo: #b51128;
+    --cor-info-titulo: #4b0208;
+    --cor-glow: #98010044;
+}
+
+.pagina[data-element="morte"] {
+    --cor-fundo: #0a0c10;
+    --cor-card: #0f131b;
+    --cor-borda: #383b42;
+    --cor-badge: #383b42;
+    --cor-badge-texto: #d0d3da;
+    --cor-secao-titulo: #b8bcc3;
+    --cor-info-titulo: #b8bcc3;
+    --cor-glow: #383b4244;
+}
+
+.pagina[data-element="energia"] {
+    --cor-fundo: #02022c;
+    --cor-card: #00005c;
+    --cor-borda: #42109D;
+    --cor-badge: #42109D;
+    --cor-badge-texto: #e8d4ff;
+    --cor-secao-titulo: #aa1f93;
+    --cor-info-titulo: #aa1f93;
+    --cor-glow: #42109D55;
+}
+
+.pagina[data-element="conhecimento"] {
+    --cor-fundo: #100e13;
+    --cor-card: #19171b;
+    --cor-borda: #9e8123;
+    --cor-badge: #563a17;
+    --cor-badge-texto: #ffe8a0;
+    --cor-secao-titulo: #9e8123;
+    --cor-info-titulo: #9e8123;
+    --cor-glow: #9e812344;
+}
+
+.pagina[data-element="medo"] {
+    --cor-fundo: #08111b;
+    --cor-card: #05192c;
+    --cor-borda: #0f427e;
+    --cor-badge: #032c4f;
+    --cor-badge-texto: #c0d8f5;
+    --cor-secao-titulo: #0075c4;
+    --cor-info-titulo: #0075c4;
+    --cor-glow: #0f427e55;
+}
+
+.pagina[data-element="varia"] {
+    --cor-fundo: #100e13;
+    --cor-card: #19171b;
+    --cor-borda: #42109D;
+    --cor-badge: #42109D;
+    --cor-badge-texto: #f5d0ff;
+    --cor-secao-titulo: #9e8123;
+    --cor-info-titulo: #563a17;
+    --cor-glow: #91207E44;
+}
+
+
+/* ── Página ────────────────────────────────────────────────────────────────── */
+
+.pagina {
+    min-height: 100vh;
+    background-color: var(--cor-fundo);
+    color: #e4e4e7;
+    padding: 24px;
+}
+
+.conteudo {
+    max-width: 896px;
+    margin: 0 auto;
+}
+
+
+/* ── Header ────────────────────────────────────────────────────────────────── */
+
+.header {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    background-color: var(--cor-card);
+    border: 2px solid var(--cor-borda);
+    box-shadow: 0 0 24px 2px var(--cor-glow);
+}
+
+.header-imagem {
+    width: 100%;
+    height: 288px;
+    object-fit: cover;
+    opacity: 0.6;
+}
+
+.header-imagem-placeholder {
+    width: 100%;
+    height: 288px;
+    background-color: var(--cor-fundo);
+}
+
+.header-gradiente {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--cor-fundo), transparent);
+}
+
+.header-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 24px;
+}
+
+.header-titulo {
+    font-size: 36px;
+    font-weight: 700;
+    margin-top: 16px;
+    color: #ffffff;
+}
+
+.header-criador {
+    color: #a1a1aa;
+    margin-top: 8px;
+}
+
+
+/* ── Badge ─────────────────────────────────────────────────────────────────── */
+
+.badge {
+    background-color: var(--cor-badge);
+    color: var(--cor-badge-texto);
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+
+/* ── Info Grid ─────────────────────────────────────────────────────────────── */
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+}
+
+
+/* ── Info Card ─────────────────────────────────────────────────────────────── */
+
+.info-card {
+    background-color: var(--cor-card);
+    border: 2px solid var(--cor-borda);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.info-card-titulo {
+    color: var(--cor-info-titulo);
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.info-card-valor {
+    font-size: 16px;
+    font-weight: 600;
+    color: #e4e4e7;
+}
+
+
+/* ── Seção (Descrição / Discente / Verdadeiro) ─────────────────────────────── */
+
+.secao {
+    margin-top: 32px;
+    background-color: var(--cor-card);
+    border: 2px solid var(--cor-borda);
+    border-radius: 16px;
+    padding: 24px;
+}
+
+.secao-titulo {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--cor-secao-titulo);
+}
+
+.secao-texto {
+    color: #d4d4d8;
+    line-height: 1.7;
+    font-size: 14px;
+}
+
+
+/* ── Dado extra (Discente / Verdadeiro) ────────────────────────────────────── */
+
+.extra-dado {
+    margin-top: 16px;
+}
+
+
+/* ── Rodapé ────────────────────────────────────────────────────────────────── */
+
+.rodape {
+    margin-top: 40px;
+    font-size: 13px;
+    color: #71717a;
+    border-top: 1px solid var(--cor-borda);
+    padding-top: 16px;
+}

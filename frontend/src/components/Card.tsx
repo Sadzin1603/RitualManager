@@ -1,10 +1,20 @@
 import { useNavigate } from "react-router-dom";
 import "./Card.css";
 
+const elementoClasse: Record<string, string> = {
+    sangue:       "elemento-sangue",
+    morte:        "elemento-morte",
+    energia:      "elemento-energia",
+    conhecimento: "elemento-conhecimento",
+    medo:         "elemento-medo",
+    varia:        "elemento-varia",
+};
+
 function Card({ ritual }) {
     const navigate = useNavigate();
+    const classeElemento = elementoClasse[ritual.element?.toLowerCase()] ?? "";
     return (
-        <div className="Card">
+        <div className={`Card ${classeElemento}`}>
 
             {/* Imagem */}
             <div className="h-40 bg-zinc-800">
@@ -23,13 +33,13 @@ function Card({ ritual }) {
 
             {/* Conteúdo */}
             <div className="Conteudo">
-                <h2 className="text-xl font-bold">{ritual.name}</h2>
+                <h2 className="Card-nome text-xl font-bold">{ritual.name}</h2>
 
                 <div className="info_ritual">
-                    <p>Circulo: {ritual.circle}°</p>
-                    <p>Execução: {ritual.exec}</p>
-                    <p>Alcance: {ritual.range}</p>
-                    <p>Duração: {ritual.duration}</p>
+                    <p><span className="info-titulo">Círculo:</span> {ritual.circle}°</p>
+                    <p><span className="info-titulo">Execução:</span> {ritual.exec}</p>
+                    <p><span className="info-titulo">Alcance:</span> {ritual.range}</p>
+                    <p><span className="info-titulo">Duração:</span> {ritual.duration}</p>
                 </div>
 
                 <p className="text-sm text-zinc-300 line-clamp-2">
@@ -41,7 +51,7 @@ function Card({ ritual }) {
                         Criado por: {ritual.creator.name}
                     </span>
 
-                    <button className="bg-purple-600 hover:bg-purple-700 px-4 py-1 rounded-md text-sm"
+                    <button className="btn-ver-mais bg-purple-600 hover:bg-purple-700 px-4 py-1 rounded-md text-sm"
                         onClick={()=>{navigate(`/ritual/${ritual.id}`)}}
                     >
                         Ver mais
