@@ -113,6 +113,10 @@
     animation: varia-header-glow 6s linear infinite;
 }
 
+.pagina[data-element="varia"] .header-imagem-wrap {
+    animation: varia-header-glow 6s linear infinite;
+}
+
 .pagina[data-element="varia"] .secao {
     animation: varia-secao-glow 6s linear infinite;
 }
@@ -152,50 +156,75 @@
 /* ── Header ────────────────────────────────────────────────────────────────── */
 
 .header {
-    position: relative;
-    overflow: hidden;
     border-radius: 16px;
     background-color: var(--cor-card);
     border: 2px solid var(--cor-borda);
     box-shadow: 0 0 24px 2px var(--cor-glow);
+    padding: 24px;
+}
+
+.header-layout {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+}
+
+/* Quadrado da imagem */
+.header-imagem-wrap {
+    position: relative;
+    flex-shrink: 0;
+    width: 200px;
+    height: 200px;
+    border-radius: 12px;
+    border: 2px solid var(--cor-borda);
+    box-shadow: 0 0 18px 2px var(--cor-glow), inset 0 0 12px rgba(0,0,0,0.5);
+    overflow: hidden;
 }
 
 .header-imagem {
     width: 100%;
-    height: 288px;
+    height: 100%;
     object-fit: cover;
-    opacity: 0.6;
+    display: block;
 }
 
 .header-imagem-placeholder {
     width: 100%;
-    height: 288px;
+    height: 100%;
     background-color: var(--cor-fundo);
 }
 
-.header-gradiente {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, var(--cor-fundo), transparent);
-}
-
-.header-info {
+/* Reflexo sutil no canto inferior da imagem */
+.header-imagem-glow {
     position: absolute;
     bottom: 0;
     left: 0;
-    padding: 24px;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(to top, var(--cor-card), transparent);
+    pointer-events: none;
+}
+
+.header-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 4px;
+    min-height: 200px;
+    gap: 10px;
 }
 
 .header-titulo {
-    font-size: 36px;
+    font-size: 32px;
     font-weight: 700;
-    margin-top: 16px;
+    margin: 0;
     color: #ffffff;
+    line-height: 1.2;
 }
 
 .header-criador {
     color: #a1a1aa;
-    margin-top: 8px;
+    margin: 0;
 }
 
 
@@ -209,6 +238,9 @@
     font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
+    display: inline-block;
+    text-align: center;
+    align-self: flex-start;
 }
 
 
