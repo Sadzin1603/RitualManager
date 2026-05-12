@@ -29,25 +29,28 @@ export default function Ritual() {
 
         {/* HEADER */}
         <div className="header">
-          {ritual.img
-            ? <img className="header-imagem" src={ritual.img} alt={ritual.name} />
-            : <div className="header-imagem-placeholder" />
-          }
+          <div className="header-layout">
+            <div className="header-imagem-wrap">
+              {ritual.img
+                ? <img className="header-imagem" src={ritual.img} alt={ritual.name} />
+                : <div className="header-imagem-placeholder" />
+              }
+              <div className="header-imagem-glow" />
+            </div>
 
-          <div className="header-gradiente" />
+            <div className="header-info">
+              <h1 className="header-titulo">
+                {ritual.name}
+              </h1>
 
-          <div className="header-info">
-            <span className="badge">
-              {ritual.element} {ritual.circle}
-            </span>
+              <span className="badge">
+                {ritual.element} {ritual.circle}
+              </span>
 
-            <h1 className="header-titulo">
-              {ritual.name}
-            </h1>
-
-            <p className="header-criador">
-              Criado por {ritual.creator?.name}
-            </p>
+              <p className="header-criador">
+                Criado por {ritual.creator?.name}
+              </p>
+            </div>
           </div>
         </div>
 
