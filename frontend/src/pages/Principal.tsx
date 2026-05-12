@@ -8,7 +8,9 @@ function Principal() {
     const [openList, setOpenList] = useState<string | null>(null);
     const [elemento, setElemento] = useState("Todos");
     const [circulo, setCirculo] = useState("Todos");
-    const [searchNome, setSearchNome] = useState("");  // ← novo
+    const [execucao, setExecucao] = useState("Todos");
+    const [alcance, setAlcance] = useState("Todos");
+    const [searchNome, setSearchNome] = useState("");
 
     useEffect(() => {
         async function fetchData() {
@@ -22,12 +24,6 @@ function Principal() {
 
     const navigate = useNavigate();
 
-    // ── Lógica de filtragem ───────────────────────────────────────────────────
-    //
-    //  O banco salva circle como "1°", "2°" etc. (veja circuloValor abaixo).
-    //  Cada condição usa: filtro vazio/padrão → passa tudo; filtro ativo → compara.
-    //  O && final exige que TODOS os filtros ativos sejam satisfeitos.
-    //
     const circuloValor: Record<string, string> = {
         "1° Circulo (1 PE)": "1°",
         "2° Circulo (3 PE)": "2°",
@@ -46,9 +42,15 @@ function Principal() {
             const passaCirculo = circulo === "Todos"
                 || ritual.circle === circuloValor[circulo];
 
-            return passaNome && passaElem && passaCirculo;
+            const passaExecucao = execucao === "Todos"
+                || ritual.exec === execucao;
+
+            const passaAlcance = alcance === "Todos"
+                || ritual.range === alcance;
+
+            return passaNome && passaElem && passaCirculo && passaExecucao && passaAlcance;
         });
-    }, [rituais, searchNome, elemento, circulo]);
+    }, [rituais, searchNome, elemento, circulo, execucao, alcance]);
 
     // ─────────────────────────────────────────────────────────────────────────
 
@@ -82,10 +84,40 @@ function Principal() {
         "4° Circulo (10 PE)": "circulo_4",
     };
 
+    const selectExecucao = (valor: string) => {
+        setExecucao(valor);
+        setOpenList(null);
+    }
+
+    const execucaoClasse: Record<string, string> = {
+        "Padrão": "execucao_padrao",
+        "Movimento": "execucao_movimento",
+        "Completa": "execucao_completa",
+        "Reação": "execucao_reacao",
+        "Livre": "execucao_livre",
+    };
+
+    const selectAlcance = (valor: string) => {
+        setAlcance(valor);
+        setOpenList(null);
+    }
+
+    const alcanceClasse: Record<string, string> = {
+        "Pessoal": "alcance_pessoal",
+        "Toque": "alcance_toque",
+        "Curto (9m)": "alcance_curto",
+        "Médio (18m)": "alcance_medio",
+        "Longo (36m)": "alcance_longo",
+        "Extremo (90m)": "alcance_extremo",
+        "Ilimitado": "alcance_ilimitado",
+    };
+
     const limparFiltros = () => {
         setElemento("Todos");
         setCirculo("Todos");
-        setSearchNome("");  // ← limpa o nome também
+        setExecucao("Todos");
+        setAlcance("Todos");
+        setSearchNome("");
     };
 
     return (
@@ -117,12 +149,12 @@ function Principal() {
                         </button>
                     </nav>
 
-                    {/* Campo de pesquisa */}
+                    {/* Campo de pesquisa ritual*/}
                     <div className="div_pesquisa">
                         <input
                             className="pesquisa"
                             type="text"
-                            placeholder="Pesquisar nome..."
+                            placeholder="Nome do ritual..."
                             value={searchNome}
                             onChange={(e) => setSearchNome(e.target.value)}
                         />
@@ -183,6 +215,62 @@ function Principal() {
                                 <button className="circulo_2" type="button" onClick={() => selectCirculo("2° Circulo (3 PE)")}>2° Circulo</button>
                                 <button className="circulo_3" type="button" onClick={() => selectCirculo("3° Circulo (6 PE)")}>3° Circulo</button>
                                 <button className="circulo_4" type="button" onClick={() => selectCirculo("4° Circulo (10 PE)")}>4° Circulo</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Filtro de Execução */}
+                    <div className="filtro filtro_execucao">
+                        <h2 className="text-sm font-medium text-zinc-400">Execução</h2>
+                        <div style={{ position: "relative" }}>
+                            <button
+                                className={`botao_lista ${execucaoClasse[execucao] || ""}`}
+                                type="button"
+                                aria-expanded={openList === "execucao"}
+                                aria-controls="lista_execucao_filtro"
+                                onClick={() => toggleList("execucao")}
+                            >
+                                {execucao}
+                            </button>
+                            <div
+                                id="lista_execucao_filtro"
+                                className={`lista ${openList === "execucao" ? "show" : ""}`}
+                            >
+                                <button type="button" onClick={() => selectExecucao("Todos")}>Todos</button>
+                                <button className="execucao_completa" type="button" onClick={() => selectExecucao("Completa")}>Completa</button>
+                                <button className="execucao_padrao" type="button" onClick={() => selectExecucao("Padrão")}>Padrão</button>
+                                <button className="execucao_movimento" type="button" onClick={() => selectExecucao("Movimento")}>Movimento</button>
+                                <button className="execucao_reacao" type="button" onClick={() => selectExecucao("Reação")}>Reação</button>
+                                <button className="execucao_livre" type="button" onClick={() => selectExecucao("Livre")}>Livre</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Filtro de Alcance */}
+                    <div className="filtro filtro_alcance">
+                        <h2 className="text-sm font-medium text-zinc-400">Alcance</h2>
+                        <div style={{ position: "relative" }}>
+                            <button
+                                className={`botao_lista ${alcanceClasse[alcance] || ""}`}
+                                type="button"
+                                aria-expanded={openList === "alcance"}
+                                aria-controls="lista_alcance_filtro"
+                                onClick={() => toggleList("alcance")}
+                            >
+                                {alcance}
+                            </button>
+                            <div
+                                id="lista_alcance_filtro"
+                                className={`lista ${openList === "alcance" ? "show" : ""}`}
+                            >
+                                <button type="button" onClick={() => selectAlcance("Todos")}>Todos</button>
+                                <button className="alcance_pessoal" type="button" onClick={() => selectAlcance("Pessoal")}>Pessoal</button>
+                                <button className="alcance_toque" type="button" onClick={() => selectAlcance("Toque")}>Toque</button>
+                                <button className="alcance_curto" type="button" onClick={() => selectAlcance("Curto (9m)")}>Curto (9m)</button>
+                                <button className="alcance_medio" type="button" onClick={() => selectAlcance("Médio (18m)")}>Médio (18m)</button>
+                                <button className="alcance_longo" type="button" onClick={() => selectAlcance("Longo (36m)")}>Longo (36m)</button>
+                                <button className="alcance_extremo" type="button" onClick={() => selectAlcance("Extremo (90m)")}>Extremo (90m)</button>
+                                <button className="alcance_ilimitado" type="button" onClick={() => selectAlcance("Ilimitado")}>Ilimitado</button>
                             </div>
                         </div>
                     </div>
