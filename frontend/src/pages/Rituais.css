@@ -419,12 +419,12 @@ br {
 /* ---- Cores dos botões: Alcance ---- */
 .lista button.alcance_pessoal:hover,
 .botao_lista.alcance_pessoal {
-    background: linear-gradient(90deg, transparent 10%, #131bac 40%, #131bac 60%, transparent 90%);
+    background: linear-gradient(90deg, #ac1320 0%, transparent 90%);
 }
 
 .lista button.alcance_toque:hover,
 .botao_lista.alcance_toque {
-    background: linear-gradient(90deg, transparent 30%, #131bac 100%);
+    background: linear-gradient(90deg, #0b77be 0%, transparent 90%);
 }
 
 .lista button.alcance_curto:hover,
