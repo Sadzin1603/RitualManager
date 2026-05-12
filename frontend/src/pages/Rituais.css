@@ -91,7 +91,7 @@ textarea.digitacao {
 
 /* Botão escolher imagem */
 .botao.escolher_imagem {
-    background-color: rgb(98, 91, 161);
+    background-color: rgb(42, 69, 158);
     color: #fff;
     font-weight: 600;
     margin: 10px 0;
@@ -193,7 +193,7 @@ button:hover {
 /* Botões de lista dropdown */
 .botao_lista {
     width: 100%;
-    background-color: rgb(98, 91, 161);
+    background-color: rgb(42, 69, 158);
     color: #fff;
     font-weight: 600;
     text-align: left;
@@ -201,7 +201,7 @@ button:hover {
 }
 
 .botao_lista:hover {
-    background-color: rgb(137, 127, 224);
+    background-color: #393799;
 }
 
 /* Listas dropdown */
@@ -249,7 +249,7 @@ button:hover {
 }
 
 .lista button:hover {
-    background-color: rgb(137, 127, 224);
+    background-color: rgb(51, 39, 161);
     transform: none;
 }
 
@@ -303,7 +303,7 @@ button:hover {
 .botao.salvar {
     display: block;
     width: 100%;
-    background-color: rgb(137, 127, 224);
+    background-color: rgb(57, 46, 156);
     color: #fff;
     margin-top: 30px;
     font-weight: 600;
