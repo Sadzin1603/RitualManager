@@ -18,7 +18,6 @@ function Principal() {
             const data = await res.json();
             setRituais(data);
         }
-
         fetchData();
     }, []);
 
