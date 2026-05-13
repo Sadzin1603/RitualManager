@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import "./Card.css";
 
 const elementoClasse: Record<string, string> = {
     sangue:       "elemento-sangue",
@@ -12,13 +13,19 @@ const elementoClasse: Record<string, string> = {
 function MiniCard({ ritual }) {
     const navigate = useNavigate();
     const classeElemento = elementoClasse[ritual.element?.toLowerCase()] ?? "";
+
     return (
-        <div className={`${classeElemento} bg-zinc-900 border border-red-700 rounded-xl p-3 w-full max-w-xl`}>
+        <div className={`${classeElemento} bg-zinc-900 rounded-xl p-3 w-full max-w-xl mb-[20px]`}>
 
             {/* Nome */}
-            <h2 className="Card-nome text-lg font-bold mb-2 text-red-500">
-                {ritual.name}
-            </h2>
+            <div className="flex justify-between">
+                <h2 className="Card-nome text-lg font-bold mb-2">
+                    {ritual.name}
+                </h2>
+                <span className="text-[15px] text-zinc-500 truncate items-center flex">
+                    {ritual.creator.name}
+                </span>
+            </div>
 
             <div className="flex gap-3">
 
@@ -40,49 +47,26 @@ function MiniCard({ ritual }) {
                 {/* INFOS */}
                 <div className="flex-1 flex flex-col justify-between min-w-0">
 
-                    {/* grid infos */}
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
-
+                    <div className="grid grid-cols-1 gap-x-4 gap-y-1 text-sm">
                         <p className="truncate">
-                            <span className="text-red-500 font-semibold">
-                                Círculo:
-                            </span>{" "}
+                            <span className="info-titulo">Círculo:</span>{" "}
                             {ritual.circle}
                         </p>
-
                         <p className="truncate">
-                            <span className="text-red-500 font-semibold">
-                                Exec:
-                            </span>{" "}
+                            <span className="info-titulo">Execução:</span>{" "}
                             {ritual.exec}
                         </p>
-
                         <p className="truncate">
-                            <span className="text-red-500 font-semibold">
-                                Alc:
-                            </span>{" "}
+                            <span className="info-titulo">Alcance:</span>{" "}
                             {ritual.range}
                         </p>
-
                         <p className="truncate">
-                            <span className="text-red-500 font-semibold">
-                                Dura:
-                            </span>{" "}
+                            <span className="info-titulo">Duração:</span>{" "}
                             {ritual.duration}
                         </p>
                     </div>
 
-                    {/* descrição */}
-                    <p className="text-xs text-zinc-300 line-clamp-2 mt-2">
-                        {ritual.description}
-                    </p>
-
-                    {/* footer */}
-                    <div className="flex justify-between items-center mt-2">
-                        <span className="text-[10px] text-zinc-500 truncate">
-                            {ritual.creator.name}
-                        </span>
-
+                    <div className="flex justify-end items-center mt-2">
                         <button
                             className="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded-md text-xs"
                             onClick={() => navigate(`/ritual/${ritual.id}`)}
@@ -93,7 +77,7 @@ function MiniCard({ ritual }) {
 
                 </div>
             </div>
-        </div> 
+        </div>
     );
 }
 

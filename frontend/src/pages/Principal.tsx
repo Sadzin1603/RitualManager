@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Card from "../components/Card"
-import {jwtDecode} from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode'
 import { useEffect, useState, useMemo } from "react";
 import "./Principal.css";
 import MiniCard from "../components/MiniCard";
@@ -123,15 +123,15 @@ function Principal() {
     };
 
     return (
-        <div className="title w-auto min-h-screen flex justify-around p-6 gap-16">
-            
+        <div className="title w-auto min-h-screen flex justify-around p-8 gap-3">
+
             <div className="div_Lateral flex-1">
 
                 {/* Filtros */}
                 <div className="div_filtros">
 
                     {/* Header */}
-                    <nav className="header">
+                    <nav className="header_filtros">
                         <h1 className="text-lg font-bold">Filtros</h1>
                         <button className="limpar_filtros" onClick={limparFiltros}>
                             Limpar
@@ -267,34 +267,40 @@ function Principal() {
                 </div>
             </div>
 
-            <div className="space-y-4 flex-1">
-                {/* Renderiza só os rituais que passaram em todos os filtros */}
-                {rituaisFiltrados.map((ritual: any) => (
-                    <Card key={ritual.id} ritual={ritual}></Card>
-                ))}
+            <div className="flex flex-col items-center gap-4 flex-1">
+                {Array.from({ length: Math.ceil(rituaisFiltrados.length / 3) }, (_, rowIndex) => {
+                    const rowItems = rituaisFiltrados.slice(rowIndex * 3, rowIndex * 3 + 3);
+                    return (
+                        <div className="flex gap-4 justify-center" key={rowIndex}>
+                            {rowItems.map((ritual: any) => <Card key={ritual.id} ritual={ritual} />)}
+                        </div>
+                    );
+                })}
             </div>
 
             <div className="div_Lateral flex-1 space-y-5">
-                {/* Botão Perfil */}
-                <button
-                    className="criar_ritual"
-                    onClick={() => navigate("/profile")}
-                >
-                    Meu Perfil
-                </button>
-                {/* Botão principal */}
-                <button
-                    className="criar_ritual"
-                    onClick={() => navigate("/rituais")}
-                >
-                    + Criar Ritual
-                </button>
+                <div className="div_criar_ritual">
+                    {/* Botão Perfil */}
+                    <button
+                        className="criar_ritual"
+                        onClick={() => navigate("/profile")}
+                    >
+                        Meu Perfil
+                    </button>
+                    {/* Botão principal */}
+                    <button
+                        className="criar_ritual"
+                        onClick={() => navigate("/rituais")}
+                    >
+                        + Criar Ritual
+                    </button>
+                </div>
                 <div>
                     {rituaisFiltrados.map((ritual: any) => (
-                        ritual.creator.id == jwtDecode(localStorage.getItem("token")).id?
-                            <MiniCard key={ritual.id} ritual={ritual}></MiniCard>
-                        :
-                        ""
+                        ritual.creator?.id == jwtDecode(localStorage.getItem("token")).id
+                            ? <MiniCard key={ritual.id} ritual={ritual}></MiniCard>
+                            :
+                            ""
                     ))}
                 </div>
             </div>

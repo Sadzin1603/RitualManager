@@ -1,10 +1,9 @@
-.header {
+.header_filtros {
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #27272a;
     padding-bottom: 10px;
-    padding-top: 10px;
     border-radius: 0px;
 }
 
@@ -20,7 +19,15 @@
     border-radius: 12px;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     border: 1px solid #27272a;
-    
+    height: fit-content;
+}
+
+.div_criar_ritual {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #27272a;
+    padding-bottom: 10px;
+    gap: 10px;
 }
 
 /* Botão de criar ritual */
@@ -82,7 +89,7 @@
 
 .div_filtros {
     gap: 20px;
-    margin-top: 20px;
+    margin-top: 0px;
     border-bottom: 1px solid #27272a;
     padding-bottom: 10px;
 }
