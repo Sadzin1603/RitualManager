@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import Card from "../components/Card"
+import {jwtDecode} from 'jwt-decode'
 import { useEffect, useState, useMemo } from "react";
 import "./Principal.css";
+import MiniCard from "../components/MiniCard";
 
 function Principal() {
     const [rituais, setRituais] = useState([]);
@@ -121,22 +123,9 @@ function Principal() {
     };
 
     return (
-        <div className="title w-auto min-h-screen flex justify-center p-6">
-            <div className="space-y-4">
-                {/* Renderiza só os rituais que passaram em todos os filtros */}
-                {rituaisFiltrados.map((ritual: any) => (
-                    <Card key={ritual.id} ritual={ritual}></Card>
-                ))}
-            </div>
-            <div className="div_Lateral">
-
-                {/* Botão principal */}
-                <button
-                    className="criar_ritual"
-                    onClick={() => navigate("/rituais")}
-                >
-                    + Criar Ritual
-                </button>
+        <div className="title w-auto min-h-screen flex justify-around p-6 gap-16">
+            
+            <div className="div_Lateral flex-1">
 
                 {/* Filtros */}
                 <div className="div_filtros">
@@ -275,6 +264,38 @@ function Principal() {
                         </div>
                     </div>
 
+                </div>
+            </div>
+
+            <div className="space-y-4 flex-1">
+                {/* Renderiza só os rituais que passaram em todos os filtros */}
+                {rituaisFiltrados.map((ritual: any) => (
+                    <Card key={ritual.id} ritual={ritual}></Card>
+                ))}
+            </div>
+
+            <div className="div_Lateral flex-1 space-y-5">
+                {/* Botão Perfil */}
+                <button
+                    className="criar_ritual"
+                    onClick={() => navigate("/profile")}
+                >
+                    Meu Perfil
+                </button>
+                {/* Botão principal */}
+                <button
+                    className="criar_ritual"
+                    onClick={() => navigate("/rituais")}
+                >
+                    + Criar Ritual
+                </button>
+                <div>
+                    {rituaisFiltrados.map((ritual: any) => (
+                        ritual.creator.id == jwtDecode(localStorage.getItem("token")).id?
+                            <MiniCard key={ritual.id} ritual={ritual}></MiniCard>
+                        :
+                        ""
+                    ))}
                 </div>
             </div>
         </div>

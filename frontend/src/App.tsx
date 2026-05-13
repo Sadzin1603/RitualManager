@@ -7,6 +7,7 @@ import Principal from "./pages/Principal";
 import Rituais from './pages/Rituais';
 import Admin from './pages/Admin';
 import Ritual from './pages/Ritual';
+import Profile from './pages/Profile';
 import "./App.css";
 
 function App() {
@@ -164,6 +165,13 @@ function App() {
             </PrivateRoute>
           }
           />
+          <Route path="/profile" element={
+            <PrivateRoute>
+              <Profile />
+            </PrivateRoute>
+          }
+          />
+          
 
           <Route path="/rituais" element={
             <PrivateRoute>
