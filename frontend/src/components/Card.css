@@ -78,7 +78,7 @@
 }
 
 /* CARD EXPANDIDO — aparece no hover */
-.Card-expanded {
+.Card-expandido {
     position: absolute;
     top: 0;
     left: 0;
@@ -97,7 +97,7 @@
     transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-.Card-wrapper:hover .Card-expanded {
+.Card-wrapper:hover .Card-expandido {
     opacity: 1;
     transform: scale(1) translateY(-8px);
     pointer-events: auto;
@@ -143,12 +143,12 @@
 .elemento-sangue .Card-small-footer {
     border-top-color: #980100;
 }
-.elemento-sangue .Card-expanded {
+.elemento-sangue .Card-expandido {
     background: #250814;
     border: 2px solid #980100;
     box-shadow: 0 0 12px 1px #98010055, 0 20px 40px -8px rgba(0, 0, 0, 0.6);
 }
-.elemento-sangue .Card-expanded .Conteudo {
+.elemento-sangue .Card-expandido .Conteudo {
     border-top: 2px solid #980100;
 }
 .elemento-sangue .Card-nome {
@@ -171,12 +171,12 @@
 .elemento-morte .Card-small-footer {
     border-top-color: #383b42;
 }
-.elemento-morte .Card-expanded {
+.elemento-morte .Card-expandido {
     background: #0f131b;
     border: 2px solid #383b42;
     box-shadow: 0 0 12px 1px #383b4266, 0 20px 40px -8px rgba(0, 0, 0, 0.6);
 }
-.elemento-morte .Card-expanded .Conteudo {
+.elemento-morte .Card-expandido .Conteudo {
     border-top: 2px solid #383b42;
 }
 .elemento-morte .Card-nome {
@@ -199,12 +199,12 @@
 .elemento-energia .Card-small-footer {
     border-top-color: #91207E;
 }
-.elemento-energia .Card-expanded {
+.elemento-energia .Card-expandido {
     background: #02022c;
     border: 2px solid #42109D;
     box-shadow: 0 0 12px 1px #42109D66, 0 20px 40px -8px rgba(0, 0, 0, 0.6);
 }
-.elemento-energia .Card-expanded .Conteudo {
+.elemento-energia .Card-expandido .Conteudo {
     border-top: 2px solid #91207E;
 }
 .elemento-energia .Card-nome {
@@ -227,12 +227,12 @@
 .elemento-conhecimento .Card-small-footer {
     border-top-color: #9e8123;
 }
-.elemento-conhecimento .Card-expanded {
+.elemento-conhecimento .Card-expandido {
     background: #19171b;
     border: 2px solid #9e8123;
     box-shadow: 0 0 12px 1px #9e812366, 0 20px 40px -8px rgba(0, 0, 0, 0.6);
 }
-.elemento-conhecimento .Card-expanded .Conteudo {
+.elemento-conhecimento .Card-expandido .Conteudo {
     border-top: 2px solid #9e8123;
 }
 .elemento-conhecimento .Card-nome {
@@ -255,12 +255,12 @@
 .elemento-medo .Card-small-footer {
     border-top-color: #0f427e;
 }
-.elemento-medo .Card-expanded {
+.elemento-medo .Card-expandido {
     background: #011324;
     border: 2px solid #0f427e;
     box-shadow: 0 0 12px 1px #0f427e66, 0 20px 40px -8px rgba(0, 0, 0, 0.6);
 }
-.elemento-medo .Card-expanded .Conteudo {
+.elemento-medo .Card-expandido .Conteudo {
     border-top: 2px solid #0f427e;
 }
 .elemento-medo .Card-nome {
@@ -304,12 +304,12 @@
 .elemento-varia .Card-small-header {
     animation: varia-nome-color 6s linear infinite;
 }
-.elemento-varia .Card-expanded {
+.elemento-varia .Card-expandido {
     background: #19171b;
     border: 2px solid #42109D;
     animation: varia-border-glow 6s linear infinite;
 }
-.elemento-varia .Card-expanded .Conteudo {
+.elemento-varia .Card-expandido .Conteudo {
     border-top: 2px solid #9e8123;
     animation: varia-conteudo-border 6s linear infinite;
 }
