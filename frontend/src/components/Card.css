@@ -1,17 +1,106 @@
-/* CARD BASE */
-.Card {
-    width: 600px;
+/* CARD GRANDE */
+.Card-wrapper {
+    position: relative;
+    width: 180px;
+    height: 240px;
+    flex-shrink: 0;
+    border-radius: 12px;
+}
+
+/* CARD PEQUENA */
+.Card-small {
+    width: 180px;
+    height: 240px;
     background: #18181A;
     color: #dadada;
     border-radius: 12px;
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     overflow: hidden;
     border: 2px solid #28272B;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: transform 0.2s ease;
 }
 
-.Card:hover {
-    scale: 1.02;
-    transition: all 0.2s ease-in-out;
+.Card-small:hover {
+    transform: scale(1.02);
+}
+
+/* Topo colorido com nome */
+.Card-small-header {
+    padding: 8px 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #dadada;
+    background: transparent;
+    border-bottom: 2px solid #28272B;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
+}
+
+/* Área da imagem */
+.Card-small-img {
+    flex: 1;
+    background: #27272a;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Card-small-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.Card-small-img .sem-imagem {
+    font-size: 11px;
+    color: #71717a;
+}
+
+/* Rodapé com descrição */
+.Card-small-footer {
+    padding: 8px 10px;
+    font-size: 11px;
+    color: #a1a1aa;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    border-top: 2px solid #28272B;
+    flex-shrink: 0;
+    height: 58px;
+    background: transparent;
+}
+
+/* CARD EXPANDIDO — aparece no hover */
+.Card-expanded {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 380px;
+    background: #18181A;
+    color: #dadada;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.6), 0 8px 16px -4px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    border: 2px solid #28272B;
+    z-index: 50;
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0.92) translateY(-8px);
+    transform-origin: top left;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.Card-wrapper:hover .Card-expanded {
+    opacity: 1;
+    transform: scale(1) translateY(-8px);
+    pointer-events: auto;
 }
 
 /* Título do ritual */
@@ -20,7 +109,7 @@
     margin-bottom: 10px;
 }
 
-/* Label das infos (Círculo:, Execução: ...) */
+/* Label das infos */
 .info-titulo {
     color: #a3a3a3;
     font-weight: 600;
@@ -36,20 +125,30 @@
     margin-bottom: 10px;
 }
 
-/* Conteudo dentro do card */
+/* Conteudo dentro do card expandido */
 .Conteudo {
     padding: 15px;
 }
 
-/* ============================================================
-   SANGUE — Red Color Palettes
-   ============================================================ */
-.elemento-sangue {
+/* SANGUE — Red Color Palettes */
+.elemento-sangue .Card-small {
     background: #250814;
     border: 2px solid #980100;
     box-shadow: 0 0 12px 1px #98010055;
 }
-.elemento-sangue .Conteudo {
+.elemento-sangue .Card-small-header {
+    color: #b51128;
+    border-bottom-color: #980100;
+}
+.elemento-sangue .Card-small-footer {
+    border-top-color: #980100;
+}
+.elemento-sangue .Card-expanded {
+    background: #250814;
+    border: 2px solid #980100;
+    box-shadow: 0 0 12px 1px #98010055, 0 20px 40px -8px rgba(0, 0, 0, 0.6);
+}
+.elemento-sangue .Card-expanded .Conteudo {
     border-top: 2px solid #980100;
 }
 .elemento-sangue .Card-nome {
@@ -59,15 +158,25 @@
     color: #97071a;
 }
 
-/* ============================================================
-   MORTE — Black Color Palettes
-   ============================================================ */
-.elemento-morte {
+/* MORTE — Black Color Palettes */
+.elemento-morte .Card-small {
     background: #0f131b;
     border: 2px solid #383b42;
     box-shadow: 0 0 12px 1px #383b4266;
 }
-.elemento-morte .Conteudo {
+.elemento-morte .Card-small-header {
+    color: #b8bcc3;
+    border-bottom-color: #383b42;
+}
+.elemento-morte .Card-small-footer {
+    border-top-color: #383b42;
+}
+.elemento-morte .Card-expanded {
+    background: #0f131b;
+    border: 2px solid #383b42;
+    box-shadow: 0 0 12px 1px #383b4266, 0 20px 40px -8px rgba(0, 0, 0, 0.6);
+}
+.elemento-morte .Card-expanded .Conteudo {
     border-top: 2px solid #383b42;
 }
 .elemento-morte .Card-nome {
@@ -77,15 +186,25 @@
     color: #4e4d52;
 }
 
-/* ============================================================
-   ENERGIA — Fantastic Color Palettes
-   ============================================================ */
-.elemento-energia {
+/* ENERGIA — Fantastic Color Palettes */
+.elemento-energia .Card-small {
     background: #02022c;
     border: 2px solid #42109D;
     box-shadow: 0 0 12px 1px #42109D66;
 }
-.elemento-energia .Conteudo {
+.elemento-energia .Card-small-header {
+    color: #91207E;
+    border-bottom-color: #42109D;
+}
+.elemento-energia .Card-small-footer {
+    border-top-color: #91207E;
+}
+.elemento-energia .Card-expanded {
+    background: #02022c;
+    border: 2px solid #42109D;
+    box-shadow: 0 0 12px 1px #42109D66, 0 20px 40px -8px rgba(0, 0, 0, 0.6);
+}
+.elemento-energia .Card-expanded .Conteudo {
     border-top: 2px solid #91207E;
 }
 .elemento-energia .Card-nome {
@@ -95,15 +214,25 @@
     color: #14499e;
 }
 
-/* ============================================================
-   CONHECIMENTO — Gold Color Palettes
-   ============================================================ */
-.elemento-conhecimento {
+/* CONHECIMENTO — Gold Color Palettes */
+.elemento-conhecimento .Card-small {
     background: #19171b;
     border: 2px solid #9e8123;
     box-shadow: 0 0 12px 1px #9e812366;
 }
-.elemento-conhecimento .Conteudo {
+.elemento-conhecimento .Card-small-header {
+    color: #9e8123;
+    border-bottom-color: #9e8123;
+}
+.elemento-conhecimento .Card-small-footer {
+    border-top-color: #9e8123;
+}
+.elemento-conhecimento .Card-expanded {
+    background: #19171b;
+    border: 2px solid #9e8123;
+    box-shadow: 0 0 12px 1px #9e812366, 0 20px 40px -8px rgba(0, 0, 0, 0.6);
+}
+.elemento-conhecimento .Card-expanded .Conteudo {
     border-top: 2px solid #9e8123;
 }
 .elemento-conhecimento .Card-nome {
@@ -113,15 +242,25 @@
     color: #8d540f;
 }
 
-/* ============================================================
-   MEDO — Deep Blue Color Palettes
-   ============================================================ */
-.elemento-medo {
+/* MEDO — Deep Blue Color Palettes */
+.elemento-medo .Card-small {
     background: #011324;
     border: 2px solid #0f427e;
     box-shadow: 0 0 12px 1px #0f427e66;
 }
-.elemento-medo .Conteudo {
+.elemento-medo .Card-small-header {
+    color: #005186;
+    border-bottom-color: #0f427e;
+}
+.elemento-medo .Card-small-footer {
+    border-top-color: #0f427e;
+}
+.elemento-medo .Card-expanded {
+    background: #011324;
+    border: 2px solid #0f427e;
+    box-shadow: 0 0 12px 1px #0f427e66, 0 20px 40px -8px rgba(0, 0, 0, 0.6);
+}
+.elemento-medo .Card-expanded .Conteudo {
     border-top: 2px solid #0f427e;
 }
 .elemento-medo .Card-nome {
@@ -131,9 +270,7 @@
     color: #0a3083;
 }
 
-/* ============================================================
-   VARIA — Animated multi-element color cycling
-   ============================================================ */
+/* VARIA — Animated multi-element color cycling */
 
 @keyframes varia-border-glow {
     0%   { border-color: #980100; box-shadow: 0 0 14px 2px #98010055; }
@@ -159,13 +296,20 @@
     100% { color: #b51128; }
 }
 
-.elemento-varia {
+.elemento-varia .Card-small {
     background: #19171b;
     border: 2px solid #42109D;
-    box-shadow: 0 0 14px 2px #91207E44;
     animation: varia-border-glow 6s linear infinite;
 }
-.elemento-varia .Conteudo {
+.elemento-varia .Card-small-header {
+    animation: varia-nome-color 6s linear infinite;
+}
+.elemento-varia .Card-expanded {
+    background: #19171b;
+    border: 2px solid #42109D;
+    animation: varia-border-glow 6s linear infinite;
+}
+.elemento-varia .Card-expanded .Conteudo {
     border-top: 2px solid #9e8123;
     animation: varia-conteudo-border 6s linear infinite;
 }
@@ -174,4 +318,36 @@
 }
 .elemento-varia .info-titulo {
     animation: varia-nome-color 6s linear infinite;
+}
+
+/* Estilos para uso no MiniCard */
+.elemento-sangue {
+    background: #250814;
+    border: 1px solid #980100;
+    box-shadow: 0 0 10px 1px #98010044;
+}
+.elemento-morte {
+    background: #0f131b;
+    border: 1px solid #383b42;
+    box-shadow: 0 0 10px 1px #383b4244;
+}
+.elemento-energia {
+    background: #02022c;
+    border: 1px solid #42109D;
+    box-shadow: 0 0 10px 1px #42109D44;
+}
+.elemento-conhecimento {
+    background: #1a1a14;
+    border: 1px solid #9e8123;
+    box-shadow: 0 0 10px 1px #9e812344;
+}
+.elemento-medo {
+    background: #011324;
+    border: 1px solid #0f427e;
+    box-shadow: 0 0 10px 1px #0f427e44;
+}
+.elemento-varia {
+    background: #19171b;
+    border: 1px solid #42109D;
+    animation: varia-border-glow 6s linear infinite;
 }
