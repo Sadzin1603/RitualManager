@@ -16,12 +16,11 @@
     flex-direction: column;
     color: white;
     padding: 20px;
-    margin: 40px 0px 0px 30px;
     background-color: #18181b;
     border-radius: 12px;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     border: 1px solid #27272a;
-    margin-top: 20px;
+    
 }
 
 /* Botão de criar ritual */
