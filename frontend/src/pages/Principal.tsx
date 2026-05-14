@@ -14,17 +14,30 @@ function Principal() {
     const [alcance, setAlcance] = useState("Todos");
     const [searchNome, setSearchNome] = useState("");
 
+    const [rituaisDoUsuario, setRituaisDoUsuario] = useState<any[]>([]);
+
     useEffect(() => {
         async function fetchData() {
             const res = await fetch("http://localhost:3000/ritual?status=aprovado");
             const data = await res.json();
             setRituais(data);
-        }
 
+            if (userId) {
+                const token = localStorage.getItem("token");
+                const resUsuario = await fetch(`http://localhost:3000/user/${userId}/rituais`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                const dataUsuario = await resUsuario.json();
+                setRituaisDoUsuario(Array.isArray(dataUsuario.data) ? dataUsuario.data : []);
+            }
+        }
         fetchData();
     }, []);
 
     const navigate = useNavigate();
+
+    const token = localStorage.getItem("token");
+    const userId = token ? (jwtDecode(token) as any)?.id : null;
 
     const circuloValor: Record<string, string> = {
         "1° Circulo (1 PE)": "1°",
@@ -296,11 +309,8 @@ function Principal() {
                     </button>
                 </div>
                 <div>
-                    {rituaisFiltrados.map((ritual: any) => (
-                        ritual.creator?.id == jwtDecode(localStorage.getItem("token"))?.id
-                            ? <MiniCard key={ritual.id} ritual={ritual}></MiniCard>
-                            :
-                            ""
+                    {rituaisDoUsuario.map((ritual: any) => (
+                        <MiniCard key={ritual.id} ritual={ritual} />
                     ))}
                 </div>
             </div>
