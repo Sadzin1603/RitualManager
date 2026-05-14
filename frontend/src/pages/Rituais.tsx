@@ -641,6 +641,26 @@ function Rituais() {
               onClick={() => toggleList("duracao")}
             >
               ∨
+            <br />
+
+            <label htmlFor="DadosDiscente">Dados Discente:</label>
+            <input className="digitacao" type="text" name="DadosDiscente" id="DadosDiscente" />
+            <br />
+
+            <label htmlFor="DescricaoDiscente">Descrição Discente:</label>
+            <textarea className="digitacao" name="DescriçãoDiscente" id="DescricaoDiscente" defaultValue="Discente (+2PE): " />
+            <br />
+
+            <label htmlFor="DadosVerdadeiro">Dados Verdadeiro:</label>
+            <input className="digitacao" type="text" name="DadosVerdadeiro" id="DadosVerdadeiro" />
+            <br />
+
+            <label htmlFor="DescricaoVerdadeiro">Descrição Verdadeiro:</label>
+            <textarea className="digitacao" name="DescriçãoVerdadeiro" id="DescricaoVerdadeiro" defaultValue="Verdadeiro (+5PE): " />
+            <br />
+
+            <button type="button" className="botao salvar" onClick={cadastrar}>
+                Salvar Ritual
             </button>
           </div>
           <div id="lista_duracao" className={`lista lista_duracao ${openList === "duracao" ? "show" : ""}`}>
