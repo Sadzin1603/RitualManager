@@ -89,7 +89,7 @@
     box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.6), 0 8px 16px -4px rgba(0, 0, 0, 0.4);
     overflow: hidden;
     border: 2px solid #28272B;
-    z-index: 50;
+    z-index: 1;
     pointer-events: none;
     opacity: 0;
     transform: scale(0.92) translateY(-8px);

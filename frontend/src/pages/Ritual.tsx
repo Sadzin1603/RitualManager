@@ -112,7 +112,7 @@ export default function Ritual() {
               <Modal
                   isOpen={open}
                   title="Copiar Ritual"
-                  message="Tem certeza que deseja copiasr esse ritual?"
+                  message="Tem certeza que deseja copiar esse ritual?"
                   onConfirm={copiarRitual}
                   onCancel={() => setOpen(false)}
               />
