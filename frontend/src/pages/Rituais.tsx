@@ -235,8 +235,12 @@ function Rituais() {
         formData.append("resistence", (document.getElementById("Resistencia") as HTMLInputElement).value);
         formData.append("dices", (document.getElementById("Dados") as HTMLInputElement).value);
         formData.append("description", descricao);
-        formData.append("discent_description", (document.getElementById("DescricaoDiscente") as HTMLTextAreaElement).value);
-        formData.append("truly_description", (document.getElementById("DescricaoVerdadeiro") as HTMLTextAreaElement).value);
+
+        const discente = (document.getElementById("DescricaoDiscente") as HTMLTextAreaElement).value;
+        const verdadeiro = (document.getElementById("DescricaoVerdadeiro") as HTMLTextAreaElement).value;
+        formData.append("discent_description", discente === "Discente (+2PE): " ? "" : discente);
+        formData.append("truly_description", verdadeiro === "Verdadeiro (+5PE): " ? "" : verdadeiro);
+
         formData.append("discent_dices", (document.getElementById("DadosDiscente") as HTMLInputElement).value);
         formData.append("truly_dices", (document.getElementById("DadosVerdadeiro") as HTMLInputElement).value);
         formData.append("creator", decoded.id);
@@ -512,7 +516,7 @@ function Rituais() {
             <br />
 
             <label htmlFor="DescricaoDiscente">Descrição Discente:</label>
-            <textarea className="digitacao" name="DescriçãoDiscente" id="DescricaoDiscente" placeholder="Ex: Discente (+2PE):" />
+            <textarea className="digitacao" name="DescriçãoDiscente" id="DescricaoDiscente" defaultValue="Discente (+2PE): " />
             <br />
 
             <label htmlFor="DadosVerdadeiro">Dados Verdadeiro:</label>
@@ -520,7 +524,7 @@ function Rituais() {
             <br />
 
             <label htmlFor="DescricaoVerdadeiro">Descrição Verdadeiro:</label>
-            <textarea className="digitacao" name="DescriçãoVerdadeiro" id="DescricaoVerdadeiro" placeholder="Ex: Verdadeiro (+5PE):" />
+            <textarea className="digitacao" name="DescriçãoVerdadeiro" id="DescricaoVerdadeiro" defaultValue="Verdadeiro (+5PE): " />
             <br />
 
             <button type="button" className="botao salvar" onClick={cadastrar}>
