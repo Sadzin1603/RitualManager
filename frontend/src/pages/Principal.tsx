@@ -16,7 +16,7 @@ function Principal() {
 
     useEffect(() => {
         async function fetchData() {
-            const res = await fetch("ht tp://localhost:3000/ritual?status=aprovado");
+            const res = await fetch("http://localhost:3000/ritual?status=aprovado");
             const data = await res.json();
             setRituais(data);
         }

@@ -1,4 +1,4 @@
-import {create as createRitualModel,getAll,changeOne,deleteOne} from '../models/RitualModel.js'
+import {create as createRitualModel,getAll,changeOne,deleteOne,editOne} from '../models/RitualModel.js'
 
 export const create = async (file,ritual) => {
     if (!ritual) {
@@ -40,7 +40,7 @@ export const changeById = async (id,ritual) => {
             throw new Error("Missing fields")
         }
     
-        return await changeOne(id,ritual)
+        return await editOne(id,ritual)
 }
 
 export const deleteById = async (id) => {

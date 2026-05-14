@@ -48,11 +48,26 @@ export const changeOne = async (id,status) => {
                     .update({"status":status})
                     .eq("id",id)
         
+    
     const {data,error} = await query
                     
                     
     return {data,error}
 };
+export const editOne = async (id,ritual) => {
+    const query = supabase
+                    .from('Rituais')
+                    .update(ritual)
+                    .eq("id",id)
+        
+    
+    const {data,error} = await query
+                    
+                    
+    return {data,error}
+};
+
+
 
 export const deleteOne = async (id) => {
     const {data,error} = await supabase
