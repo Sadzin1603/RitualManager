@@ -16,7 +16,7 @@ function Principal() {
 
     useEffect(() => {
         async function fetchData() {
-            const res = await fetch("ht tp://localhost:3000/ritual?status=aprovado");
+            const res = await fetch("http://localhost:3000/ritual?status=aprovado");
             const data = await res.json();
             setRituais(data);
         }
@@ -125,7 +125,7 @@ function Principal() {
     return (
         <div className="title w-auto min-h-screen flex justify-around p-8 gap-3">
 
-            <div className="div_Lateral flex-1">
+            <div className="div_Lateral">
 
                 {/* Filtros */}
                 <div className="div_filtros">
@@ -278,7 +278,7 @@ function Principal() {
                 })}
             </div>
 
-            <div className="div_Lateral flex-1 space-y-5">
+            <div className="div_Lateral space-y-5">
                 <div className="div_criar_ritual">
                     {/* Botão Perfil */}
                     <button
@@ -297,7 +297,7 @@ function Principal() {
                 </div>
                 <div>
                     {rituaisFiltrados.map((ritual: any) => (
-                        ritual.creator?.id == jwtDecode(localStorage.getItem("token")).id
+                        ritual.creator?.id == jwtDecode(localStorage.getItem("token"))?.id
                             ? <MiniCard key={ritual.id} ritual={ritual}></MiniCard>
                             :
                             ""
