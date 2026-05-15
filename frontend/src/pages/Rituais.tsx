@@ -314,10 +314,11 @@ function Rituais() {
                 const res = await fetch(`http://localhost:3000/ritual/${ritualState.id}`, {
                     method: "PUT",
                     headers: { Authorization: `Bearer ${token}` },
-                    body: formData,                // ← antes passava {ritual} (objeto literal, inválido)
+                    body: formData,
                 });
-                console.log("sa")
+
                 if (!res.ok) throw new Error(`Erro ${res.status}`);
+                
                 navigate("/principal");
             } catch (err) {
                 console.error("Erro ao editar ritual:", err);

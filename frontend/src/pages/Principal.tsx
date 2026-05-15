@@ -4,8 +4,10 @@ import { jwtDecode } from 'jwt-decode'
 import { useEffect, useState, useMemo } from "react";
 import "./Principal.css";
 import MiniCard from "../components/MiniCard";
+import Modal from '../components/Modal'
 
 function Principal() {
+    const [open,setOpen] = useState([false,null])
     const [rituais, setRituais] = useState([]);
     const [openList, setOpenList] = useState<string | null>(null);
     const [elemento, setElemento] = useState("Todos");
@@ -134,6 +136,21 @@ function Principal() {
         setAlcance("Todos");
         setSearchNome("");
     };
+
+    function deletar(id){
+        try{
+            const token = localStorage.getItem("token");
+            fetch(`http://localhost:3000/ritual/${id}`,{
+                method:"DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                    }
+            })
+            navigate("/principal")
+        }catch (err){
+            console.log(err)
+        }
+    }
 
     return (
         <div className="title w-auto min-h-screen flex justify-around p-8 gap-3">
@@ -285,11 +302,19 @@ function Principal() {
                     const rowItems = rituaisFiltrados.slice(rowIndex * 3, rowIndex * 3 + 3);
                     return (
                         <div className="flex gap-4 justify-center" key={rowIndex}>
-                            {rowItems.map((ritual: any) => <Card key={ritual.id} ritual={ritual} />)}
+                            {rowItems.map((ritual: any) => <Card key={ritual.id} ritual={ritual} onConfirm={()=>setOpen([true,ritual.id])} />)}
                         </div>
+                        
                     );
                 })}
             </div>
+            <Modal
+                  isOpen={open[0]}
+                  title="Deletar Ritual"
+                  message="Tem certeza que deseja deletar esse ritual?"
+                  onConfirm={()=>deletar(open[1])}
+                  onCancel={() => setOpen([false,null])}
+              />
 
             <div className="div_Lateral space-y-5">
                 <div className="div_criar_ritual">
