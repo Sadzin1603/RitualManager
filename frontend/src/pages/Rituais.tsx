@@ -349,13 +349,11 @@ function Rituais() {
 
         setCamposInvalidos([]);
 
-        if (!img) return;
-
         const decoded = jwtDecode<JwtPayload>(token);
         const formData = new FormData();
+        if (img) formData.append("file", img);
 
         formData.append("name", name);
-        formData.append("file", img);
         formData.append("element", elemento);
         formData.append("circle", CIRCULO_TEXT[circulo]);
         formData.append("exec", execucao);

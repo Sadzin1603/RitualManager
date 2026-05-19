@@ -24,7 +24,7 @@ function Cadastro( ) {
   }
 
   async function cadastrar() {
-    await fetch("http://localhost:3000/cadastro",{
+    await fetch("http://localhost:3000/auth/register",{
       method:"POST",
       headers:{ 'Content-Type': 'application/json' },
       body: JSON.stringify({ name:nome,email,password:senha })

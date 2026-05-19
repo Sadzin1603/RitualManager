@@ -3,6 +3,7 @@ import Card from "../components/Card";
 import MiniCard from "../components/MiniCard";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState, useMemo } from "react";
+import Modal from "../components/Modal";
 import "./Principal.css";
 
 function Profile() {
@@ -14,6 +15,7 @@ function Profile() {
     const [execucao, setExecucao] = useState("Todos");
     const [alcance, setAlcance] = useState("Todos");
     const [searchNome, setSearchNome] = useState("");
+    const [open,setOpen] = useState([false,null,null])
 
     const token = localStorage.getItem("token");
     const userId = token ? (jwtDecode(token) as any)?.id : null;
@@ -96,6 +98,30 @@ function Profile() {
         setElemento("Todos"); setCirculo("Todos");
         setExecucao("Todos"); setAlcance("Todos"); setSearchNome("");
     };
+
+    async function deletar(id,creator){
+        try{
+            const token = localStorage.getItem("token");
+            const res = await fetch(`http://localhost:3000/ritual/${id}`,{
+                method:"DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Ritual:creator.id
+                    },
+                body:creator
+            })
+            if (!res.ok) {
+                setOpen([false,null,null])
+                throw new Error("Erro ao deletar")
+            }
+            setRituais(rituais.filter((ritual)=>{
+                return ritual.id == id ? false :  true
+            }))
+            setOpen([false,null,null])
+        }catch (err){
+            console.log(err)
+        }
+    }
 
     return (
         <div className="title w-auto min-h-screen flex justify-around p-8 gap-3">
@@ -181,11 +207,19 @@ function Profile() {
                     const rowItems = rituaisDoUsuarioFiltrados.slice(rowIndex * 3, rowIndex * 3 + 3);
                     return (
                         <div className="flex gap-4 justify-center" key={rowIndex}>
-                            {rowItems.map((ritual: any) => <Card key={ritual.id} ritual={ritual} />)}
+                            {rowItems.map((ritual: any) => <Card key={ritual.id} ritual={ritual} onConfirm={()=>setOpen([true,ritual.id,ritual.creator])}/>)}
                         </div>
                     );
                 })}
+                
             </div>
+            <Modal
+                  isOpen={open[0]}
+                  title="Deletar Ritual"
+                  message="Tem certeza que deseja deletar esse ritual?"
+                  onConfirm={()=>deletar(open[1],open[2])}
+                  onCancel={() => setOpen([false,null,null])}
+              />
 
             {/* MiniCards — todos os rituais aprovados pelo ADM com filtro */}
             <div className="div_Lateral space-y-5">

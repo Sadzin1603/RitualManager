@@ -2,7 +2,7 @@ import {create,pegar,pegarId,changeById,deleteById} from '../services/RitualServ
 export default {
     post: async (req,res) =>{
         try {
-            const rituais = await create(req.file,req.body);
+            const rituais = await create(req.file,req.body,{"status":"pendente"});
             return res.json({"message":"ritual criado"});
         } catch (err) {
             return res.status(400).json({ error: err.message });
@@ -16,6 +16,14 @@ export default {
             return res.status(400).json({error: err.message})
         }
     },
+    copy: async(req,res)=>{
+        try {
+            const rituais = await create(req.file,req.body,{"status":"aprovado"});
+            return res.json({"message":"ritual copiado"});
+        } catch (err) {
+            return res.status(400).json({ error: err.message });
+        }
+    },
     getId: async(req,res) =>{
         try{
             const rituais = await pegarId(req.params.id,req.user);
@@ -26,7 +34,7 @@ export default {
     },
     put: async (req,res) => {
         try{
-            const ritual = await changeById(req.params.id,req.body)
+            const ritual = await changeById(req.file,req.params.id,req.body)
             return res.json({"message":"atualizado"})
         }catch (err){
             return res.status(400).json({error:err.message})

@@ -46,8 +46,8 @@ export default function Ritual() {
       formData.append("truly_description", ritual.truly_description);
       formData.append("discent_dices", ritual.discent_dices);
       formData.append("truly_dices", ritual.truly_dices)
-      formData.append("status", "pendente");
       formData.append("creator",    decoded.id);
+      //formData.append("status", "pendente");
 
       // A imagem já é uma URL — passa ela como string se o backend aceitar,
       // ou faz fetch da URL pra virar um Blob antes d
@@ -57,7 +57,7 @@ export default function Ritual() {
       formData.append("file", new File([blob], "ritual_img.jpg", { type: blob.type }));
       //formData.append("img", ritual.img); // ou o blob
 
-      await fetch("http://localhost:3000/ritual", {
+      await fetch("http://localhost:3000/ritual/copy", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

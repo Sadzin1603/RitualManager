@@ -7,7 +7,7 @@ import MiniCard from "../components/MiniCard";
 import Modal from '../components/Modal'
 
 function Principal() {
-    const [open,setOpen] = useState([false,null])
+    const [open,setOpen] = useState([false,null,null])
     const [rituais, setRituais] = useState([]);
     const [openList, setOpenList] = useState<string | null>(null);
     const [elemento, setElemento] = useState("Todos");
@@ -137,16 +137,25 @@ function Principal() {
         setSearchNome("");
     };
 
-    function deletar(id){
+    async function deletar(id,creator){
         try{
             const token = localStorage.getItem("token");
-            fetch(`http://localhost:3000/ritual/${id}`,{
+            const res = await fetch(`http://localhost:3000/ritual/${id}`,{
                 method:"DELETE",
                 headers: {
-                    Authorization: `Bearer ${token}`
-                    }
+                    Authorization: `Bearer ${token}`,
+                    Ritual:creator.id
+                    },
+                body:creator
             })
-            navigate("/principal")
+            if (!res.ok) {
+                setOpen([false,null,null])
+                throw new Error("Erro ao deletar")
+            }
+            setRituais(rituais.filter((ritual)=>{
+                return ritual.id == id ? false :  true
+            }))
+            setOpen([false,null,null])
         }catch (err){
             console.log(err)
         }
@@ -302,7 +311,7 @@ function Principal() {
                     const rowItems = rituaisFiltrados.slice(rowIndex * 3, rowIndex * 3 + 3);
                     return (
                         <div className="flex gap-4 justify-center" key={rowIndex}>
-                            {rowItems.map((ritual: any) => <Card key={ritual.id} ritual={ritual} onConfirm={()=>setOpen([true,ritual.id])} />)}
+                            {rowItems.map((ritual: any) => <Card key={ritual.id} ritual={ritual} onConfirm={()=>setOpen([true,ritual.id,ritual.creator])} />)}
                         </div>
                         
                     );
@@ -312,8 +321,8 @@ function Principal() {
                   isOpen={open[0]}
                   title="Deletar Ritual"
                   message="Tem certeza que deseja deletar esse ritual?"
-                  onConfirm={()=>deletar(open[1])}
-                  onCancel={() => setOpen([false,null])}
+                  onConfirm={()=>deletar(open[1],open[2])}
+                  onCancel={() => setOpen([false,null,null])}
               />
 
             <div className="div_Lateral space-y-5">
