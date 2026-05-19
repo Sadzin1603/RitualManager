@@ -1,11 +1,11 @@
 body {
-    background: linear-gradient(180deg, #121a4d 0%, #0D1433 100%);
+    background: linear-gradient(180deg, #161629 0%, #0a0d16 100%);
 }
 
 /* Layout principal */
 .editor {
     padding: 20px;
-    background-color: #292647;
+    background-color: #252247;
     color: #eee;
     min-height: 100vh;
 }
