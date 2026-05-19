@@ -3,24 +3,27 @@ import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(process.env.SUPABASE_URL,process.env.SUPABASE_KEY)
 
-export const create = async (file,user) => {
-    const date = Date.now()
-    const { data, error } = await supabase.storage
-        .from("fotos_rituais")
-        .upload(`public/${date}${file.originalname}`, file.buffer);
+export const create = async (file,user,status) => {
+    const imageUrl="";
+    if(file){
+        const date = Date.now()
+        const { data, error } = await supabase.storage
+            .from("fotos_rituais")
+            .upload(`public/${date}${file.originalname}`, file.buffer);
 
-    if (error) {
-        return res.status(500).json(error);
+        if (error) {
+            return res.status(500).json(error);
+        }
+        const { data: publicUrlData } = supabase
+            .storage
+            .from("fotos_rituais")
+            .getPublicUrl(`public/${date}${file.originalname}`);
+
+        imageUrl = publicUrlData.publicUrl;
     }
-    const { data: publicUrlData } = supabase
-        .storage
-        .from("fotos_rituais")
-        .getPublicUrl(`public/${date}${file.originalname}`);
-
-    const imageUrl = publicUrlData.publicUrl;
     const {data2,error2} = await supabase
                     .from('Rituais')
-                    .insert({...user,img:imageUrl,status:"pendente"})
+                    .insert({...user,img:imageUrl,status:status.status})
     
     return {"message":"Ritual criado"}
 };
@@ -54,17 +57,34 @@ export const changeOne = async (id,status) => {
                     
     return {data,error}
 };
-export const editOne = async (id,ritual) => {
+export const editOne = async (file,id,ritual) => {
+    if(file){
+        const date = Date.now()
+        const { data, error } = await supabase.storage
+            .from("fotos_rituais")
+            .upload(`public/${date}${file.originalname}`, file.buffer);
+
+        if (error) {
+            return res.status(500).json(error);
+        }
+        const { data: publicUrlData } = supabase
+            .storage
+            .from("fotos_rituais")
+            .getPublicUrl(`public/${date}${file.originalname}`);
+
+        const imageUrl = publicUrlData.publicUrl;
+        ritual.img = imageUrl
+    }
     const query = supabase
                     .from('Rituais')
                     .update(ritual)
                     .eq("id",id)
         
     
-    const {data,error} = await query
+    const {data2,error2} = await query
                     
                     
-    return {data,error}
+    return {data2,error2}
 };
 
 

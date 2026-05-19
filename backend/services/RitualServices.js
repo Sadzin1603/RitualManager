@@ -1,6 +1,6 @@
 import {create as createRitualModel,getAll,changeOne,deleteOne,editOne} from '../models/RitualModel.js'
 
-export const create = async (file,ritual) => {
+export const create = async (file,ritual,status) => {
     if (!ritual) {
         throw new Error("Missing fields");
     }
@@ -10,7 +10,7 @@ export const create = async (file,ritual) => {
     //      throw new Error("Email already exists");
     // }
 
-    return await createRitualModel(file,ritual);
+    return await createRitualModel(file,ritual,status);
 };
 export const pegar = async (params) => {
     
@@ -35,12 +35,12 @@ export const pegarId = async (id,user) => {
     return await data
 }
 
-export const changeById = async (id,ritual) => {
+export const changeById = async (file,id,ritual) => {
     if(!id || !ritual){
             throw new Error("Missing fields")
         }
     
-        return await editOne(id,ritual)
+        return await editOne(file,id,ritual)
 }
 
 export const deleteById = async (id) => {

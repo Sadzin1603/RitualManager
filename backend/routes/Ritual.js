@@ -3,6 +3,7 @@ import multer from "multer";
 import controller from '../controllers/RitualController.js'
 import {verifyToken} from '../middlewares/AuthMiddleware.js'
 import {verifyAdmin} from '../middlewares/AdminMiddleware.js'
+import {verifyOwner} from '../middlewares/OwnerMiddleware.js'
 
 const upload = multer({ storage: multer.memoryStorage() });
 const router = express.Router();
@@ -13,9 +14,13 @@ router
     .post(upload.single("file"),controller.post)
 
 router
+    .route("/copy")
+    .post(upload.single("file"),controller.copy)//copia a porra do ritual
+
+router
     .route("/:id")
     .get(verifyToken,controller.getId)//pego a porra do ritual com base no id (aprovado)
     .put(upload.single("file"),controller.put)//editar a porra do ritual
-    .delete(verifyToken,verifyAdmin,controller.delete)//deleta a porra do ritual (admin)
+    .delete(verifyToken,(verifyOwner||verifyAdmin),controller.delete)//deleta a porra do ritual (admin)
 
 export default router;
