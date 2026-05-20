@@ -3,8 +3,8 @@ import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(process.env.SUPABASE_URL,process.env.SUPABASE_KEY)
 
-export const create = async (file,user,status) => {
-    const imageUrl="";
+export const create = async (file,ritual,status) => {
+    const imageUrl=ritual.img;
     if(file){
         const date = Date.now()
         const { data, error } = await supabase.storage
@@ -21,9 +21,10 @@ export const create = async (file,user,status) => {
 
         imageUrl = publicUrlData.publicUrl;
     }
+    
     const {data2,error2} = await supabase
                     .from('Rituais')
-                    .insert({...user,img:imageUrl,status:status.status})
+                    .insert({...ritual,img:imageUrl,status:status.status})
     
     return {"message":"Ritual criado"}
 };
@@ -57,7 +58,7 @@ export const changeOne = async (id,status) => {
                     
     return {data,error}
 };
-export const editOne = async (file,id,ritual) => {
+export const editOne = async (file,id,ritual) => {  
     if(file){
         const date = Date.now()
         const { data, error } = await supabase.storage

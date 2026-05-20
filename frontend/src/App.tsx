@@ -140,14 +140,16 @@ function App() {
             </Link>
           )}
 
-          {islogado && user && (
+          {islogado && user.admin ? (
             <Link
               to="/admin"
               className="bg-red-900 px-4 py-2 rounded text-white"
             >
               Admin
             </Link>
-          )}
+          )
+          : ''
+        }
         </div>
       </header>
 

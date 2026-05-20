@@ -3,43 +3,45 @@ import Card from "../components/Card";
 import MiniCard from "../components/MiniCard";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState, useMemo } from "react";
-import Modal from "../components/Modal";
 import "./Principal.css";
+import {useQuery} from '@tanstack/react-query'
 
 type ViewMode = "mini" | "card" | "lista";
 
 function Profile() {
-    const [rituais, setRituais] = useState<any[]>([]);
-    const [rituaisAprovados, setRituaisAprovados] = useState<any[]>([]);
+    const {data:rituais} = useQuery({
+        queryKey: ['rituais_aprovados'],
+        queryFn: fetchDataRituais,
+    })
+    async function fetchDataRituais() {
+            const res = await fetch("http://localhost:3000/ritual");
+            if (!res.ok) {
+                throw new Error("Erro ao buscar rituais");
+            }
+
+            return await res.json();
+            
+    }
+    const {data:meus_rituais} = useQuery({
+        queryKey: ['meus_rituais'],
+        queryFn: fetchDataMyRituais,
+    })
+    async function fetchDataMyRituais() {
+            const token = localStorage.getItem("token");
+            const res = await fetch(`http://localhost:3000/user/${jwtDecode(token)?.id}/rituais`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            return await res.json(); 
+    }
+
     const [openList, setOpenList] = useState<string | null>(null);
     const [elemento, setElemento] = useState("Todos");
     const [circulo, setCirculo] = useState("Todos");
     const [execucao, setExecucao] = useState("Todos");
     const [alcance, setAlcance] = useState("Todos");
     const [searchNome, setSearchNome] = useState("");
-    const [open, setOpen] = useState([false, null, null]);
-    const [viewMode, setViewMode] = useState<ViewMode>(localStorage.getItem('ListMode') || 'card');
 
     const token = localStorage.getItem("token");
-    const userId = token ? (jwtDecode(token) as any)?.id : null;
-
-    useEffect(() => {
-        if (!userId) return;
-        async function fetchData() {
-            const token = localStorage.getItem("token");
-
-            const res = await fetch(`http://localhost:3000/user/${userId}/rituais`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            const data = await res.json();
-            setRituais(Array.isArray(data.data) ? data.data : []);
-
-            const resAprovados = await fetch("http://localhost:3000/ritual?status=aprovado");
-            const dataAprovados = await resAprovados.json();
-            setRituaisAprovados(Array.isArray(dataAprovados) ? dataAprovados : []);
-        }
-        fetchData();
-    }, [userId]);
 
     const navigate = useNavigate();
 
@@ -51,7 +53,18 @@ function Profile() {
     };
 
     const rituaisDoUsuarioFiltrados = useMemo(() => {
-        return rituais.filter((ritual: any) => {
+        return meus_rituais?.filter((ritual: any) => {
+            const passaNome = searchNome === "" || ritual.name.toLowerCase().includes(searchNome.toLowerCase());
+            const passaElem = elemento === "Todos" || ritual.element === elemento;
+            const passaCirculo = circulo === "Todos" || ritual.circle === circuloValor[circulo];
+            const passaExecucao = execucao === "Todos" || ritual.exec === execucao;
+            const passaAlcance = alcance === "Todos" || ritual.range === alcance;
+            return passaNome && passaElem && passaCirculo && passaExecucao && passaAlcance;
+        });
+    }, [meus_rituais, searchNome, elemento, circulo, execucao, alcance]);
+
+    const rituaisAprovadosFiltrados = useMemo(() => {
+        return rituais?.filter((ritual: any) => {
             const passaNome = searchNome === "" || ritual.name.toLowerCase().includes(searchNome.toLowerCase());
             const passaElem = elemento === "Todos" || ritual.element === elemento;
             const passaCirculo = circulo === "Todos" || ritual.circle === circuloValor[circulo];
@@ -60,17 +73,6 @@ function Profile() {
             return passaNome && passaElem && passaCirculo && passaExecucao && passaAlcance;
         });
     }, [rituais, searchNome, elemento, circulo, execucao, alcance]);
-
-    const rituaisAprovadosFiltrados = useMemo(() => {
-        return rituaisAprovados.filter((ritual: any) => {
-            const passaNome = searchNome === "" || ritual.name.toLowerCase().includes(searchNome.toLowerCase());
-            const passaElem = elemento === "Todos" || ritual.element === elemento;
-            const passaCirculo = circulo === "Todos" || ritual.circle === circuloValor[circulo];
-            const passaExecucao = execucao === "Todos" || ritual.exec === execucao;
-            const passaAlcance = alcance === "Todos" || ritual.range === alcance;
-            return passaNome && passaElem && passaCirculo && passaExecucao && passaAlcance;
-        });
-    }, [rituaisAprovados, searchNome, elemento, circulo, execucao, alcance]);
 
     const toggleList = (listName: string) => setOpenList((current) => (current === listName ? null : listName));
     const selectElemento = (valor: string) => { setElemento(valor); setOpenList(null); };
@@ -101,28 +103,6 @@ function Profile() {
         setElemento("Todos"); setCirculo("Todos");
         setExecucao("Todos"); setAlcance("Todos"); setSearchNome("");
     };
-
-    async function deletar(id: any, creator: any) {
-        try {
-            const token = localStorage.getItem("token");
-            const res = await fetch(`http://localhost:3000/ritual/${id}`, {
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Ritual: creator.id
-                },
-                body: creator
-            });
-            if (!res.ok) {
-                setOpen([false, null, null]);
-                throw new Error("Erro ao deletar");
-            }
-            setRituais(rituais.filter((ritual) => ritual.id !== id));
-            setOpen([false, null, null]);
-        } catch (err) {
-            console.log(err);
-        }
-    }
 
     return (
         <div className="title w-auto min-h-screen flex justify-around p-8 gap-3">
@@ -351,7 +331,7 @@ function Profile() {
                     <button className="criar_ritual" onClick={() => navigate("/rituais")}>+ Criar Ritual</button>
                 </div>
                 <div>
-                    {rituaisAprovadosFiltrados.map((ritual: any) => (
+                    {rituaisAprovadosFiltrados?.map((ritual: any) => (
                         <MiniCard key={ritual.id} ritual={ritual} />
                     ))}
                 </div>

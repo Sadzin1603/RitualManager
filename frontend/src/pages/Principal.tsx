@@ -4,13 +4,36 @@ import { jwtDecode } from 'jwt-decode'
 import { useEffect, useState, useMemo } from "react";
 import "./Principal.css";
 import MiniCard from "../components/MiniCard";
-import Modal from '../components/Modal'
+import{useQuery} from '@tanstack/react-query'
+import { LoaderCircle } from 'lucide-react';
 
 type ViewMode = "mini" | "card" | "lista";
 
 function Principal() {
-    const [open, setOpen] = useState([false, null, null])
-    const [rituais, setRituais] = useState([]);
+    const {data:rituais} = useQuery({
+        queryKey: ['rituais_aprovados'],
+        queryFn: fetchDataRituais,
+    })
+    async function fetchDataRituais() {
+            const res = await fetch("http://localhost:3000/ritual");
+            if (!res.ok) {
+                throw new Error("Erro ao buscar rituais");
+            }
+
+            return await res.json();
+            
+    }
+    const {data:meus_rituais} = useQuery({
+        queryKey: ['meus_rituais'],
+        queryFn: fetchDataMyRituais,
+    })
+    async function fetchDataMyRituais() {
+            const token = localStorage.getItem("token");
+            const res = await fetch(`http://localhost:3000/user/${userId}/rituais`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            return await res.json(); 
+    }
     const [openList, setOpenList] = useState<string | null>(null);
     const [elemento, setElemento] = useState("Todos");
     const [circulo, setCirculo] = useState("Todos");
@@ -18,26 +41,6 @@ function Principal() {
     const [alcance, setAlcance] = useState("Todos");
     const [searchNome, setSearchNome] = useState("");
     const [viewMode, setViewMode] = useState<ViewMode>(localStorage.getItem('ListMode') || 'card');
-
-    const [rituaisDoUsuario, setRituaisDoUsuario] = useState<any[]>([]);
-
-    useEffect(() => {
-        async function fetchData() {
-            const res = await fetch("http://localhost:3000/ritual?status=aprovado");
-            const data = await res.json();
-            setRituais(data);
-
-            if (userId) {
-                const token = localStorage.getItem("token");
-                const resUsuario = await fetch(`http://localhost:3000/user/${userId}/rituais`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                const dataUsuario = await resUsuario.json();
-                setRituaisDoUsuario(Array.isArray(dataUsuario.data) ? dataUsuario.data : []);
-            }
-        }
-        fetchData();
-    }, []);
 
     const navigate = useNavigate();
 
@@ -52,7 +55,7 @@ function Principal() {
     };
 
     const rituaisFiltrados = useMemo(() => {
-        return rituais.filter((ritual: any) => {
+        return rituais?.filter((ritual: any) => {
             const passaNome = searchNome === ""
                 || ritual.name.toLowerCase().includes(searchNome.toLowerCase());
 
@@ -139,30 +142,6 @@ function Principal() {
         setAlcance("Todos");
         setSearchNome("");
     };
-
-    async function deletar(id, creator) {
-        try {
-            const token = localStorage.getItem("token");
-            const res = await fetch(`http://localhost:3000/ritual/${id}`, {
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Ritual: creator.id
-                },
-                body: creator
-            })
-            if (!res.ok) {
-                setOpen([false, null, null])
-                throw new Error("Erro ao deletar")
-            }
-            setRituais(rituais.filter((ritual) => {
-                return ritual.id == id ? false : true
-            }))
-            setOpen([false, null, null])
-        } catch (err) {
-            console.log(err)
-        }
-    }
 
     return (
         <div className="title w-auto min-h-screen flex justify-around p-8 gap-3">
@@ -356,58 +335,19 @@ function Principal() {
                 </div>
             </div>
 
-            <div className="flex flex-col items-center gap-4 flex-1 w-full">
-                {viewMode === "lista" ? (
-                    /* Lista: 1 coluna centralizada */
-                    <div className="flex flex-col gap-3 w-full max-w-4xl">
-                        {rituaisFiltrados.map((ritual: any) => (
-                            <Card
-                                key={ritual.id}
-                                ritual={ritual}
-                                viewMode="lista"
-                                onConfirm={() => setOpen([true, ritual.id, ritual.creator])}
-                            />
-                        ))}
-                    </div>
-                ) : viewMode === "mini" ? (
-                    /* Mini: 2 colunas centralizadas */
-                    <div className="grid grid-cols-2 gap-4 w-[670px]">
-                        {rituaisFiltrados.map((ritual: any) => (
-                            <Card
-                                key={ritual.id}
-                                ritual={ritual}
-                                viewMode="mini"
-                                onConfirm={() => setOpen([true, ritual.id, ritual.creator])}
-                            />
-                        ))}
-                    </div>
-                ) : (
-                    /* Card: 3 por linha, centralizado */
-                    Array.from({ length: Math.ceil(rituaisFiltrados.length / 3) }, (_, rowIndex) => {
-                        const rowItems = rituaisFiltrados.slice(rowIndex * 3, rowIndex * 3 + 3);
-                        return (
-                            <div className="flex gap-4 justify-center" key={rowIndex}>
-                                {rowItems.map((ritual: any) => (
-                                    <Card
-                                        key={ritual.id}
-                                        ritual={ritual}
-                                        viewMode="card"
-                                        onConfirm={() => setOpen([true, ritual.id, ritual.creator])}
-                                    />
-                                ))}
-                            </div>
-                        );
-                    })
-                )}
+            <div className="flex flex-col items-center gap-4 flex-1">
+                
+                {rituaisFiltrados ? Array.from({ length: Math.ceil(rituaisFiltrados?.length / 3) }, (_, rowIndex) => {
+                    const rowItems = rituaisFiltrados.slice(rowIndex * 3, rowIndex * 3 + 3);
+                    return (
+                        <div className="flex gap-4 justify-center" key={rowIndex}>
+                            {rowItems.map((ritual: any) => <Card key={ritual.id} ritual={ritual} />)}
+                        </div>
+                        
+                    );
+                }) : <LoaderCircle className="animate-spin" scale={2} color="white" />}
             </div>
-
-            <Modal
-                isOpen={open[0]}
-                title="Deletar Ritual"
-                message="Tem certeza que deseja deletar esse ritual?"
-                onConfirm={() => deletar(open[1], open[2])}
-                onCancel={() => setOpen([false, null, null])}
-            />
+            
 
             <div className="div_Lateral space-y-5">
                 <div className="div_criar_ritual">
@@ -425,7 +365,7 @@ function Principal() {
                     </button>
                 </div>
                 <div>
-                    {rituaisDoUsuario.map((ritual: any) => (
+                    {meus_rituais?.map((ritual: any) => (
                         <MiniCard key={ritual.id} ritual={ritual} />
                     ))}
                 </div>
