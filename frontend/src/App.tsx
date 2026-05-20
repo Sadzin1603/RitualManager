@@ -124,7 +124,7 @@ function App() {
                 to="/rituais"
                 className="hover:text-red-400"
               >
-                Rituais
+                Criar Ritual
               </Link>
             </>
           )}
