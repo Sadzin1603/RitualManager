@@ -29,6 +29,6 @@ export const getRituais = async (id) => {
     if(!id){
         throw new Error("Missing fields");
     }
-
-    return await getAll({creator:id})
+    const {data,error} = await getAll({creator:id})
+    return await data;
 }

@@ -4,35 +4,40 @@ import { jwtDecode } from 'jwt-decode'
 import { useEffect, useState, useMemo } from "react";
 import "./Principal.css";
 import MiniCard from "../components/MiniCard";
+import{useQuery} from '@tanstack/react-query'
+import { LoaderCircle } from 'lucide-react';
 
 function Principal() {
-    const [rituais, setRituais] = useState([]);
+    const {data:rituais} = useQuery({
+        queryKey: ['rituais_aprovados'],
+        queryFn: fetchDataRituais,
+    })
+    async function fetchDataRituais() {
+            const res = await fetch("http://localhost:3000/ritual");
+            if (!res.ok) {
+                throw new Error("Erro ao buscar rituais");
+            }
+
+            return await res.json();
+            
+    }
+    const {data:meus_rituais} = useQuery({
+        queryKey: ['meus_rituais'],
+        queryFn: fetchDataMyRituais,
+    })
+    async function fetchDataMyRituais() {
+            const token = localStorage.getItem("token");
+            const res = await fetch(`http://localhost:3000/user/${userId}/rituais`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            return await res.json(); 
+    }
     const [openList, setOpenList] = useState<string | null>(null);
     const [elemento, setElemento] = useState("Todos");
     const [circulo, setCirculo] = useState("Todos");
     const [execucao, setExecucao] = useState("Todos");
     const [alcance, setAlcance] = useState("Todos");
     const [searchNome, setSearchNome] = useState("");
-
-    const [rituaisDoUsuario, setRituaisDoUsuario] = useState<any[]>([]);
-
-    useEffect(() => {
-        async function fetchData() {
-            const res = await fetch("http://localhost:3000/ritual?status=aprovado");
-            const data = await res.json();
-            setRituais(data);
-
-            if (userId) {
-                const token = localStorage.getItem("token");
-                const resUsuario = await fetch(`http://localhost:3000/user/${userId}/rituais`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                const dataUsuario = await resUsuario.json();
-                setRituaisDoUsuario(Array.isArray(dataUsuario.data) ? dataUsuario.data : []);
-            }
-        }
-        fetchData();
-    }, []);
 
     const navigate = useNavigate();
 
@@ -47,7 +52,7 @@ function Principal() {
     };
 
     const rituaisFiltrados = useMemo(() => {
-        return rituais.filter((ritual: any) => {
+        return rituais?.filter((ritual: any) => {
             const passaNome = searchNome === ""
                 || ritual.name.toLowerCase().includes(searchNome.toLowerCase());
 
@@ -134,7 +139,6 @@ function Principal() {
         setAlcance("Todos");
         setSearchNome("");
     };
-
 
     return (
         <div className="title w-auto min-h-screen flex justify-around p-8 gap-3">
@@ -282,7 +286,8 @@ function Principal() {
             </div>
 
             <div className="flex flex-col items-center gap-4 flex-1">
-                {Array.from({ length: Math.ceil(rituaisFiltrados.length / 3) }, (_, rowIndex) => {
+                
+                {rituaisFiltrados ? Array.from({ length: Math.ceil(rituaisFiltrados?.length / 3) }, (_, rowIndex) => {
                     const rowItems = rituaisFiltrados.slice(rowIndex * 3, rowIndex * 3 + 3);
                     return (
                         <div className="flex gap-4 justify-center" key={rowIndex}>
@@ -290,7 +295,7 @@ function Principal() {
                         </div>
                         
                     );
-                })}
+                }) : <LoaderCircle className="animate-spin" scale={2} color="white" />}
             </div>
             
 
@@ -312,7 +317,7 @@ function Principal() {
                     </button>
                 </div>
                 <div>
-                    {rituaisDoUsuario.map((ritual: any) => (
+                    {meus_rituais?.map((ritual: any) => (
                         <MiniCard key={ritual.id} ritual={ritual} />
                     ))}
                 </div>
