@@ -7,6 +7,8 @@ import MiniCard from "../components/MiniCard";
 import{useQuery} from '@tanstack/react-query'
 import { LoaderCircle } from 'lucide-react';
 
+type ViewMode = "mini" | "card" | "lista";
+
 function Principal() {
     const {data:rituais} = useQuery({
         queryKey: ['rituais_aprovados'],
@@ -38,6 +40,7 @@ function Principal() {
     const [execucao, setExecucao] = useState("Todos");
     const [alcance, setAlcance] = useState("Todos");
     const [searchNome, setSearchNome] = useState("");
+    const [viewMode, setViewMode] = useState<ViewMode>(localStorage.getItem('ListMode') || 'card');
 
     const navigate = useNavigate();
 
@@ -156,6 +159,53 @@ function Principal() {
                         </button>
                     </nav>
 
+                    {/* Botões de visualização */}
+                    <div className="modo view-toggle-group">
+                        <button
+                            className={`view-toggle-btn ${viewMode === "mini" ? "active" : ""}`}
+                            onClick={() =>{
+                            localStorage.setItem('ListMode', "mini")    
+                            setViewMode("mini")}}
+                            aria-pressed={viewMode === "mini"}
+                            title="Mini"
+                        >
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
+                                <rect x="3" y="7" width="9" height="10" rx="1.5" />
+                                <line x1="15" y1="9" x2="21" y2="9" />
+                                <line x1="15" y1="12" x2="21" y2="12" />
+                                <line x1="15" y1="15" x2="21" y2="15" />
+                            </svg>
+                            Mini
+                        </button>
+                        <button
+                            className={`view-toggle-btn ${viewMode === "card" ? "active" : ""}`}
+                            onClick={() =>{ 
+                                localStorage.setItem('ListMode', "card")
+                                setViewMode("card")}}
+                            aria-pressed={viewMode === "card"}
+                            title="Card"
+                        >
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
+                                <rect x="4" y="3" width="16" height="18" rx="2.5" />
+                                <rect x="7" y="6" width="10" height="6" rx="1.5" fill="currentColor" opacity={0.2} stroke="currentColor" strokeWidth={1.2} />
+                                <line x1="7" y1="15" x2="17" y2="15" />
+                                <line x1="7" y1="18" x2="12" y2="18" />
+                            </svg>
+                            Card
+                        </button>
+                        <button
+                            className={`view-toggle-btn ${viewMode === "lista" ? "active" : ""}`}
+                            onClick={() =>{ 
+                                localStorage.setItem('ListMode', "lista")
+                                setViewMode("lista")}}
+                            aria-pressed={viewMode === "lista"}
+                            title="Lista"
+                        >
+                            <i className="ti ti-list" aria-hidden="true" />
+                            Lista
+                        </button>
+                    </div>
+
                     {/* Campo de pesquisa ritual*/}
                     <div className="div_pesquisa">
                         <input
@@ -273,7 +323,7 @@ function Principal() {
                                 <button type="button" onClick={() => selectAlcance("Todos")}>Todos</button>
                                 <button className="alcance_pessoal" type="button" onClick={() => selectAlcance("Pessoal")}>Pessoal</button>
                                 <button className="alcance_toque" type="button" onClick={() => selectAlcance("Toque")}>Toque</button>
-                                <button className="alcance_curto" type="button" onClick={() => selectAlcance("Curto (9m)")}>Curto (9m)</button>
+                                <button className="alcance_curto" type={() => selectAlcance("Curto (9m)")}>Curto (9m)</button>
                                 <button className="alcance_medio" type="button" onClick={() => selectAlcance("Médio (18m)")}>Médio (18m)</button>
                                 <button className="alcance_longo" type="button" onClick={() => selectAlcance("Longo (36m)")}>Longo (36m)</button>
                                 <button className="alcance_extremo" type="button" onClick={() => selectAlcance("Extremo (90m)")}>Extremo (90m)</button>
@@ -301,14 +351,12 @@ function Principal() {
 
             <div className="div_Lateral space-y-5">
                 <div className="div_criar_ritual">
-                    {/* Botão Perfil */}
                     <button
                         className="criar_ritual"
                         onClick={() => navigate("/profile")}
                     >
                         Meu Perfil
                     </button>
-                    {/* Botão principal */}
                     <button
                         className="criar_ritual"
                         onClick={() => navigate("/rituais")}

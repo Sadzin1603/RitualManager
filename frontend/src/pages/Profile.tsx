@@ -6,6 +6,8 @@ import { useEffect, useState, useMemo } from "react";
 import "./Principal.css";
 import {useQuery} from '@tanstack/react-query'
 
+type ViewMode = "mini" | "card" | "lista";
+
 function Profile() {
     const {data:rituais} = useQuery({
         queryKey: ['rituais_aprovados'],
@@ -105,25 +107,94 @@ function Profile() {
     return (
         <div className="title w-auto min-h-screen flex justify-around p-8 gap-3">
 
+            {/* Coluna lateral esquerda — filtros */}
             <div className="div_Lateral">
                 <div className="div_filtros">
+                    {/* Header */}
                     <nav className="header_filtros">
                         <h1 className="text-lg font-bold">Filtros</h1>
-                        <button className="limpar_filtros" onClick={limparFiltros}>Limpar</button>
+                        <button className="limpar_filtros" onClick={limparFiltros}>
+                            Limpar
+                        </button>
                     </nav>
+
+                    {/* Botões de visualização */}
+                    <div className="modo view-toggle-group">
+                        <button
+                            className={`view-toggle-btn ${viewMode === "mini" ? "active" : ""}`}
+                            onClick={() =>{
+                            localStorage.setItem('ListMode', "mini")    
+                            setViewMode("mini")}}
+                            aria-pressed={viewMode === "mini"}
+                            title="Mini"
+                        >
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
+                                <rect x="3" y="7" width="9" height="10" rx="1.5" />
+                                <line x1="15" y1="9" x2="21" y2="9" />
+                                <line x1="15" y1="12" x2="21" y2="12" />
+                                <line x1="15" y1="15" x2="21" y2="15" />
+                            </svg>
+                            Mini
+                        </button>
+                        <button
+                            className={`view-toggle-btn ${viewMode === "card" ? "active" : ""}`}
+                            onClick={() =>{ 
+                                localStorage.setItem('ListMode', "card")
+                                setViewMode("card")}}
+                            aria-pressed={viewMode === "card"}
+                            title="Card"
+                        >
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
+                                <rect x="4" y="3" width="16" height="18" rx="2.5" />
+                                <rect x="7" y="6" width="10" height="6" rx="1.5" fill="currentColor" opacity={0.2} stroke="currentColor" strokeWidth={1.2} />
+                                <line x1="7" y1="15" x2="17" y2="15" />
+                                <line x1="7" y1="18" x2="12" y2="18" />
+                            </svg>
+                            Card
+                        </button>
+                        <button
+                            className={`view-toggle-btn ${viewMode === "lista" ? "active" : ""}`}
+                            onClick={() =>{ 
+                                localStorage.setItem('ListMode', "lista")
+                                setViewMode("lista")}}
+                            aria-pressed={viewMode === "lista"}
+                            title="Lista"
+                        >
+                            <i className="ti ti-list" aria-hidden="true" />
+                            Lista
+                        </button>
+                    </div>
+
+                    {/* Campo de pesquisa */}
                     <div className="div_pesquisa">
-                        <input className="pesquisa" type="text" placeholder="Nome do ritual..." value={searchNome} onChange={(e) => setSearchNome(e.target.value)} />
+                        <input
+                            className="pesquisa"
+                            type="text"
+                            placeholder="Nome do ritual..."
+                            value={searchNome}
+                            onChange={(e) => setSearchNome(e.target.value)}
+                        />
                         <button>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="icone_pesquisa">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                             </svg>
                         </button>
                     </div>
+
+                    {/* Filtro de Elemento */}
                     <div className="filtro filtro_elemento">
                         <h2 className="text-sm font-medium text-zinc-400">Elemento</h2>
                         <div style={{ position: "relative" }}>
-                            <button className={`botao_lista ${elementoClasse[elemento] || ""}`} type="button" onClick={() => toggleList("elemento")}>{elemento}</button>
-                            <div className={`lista ${openList === "elemento" ? "show" : ""}`}>
+                            <button
+                                className={`botao_lista ${elementoClasse[elemento] || ""}`}
+                                type="button"
+                                aria-expanded={openList === "elemento"}
+                                aria-controls="lista_elemento_filtro"
+                                onClick={() => toggleList("elemento")}
+                            >
+                                {elemento}
+                            </button>
+                            <div id="lista_elemento_filtro" className={`lista ${openList === "elemento" ? "show" : ""}`}>
                                 <button type="button" onClick={() => selectElemento("Todos")}>Todos</button>
                                 <button className="elemento_sangue" type="button" onClick={() => selectElemento("Sangue")}>Sangue</button>
                                 <button className="elemento_conhecimento" type="button" onClick={() => selectElemento("Conhecimento")}>Conhecimento</button>
@@ -134,11 +205,21 @@ function Profile() {
                             </div>
                         </div>
                     </div>
+
+                    {/* Filtro de Circulo */}
                     <div className="filtro filtro_circulo">
                         <h2 className="text-sm font-medium text-zinc-400">Circulo</h2>
                         <div style={{ position: "relative" }}>
-                            <button className={`botao_lista ${circuloClasse[circulo] || ""}`} type="button" onClick={() => toggleList("circulo")}>{circulo}</button>
-                            <div className={`lista ${openList === "circulo" ? "show" : ""}`}>
+                            <button
+                                className={`botao_lista ${circuloClasse[circulo] || ""}`}
+                                type="button"
+                                aria-expanded={openList === "circulo"}
+                                aria-controls="lista_circulo_filtro"
+                                onClick={() => toggleList("circulo")}
+                            >
+                                {circulo}
+                            </button>
+                            <div id="lista_circulo_filtro" className={`lista ${openList === "circulo" ? "show" : ""}`}>
                                 <button type="button" onClick={() => selectCirculo("Todos")}>Todos</button>
                                 <button className="circulo_1" type="button" onClick={() => selectCirculo("1° Circulo (1 PE)")}>1° Circulo</button>
                                 <button className="circulo_2" type="button" onClick={() => selectCirculo("2° Circulo (3 PE)")}>2° Circulo</button>
@@ -147,11 +228,21 @@ function Profile() {
                             </div>
                         </div>
                     </div>
+
+                    {/* Filtro de Execução */}
                     <div className="filtro filtro_execucao">
                         <h2 className="text-sm font-medium text-zinc-400">Execução</h2>
                         <div style={{ position: "relative" }}>
-                            <button className={`botao_lista ${execucaoClasse[execucao] || ""}`} type="button" onClick={() => toggleList("execucao")}>{execucao}</button>
-                            <div className={`lista ${openList === "execucao" ? "show" : ""}`}>
+                            <button
+                                className={`botao_lista ${execucaoClasse[execucao] || ""}`}
+                                type="button"
+                                aria-expanded={openList === "execucao"}
+                                aria-controls="lista_execucao_filtro"
+                                onClick={() => toggleList("execucao")}
+                            >
+                                {execucao}
+                            </button>
+                            <div id="lista_execucao_filtro" className={`lista ${openList === "execucao" ? "show" : ""}`}>
                                 <button type="button" onClick={() => selectExecucao("Todos")}>Todos</button>
                                 <button className="execucao_completa" type="button" onClick={() => selectExecucao("Completa")}>Completa</button>
                                 <button className="execucao_padrao" type="button" onClick={() => selectExecucao("Padrão")}>Padrão</button>
@@ -161,11 +252,21 @@ function Profile() {
                             </div>
                         </div>
                     </div>
+
+                    {/* Filtro de Alcance */}
                     <div className="filtro filtro_alcance">
                         <h2 className="text-sm font-medium text-zinc-400">Alcance</h2>
                         <div style={{ position: "relative" }}>
-                            <button className={`botao_lista ${alcanceClasse[alcance] || ""}`} type="button" onClick={() => toggleList("alcance")}>{alcance}</button>
-                            <div className={`lista ${openList === "alcance" ? "show" : ""}`}>
+                            <button
+                                className={`botao_lista ${alcanceClasse[alcance] || ""}`}
+                                type="button"
+                                aria-expanded={openList === "alcance"}
+                                aria-controls="lista_alcance_filtro"
+                                onClick={() => toggleList("alcance")}
+                            >
+                                {alcance}
+                            </button>
+                            <div id="lista_alcance_filtro" className={`lista ${openList === "alcance" ? "show" : ""}`}>
                                 <button type="button" onClick={() => selectAlcance("Todos")}>Todos</button>
                                 <button className="alcance_pessoal" type="button" onClick={() => selectAlcance("Pessoal")}>Pessoal</button>
                                 <button className="alcance_toque" type="button" onClick={() => selectAlcance("Toque")}>Toque</button>
@@ -180,20 +281,50 @@ function Profile() {
                 </div>
             </div>
 
-            {/* Cards do meio — rituais do próprio usuário */}
-            <div className="flex flex-col items-center gap-4 flex-1">
-                {Array.from({ length: Math.ceil(rituaisDoUsuarioFiltrados?.length / 3) }, (_, rowIndex) => {
-                    const rowItems = rituaisDoUsuarioFiltrados?.slice(rowIndex * 3, rowIndex * 3 + 3);
-                    return (
-                        <div className="flex gap-4 justify-center" key={rowIndex}>
-                            {rowItems.map((ritual: any) => <Card key={ritual.id} ritual={ritual} />)}
-                        </div>
-                    );
-                })}
-                
+            {/* Centro — rituais do usuário com viewMode */}
+            <div className="flex flex-col items-center gap-4 flex-1 w-full">
+                {viewMode === "lista" ? (
+                    <div className="flex flex-col gap-3 w-full max-w-4xl">
+                        {rituaisDoUsuarioFiltrados.map((ritual: any) => (
+                            <Card
+                                key={ritual.id}
+                                ritual={ritual}
+                                viewMode="lista"
+                                onConfirm={() => setOpen([true, ritual.id, ritual.creator])}
+                            />
+                        ))}
+                    </div>
+                ) : viewMode === "mini" ? (
+                    <div className="grid grid-cols-2 gap-4 w-[670px]">
+                        {rituaisDoUsuarioFiltrados.map((ritual: any) => (
+                            <Card
+                                key={ritual.id}
+                                ritual={ritual}
+                                viewMode="mini"
+                                onConfirm={() => setOpen([true, ritual.id, ritual.creator])}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    Array.from({ length: Math.ceil(rituaisDoUsuarioFiltrados.length / 3) }, (_, rowIndex) => {
+                        const rowItems = rituaisDoUsuarioFiltrados.slice(rowIndex * 3, rowIndex * 3 + 3);
+                        return (
+                            <div className="flex gap-4 justify-center" key={rowIndex}>
+                                {rowItems.map((ritual: any) => (
+                                    <Card
+                                        key={ritual.id}
+                                        ritual={ritual}
+                                        viewMode="card"
+                                        onConfirm={() => setOpen([true, ritual.id, ritual.creator])}
+                                    />
+                                ))}
+                            </div>
+                        );
+                    })
+                )}
             </div>
 
-            {/* MiniCards — todos os rituais aprovados pelo ADM com filtro */}
+            {/* Coluna lateral direita — minicards aprovados + botões */}
             <div className="div_Lateral space-y-5">
                 <div className="div_criar_ritual">
                     <button className="criar_ritual" onClick={() => navigate("/principal")}>Voltar</button>
@@ -206,6 +337,13 @@ function Profile() {
                 </div>
             </div>
 
+            <Modal
+                isOpen={open[0]}
+                title="Deletar Ritual"
+                message="Tem certeza que deseja deletar esse ritual?"
+                onConfirm={() => deletar(open[1], open[2])}
+                onCancel={() => setOpen([false, null, null])}
+            />
         </div>
     );
 }
