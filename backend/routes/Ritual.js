@@ -15,7 +15,11 @@ router
 
 router
     .route("/copy")
-    .post(upload.single("file"),controller.copy)//copia a porra do ritual
+    .post(upload.single("file"),controller.copy)
+
+router
+    .route("/delete/:id")
+    .put(verifyToken,verifyOwner,upload.single("file"),controller.changeCreator)
 
 router
     .route("/:id")
