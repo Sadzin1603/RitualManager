@@ -103,6 +103,7 @@ function Profile() {
         setElemento("Todos"); setCirculo("Todos");
         setExecucao("Todos"); setAlcance("Todos"); setSearchNome("");
     };
+    const [viewMode, setViewMode] = useState<ViewMode>(localStorage.getItem('ListMode') || 'card');
 
     return (
         <div className="title w-auto min-h-screen flex justify-around p-8 gap-3">
@@ -290,23 +291,21 @@ function Profile() {
                                 key={ritual.id}
                                 ritual={ritual}
                                 viewMode="lista"
-                                onConfirm={() => setOpen([true, ritual.id, ritual.creator])}
                             />
                         ))}
                     </div>
                 ) : viewMode === "mini" ? (
                     <div className="grid grid-cols-2 gap-4 w-[670px]">
-                        {rituaisDoUsuarioFiltrados.map((ritual: any) => (
+                        {rituaisDoUsuarioFiltrados?.map((ritual: any) => (
                             <Card
                                 key={ritual.id}
                                 ritual={ritual}
                                 viewMode="mini"
-                                onConfirm={() => setOpen([true, ritual.id, ritual.creator])}
                             />
                         ))}
                     </div>
                 ) : (
-                    Array.from({ length: Math.ceil(rituaisDoUsuarioFiltrados.length / 3) }, (_, rowIndex) => {
+                    Array.from({ length: Math.ceil(rituaisDoUsuarioFiltrados?.length / 3) }, (_, rowIndex) => {
                         const rowItems = rituaisDoUsuarioFiltrados.slice(rowIndex * 3, rowIndex * 3 + 3);
                         return (
                             <div className="flex gap-4 justify-center" key={rowIndex}>
@@ -315,7 +314,6 @@ function Profile() {
                                         key={ritual.id}
                                         ritual={ritual}
                                         viewMode="card"
-                                        onConfirm={() => setOpen([true, ritual.id, ritual.creator])}
                                     />
                                 ))}
                             </div>
@@ -336,14 +334,6 @@ function Profile() {
                     ))}
                 </div>
             </div>
-
-            <Modal
-                isOpen={open[0]}
-                title="Deletar Ritual"
-                message="Tem certeza que deseja deletar esse ritual?"
-                onConfirm={() => deletar(open[1], open[2])}
-                onCancel={() => setOpen([false, null, null])}
-            />
         </div>
     );
 }
