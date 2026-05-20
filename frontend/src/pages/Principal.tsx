@@ -323,7 +323,7 @@ function Principal() {
                                 <button type="button" onClick={() => selectAlcance("Todos")}>Todos</button>
                                 <button className="alcance_pessoal" type="button" onClick={() => selectAlcance("Pessoal")}>Pessoal</button>
                                 <button className="alcance_toque" type="button" onClick={() => selectAlcance("Toque")}>Toque</button>
-                                <button className="alcance_curto" type={() => selectAlcance("Curto (9m)")}>Curto (9m)</button>
+                                <button className="alcance_curto" type="button" onClick={() => selectAlcance("Curto (9m)")}>Curto (9m)</button>
                                 <button className="alcance_medio" type="button" onClick={() => selectAlcance("Médio (18m)")}>Médio (18m)</button>
                                 <button className="alcance_longo" type="button" onClick={() => selectAlcance("Longo (36m)")}>Longo (36m)</button>
                                 <button className="alcance_extremo" type="button" onClick={() => selectAlcance("Extremo (90m)")}>Extremo (90m)</button>
@@ -335,19 +335,44 @@ function Principal() {
                 </div>
             </div>
 
-            <div className="flex flex-col items-center gap-4 flex-1">
-                
-                {rituaisFiltrados ? Array.from({ length: Math.ceil(rituaisFiltrados?.length / 3) }, (_, rowIndex) => {
-                    const rowItems = rituaisFiltrados.slice(rowIndex * 3, rowIndex * 3 + 3);
-                    return (
-                        <div className="flex gap-4 justify-center" key={rowIndex}>
-                            {rowItems.map((ritual: any) => <Card key={ritual.id} ritual={ritual} />)}
-                        </div>
-                        
-                    );
-                }) : <LoaderCircle className="animate-spin" scale={2} color="white" />}
+            <div className="flex flex-col items-center gap-4 flex-1 w-full">
+                {viewMode === "lista" ? (
+                    <div className="flex flex-col gap-3 w-full max-w-4xl">
+                        {rituaisFiltrados?.map((ritual: any) => (
+                            <Card
+                                key={ritual.id}
+                                ritual={ritual}
+                                viewMode="lista"
+                            />
+                        ))}
+                    </div>
+                ) : viewMode === "mini" ? (
+                    <div className="grid grid-cols-2 gap-4 w-[670px]">
+                        {rituaisFiltrados?.map((ritual: any) => (
+                            <Card
+                                key={ritual.id}
+                                ritual={ritual}
+                                viewMode="mini"
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    Array.from({ length: Math.ceil(rituaisFiltrados?.length / 3) }, (_, rowIndex) => {
+                        const rowItems = rituaisFiltrados.slice(rowIndex * 3, rowIndex * 3 + 3);
+                        return (
+                            <div className="flex gap-4 justify-center" key={rowIndex}>
+                                {rowItems.map((ritual: any) => (
+                                    <Card
+                                        key={ritual.id}
+                                        ritual={ritual}
+                                        viewMode="card"
+                                    />
+                                ))}
+                            </div>
+                        );
+                    })
+                )}
             </div>
-            
 
             <div className="div_Lateral space-y-5">
                 <div className="div_criar_ritual">
