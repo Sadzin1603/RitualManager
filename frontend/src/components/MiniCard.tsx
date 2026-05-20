@@ -10,26 +10,26 @@ const elementoClasse: Record<string, string> = {
     varia:        "elemento-varia",
 };
 
-function MiniCard({ ritual }) {
+function MiniCard({ ritual, onConfirm }: { ritual: any; onConfirm?: () => void }) {
     const navigate = useNavigate();
     const classeElemento = elementoClasse[ritual.element?.toLowerCase()] ?? "";
 
     return (
-        <div className={`${classeElemento} bg-zinc-900 rounded-xl p-3 w-full max-w-xl mb-[20px]`}>
+        <div className={`MiniCard-lateral ${classeElemento} rounded-xl p-3 w-full max-w-xl mb-[20px]`}>
 
-            {/* Nome */}
+            {/* Nome + criador */}
             <div className="flex justify-between">
                 <h2 className="Card-nome text-lg font-bold mb-2">
                     {ritual.name}
                 </h2>
                 <span className="text-[15px] text-zinc-500 truncate items-center flex">
-                    {ritual.creator.name}
+                    {ritual.creator?.name}
                 </span>
             </div>
 
             <div className="flex gap-3">
 
-                {/* IMAGEM */}
+                {/* Imagem */}
                 <div className="w-32 h-32 bg-zinc-800 rounded-md overflow-hidden shrink-0">
                     {ritual.img ? (
                         <img
@@ -44,28 +44,22 @@ function MiniCard({ ritual }) {
                     )}
                 </div>
 
-                {/* INFOS */}
+                {/* Infos */}
                 <div className="flex-1 flex flex-col justify-between min-w-0">
-
                     <div className="grid grid-cols-1 gap-x-4 gap-y-1 text-sm">
                         <p className="truncate">
-                            <span className="info-titulo">Círculo:</span>{" "}
-                            {ritual.circle}
+                            <span className="info-titulo">Círculo:</span> {ritual.circle}
                         </p>
                         <p className="truncate">
-                            <span className="info-titulo">Execução:</span>{" "}
-                            {ritual.exec}
+                            <span className="info-titulo">Execução:</span> {ritual.exec}
                         </p>
                         <p className="truncate">
-                            <span className="info-titulo">Alcance:</span>{" "}
-                            {ritual.range}
+                            <span className="info-titulo">Alcance:</span> {ritual.range}
                         </p>
                         <p className="truncate">
-                            <span className="info-titulo">Duração:</span>{" "}
-                            {ritual.duration}
+                            <span className="info-titulo">Duração:</span> {ritual.duration}
                         </p>
                     </div>
-
                     <div className="flex justify-end items-center mt-2">
                         <button
                             className="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded-md text-xs"
@@ -74,7 +68,6 @@ function MiniCard({ ritual }) {
                             Ver mais
                         </button>
                     </div>
-
                 </div>
             </div>
         </div>

@@ -54,6 +54,23 @@
     transition: background-color 0.3s ease;
 }
 
+/* Botão de modo de card */
+.modo button{
+    color: #fff;
+    background-color: #0f2792;
+    font-size: 14px;
+}
+.modo button:hover{
+    background-color: #0f2792;
+}
+
+.view-toggle-btn.active {
+    background: #0b1c69;
+    color: #fff;
+    border-color: #383b42;
+}
+
+
 /* Campo de pesquisa */
 
 .div_pesquisa {

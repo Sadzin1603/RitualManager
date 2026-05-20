@@ -1,4 +1,57 @@
-/* CARD GRANDE */
+/* ============================================================
+   BOTÕES DE VISUALIZAÇÃO
+   ============================================================ */
+.view-toggle-group {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    margin-bottom: 8px;
+    width: 100%;
+}
+
+.view-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex: 1;
+    padding: 8px 0;
+    border-radius: 8px;
+    border: 1.5px solid #28272B;
+    background: #18181A;
+    color: #71717a;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+}
+
+.view-toggle-btn svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+.view-toggle-btn i {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.view-toggle-btn:hover {
+    background: #27272a;
+    color: #a1a1aa;
+    border-color: #383b42;
+}
+
+.view-toggle-btn.active {
+    background: #27272a;
+    color: #dadada;
+    border-color: #383b42;
+}
+
+/* ============================================================
+   CARD GRANDE (Card.tsx)
+   ============================================================ */
 .Card-wrapper {
     position: relative;
     width: 180px;
@@ -26,7 +79,6 @@
     transform: scale(1.02);
 }
 
-/* Topo colorido com nome */
 .Card-small-header {
     padding: 8px 10px;
     font-size: 13px;
@@ -40,7 +92,6 @@
     flex-shrink: 0;
 }
 
-/* Área da imagem */
 .Card-small-img {
     flex: 1;
     background: #27272a;
@@ -61,7 +112,6 @@
     color: #71717a;
 }
 
-/* Rodapé com descrição */
 .Card-small-footer {
     padding: 8px 10px;
     font-size: 11px;
@@ -103,19 +153,16 @@
     pointer-events: auto;
 }
 
-/* Título do ritual */
 .Card-nome {
     color: #dadada;
     margin-bottom: 10px;
 }
 
-/* Label das infos */
 .info-titulo {
     color: #a3a3a3;
     font-weight: 600;
 }
 
-/* Informações do ritual */
 .info_ritual {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -125,175 +172,614 @@
     margin-bottom: 10px;
 }
 
-/* Conteudo dentro do card expandido */
 .Conteudo {
     padding: 15px;
 }
 
-/* SANGUE — Red Color Palettes */
+/* ============================================================
+   MINI CARD (MiniCard.tsx)
+   ============================================================ */
+.MiniCard-wrapper {
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.MiniCard {
+    width: 200px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+    background: #18181A;
+    border: 2px solid #28272B;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.MiniCard:hover {
+    transform: scale(1.02);
+}
+
+.MiniCard-img {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+    background: #27272a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.MiniCard-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.MiniCard-img .sem-imagem {
+    font-size: 10px;
+    color: #71717a;
+}
+
+.MiniCard-info {
+    flex: 1;
+    padding: 6px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.MiniCard-nome {
+    font-size: 12px;
+    font-weight: 700;
+    color: #dadada;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.MiniCard-meta {
+    display: flex;
+    gap: 6px;
+    font-size: 10px;
+    color: #71717a;
+}
+
+.MiniCard-delete {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #ef4444;
+    flex-shrink: 0;
+    margin-right: 4px;
+    border-radius: 6px;
+    transition: background 0.15s;
+}
+
+.MiniCard-delete:hover {
+    background: #27272a;
+}
+
+.MiniCard-delete svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* ============================================================
+   LISTA CARD
+   ============================================================ */
+.lista-card {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #18181A;
+    color: #dadada;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    border: 2px solid #28272B;
+    transition: transform 0.2s ease-in-out;
+}
+
+.lista-card:hover {
+    transform: scale(1.01);
+}
+
+.lista-card .Conteudo {
+    padding: 15px;
+}
+
+/* ============================================================
+   LISTA CARD — SANGUE
+   ============================================================ */
+.lista-card.elemento-sangue {
+    background: #250a15;
+    border: 2px solid #980100;
+    box-shadow: 0 0 12px 1px #98010055;
+}
+
+.lista-card.elemento-sangue .Conteudo {
+    border-top: 2px solid #980100;
+}
+
+.lista-card.elemento-sangue .Card-nome {
+    color: #b51128;
+}
+
+.lista-card.elemento-sangue .info-titulo {
+    color: #97071a;
+}
+
+/* ============================================================
+   LISTA CARD — MORTE
+   ============================================================ */
+.lista-card.elemento-morte {
+    background: #0f131b;
+    border: 2px solid #383b42;
+    box-shadow: 0 0 12px 1px #383b4266;
+}
+
+.lista-card.elemento-morte .Conteudo {
+    border-top: 2px solid #383b42;
+}
+
+.lista-card.elemento-morte .Card-nome {
+    color: #b8bcc3;
+}
+
+.lista-card.elemento-morte .info-titulo {
+    color: #4e4d52;
+}
+
+/* ============================================================
+   LISTA CARD — ENERGIA
+   ============================================================ */
+.lista-card.elemento-energia {
+    background: #02022c;
+    border: 2px solid #42109D;
+    box-shadow: 0 0 12px 1px #42109D66;
+}
+
+.lista-card.elemento-energia .Conteudo {
+    border-top: 2px solid #91207E;
+}
+
+.lista-card.elemento-energia .Card-nome {
+    color: #91207E;
+}
+
+.lista-card.elemento-energia .info-titulo {
+    color: #14499e;
+}
+
+/* ============================================================
+   LISTA CARD — CONHECIMENTO
+   ============================================================ */
+.lista-card.elemento-conhecimento {
+    background: #19171b;
+    border: 2px solid #9e8123;
+    box-shadow: 0 0 12px 1px #9e812366;
+}
+
+.lista-card.elemento-conhecimento .Conteudo {
+    border-top: 2px solid #9e8123;
+}
+
+.lista-card.elemento-conhecimento .Card-nome {
+    color: #9e8123;
+}
+
+.lista-card.elemento-conhecimento .info-titulo {
+    color: #8d540f;
+}
+
+/* ============================================================
+   LISTA CARD — MEDO
+   ============================================================ */
+.lista-card.elemento-medo {
+    background: #011324;
+    border: 2px solid #0f427e;
+    box-shadow: 0 0 12px 1px #0f427e66;
+}
+
+.lista-card.elemento-medo .Conteudo {
+    border-top: 2px solid #0f427e;
+}
+
+.lista-card.elemento-medo .Card-nome {
+    color: #005186;
+}
+
+.lista-card.elemento-medo .info-titulo {
+    color: #0a3083;
+}
+
+/* ============================================================
+   LISTA CARD — VARIA
+   ============================================================ */
+.lista-card.elemento-varia {
+    background: #19171b;
+    border: 2px solid #42109D;
+    animation: varia-border-glow 6s linear infinite;
+}
+
+.lista-card.elemento-varia .Conteudo {
+    border-top: 2px solid #9e8123;
+    animation: varia-conteudo-border 6s linear infinite;
+}
+
+.lista-card.elemento-varia .Card-nome {
+    animation: varia-nome-color 6s linear infinite;
+}
+
+.lista-card.elemento-varia .info-titulo {
+    animation: varia-nome-color 6s linear infinite;
+}
+
+/* ============================================================
+   ELEMENTOS — SANGUE
+   ============================================================ */
 .elemento-sangue .Card-small {
     background: #250814;
     border: 2px solid #980100;
     box-shadow: 0 0 12px 1px #98010055;
 }
+
 .elemento-sangue .Card-small-header {
     color: #b51128;
     border-bottom-color: #980100;
 }
+
 .elemento-sangue .Card-small-footer {
     border-top-color: #980100;
 }
+
 .elemento-sangue .Card-expandido {
     background: #250814;
     border: 2px solid #980100;
     box-shadow: 0 0 12px 1px #98010055, 0 20px 40px -8px rgba(0, 0, 0, 0.6);
 }
+
 .elemento-sangue .Card-expandido .Conteudo {
     border-top: 2px solid #980100;
 }
+
 .elemento-sangue .Card-nome {
     color: #b51128;
 }
+
 .elemento-sangue .info-titulo {
     color: #97071a;
 }
 
-/* MORTE — Black Color Palettes */
+.elemento-sangue .MiniCard {
+    background: #250814;
+    border: 2px solid #980100;
+    box-shadow: 0 0 10px 1px #98010044;
+}
+
+.elemento-sangue .MiniCard-nome {
+    color: #b51128;
+}
+
+.elemento-sangue .ListaCard {
+    background: #250814;
+    border: 2px solid #980100;
+    box-shadow: 0 0 10px 1px #98010044;
+}
+
+.elemento-sangue .ListaCard-nome {
+    color: #b51128;
+}
+
+.elemento-sangue .info-titulo {
+    color: #97071a;
+}
+
+/* ============================================================
+   ELEMENTOS — MORTE
+   ============================================================ */
 .elemento-morte .Card-small {
     background: #0f131b;
     border: 2px solid #383b42;
     box-shadow: 0 0 12px 1px #383b4266;
 }
+
 .elemento-morte .Card-small-header {
     color: #b8bcc3;
     border-bottom-color: #383b42;
 }
+
 .elemento-morte .Card-small-footer {
     border-top-color: #383b42;
 }
+
 .elemento-morte .Card-expandido {
     background: #0f131b;
     border: 2px solid #383b42;
     box-shadow: 0 0 12px 1px #383b4266, 0 20px 40px -8px rgba(0, 0, 0, 0.6);
 }
+
 .elemento-morte .Card-expandido .Conteudo {
     border-top: 2px solid #383b42;
 }
+
 .elemento-morte .Card-nome {
     color: #b8bcc3;
 }
+
 .elemento-morte .info-titulo {
     color: #4e4d52;
 }
 
-/* ENERGIA — Fantastic Color Palettes */
+.elemento-morte .MiniCard {
+    background: #0f131b;
+    border: 2px solid #383b42;
+    box-shadow: 0 0 10px 1px #383b4244;
+}
+
+.elemento-morte .MiniCard-nome {
+    color: #b8bcc3;
+}
+
+.elemento-morte .ListaCard {
+    background: #0f131b;
+    border: 2px solid #383b42;
+    box-shadow: 0 0 10px 1px #383b4244;
+}
+
+.elemento-morte .ListaCard-nome {
+    color: #b8bcc3;
+}
+
+/* ============================================================
+   ELEMENTOS — ENERGIA
+   ============================================================ */
 .elemento-energia .Card-small {
     background: #02022c;
     border: 2px solid #42109D;
     box-shadow: 0 0 12px 1px #42109D66;
 }
+
 .elemento-energia .Card-small-header {
     color: #91207E;
     border-bottom-color: #42109D;
 }
+
 .elemento-energia .Card-small-footer {
     border-top-color: #91207E;
 }
+
 .elemento-energia .Card-expandido {
     background: #02022c;
     border: 2px solid #42109D;
     box-shadow: 0 0 12px 1px #42109D66, 0 20px 40px -8px rgba(0, 0, 0, 0.6);
 }
+
 .elemento-energia .Card-expandido .Conteudo {
     border-top: 2px solid #91207E;
 }
+
 .elemento-energia .Card-nome {
     color: #91207E;
 }
+
 .elemento-energia .info-titulo {
     color: #14499e;
 }
 
-/* CONHECIMENTO — Gold Color Palettes */
+.elemento-energia .MiniCard {
+    background: #02022c;
+    border: 2px solid #42109D;
+    box-shadow: 0 0 10px 1px #42109D44;
+}
+
+.elemento-energia .MiniCard-nome {
+    color: #91207E;
+}
+
+.elemento-energia .ListaCard {
+    background: #02022c;
+    border: 2px solid #42109D;
+    box-shadow: 0 0 10px 1px #42109D44;
+}
+
+.elemento-energia .ListaCard-nome {
+    color: #91207E;
+}
+
+/* ============================================================
+   ELEMENTOS — CONHECIMENTO
+   ============================================================ */
 .elemento-conhecimento .Card-small {
     background: #19171b;
     border: 2px solid #9e8123;
     box-shadow: 0 0 12px 1px #9e812366;
 }
+
 .elemento-conhecimento .Card-small-header {
     color: #9e8123;
     border-bottom-color: #9e8123;
 }
+
 .elemento-conhecimento .Card-small-footer {
     border-top-color: #9e8123;
 }
+
 .elemento-conhecimento .Card-expandido {
     background: #19171b;
     border: 2px solid #9e8123;
     box-shadow: 0 0 12px 1px #9e812366, 0 20px 40px -8px rgba(0, 0, 0, 0.6);
 }
+
 .elemento-conhecimento .Card-expandido .Conteudo {
     border-top: 2px solid #9e8123;
 }
+
 .elemento-conhecimento .Card-nome {
     color: #9e8123;
 }
+
 .elemento-conhecimento .info-titulo {
     color: #8d540f;
 }
 
-/* MEDO — Deep Blue Color Palettes */
+.elemento-conhecimento .MiniCard {
+    background: #19171b;
+    border: 2px solid #9e8123;
+    box-shadow: 0 0 10px 1px #9e812344;
+}
+
+.elemento-conhecimento .MiniCard-nome {
+    color: #9e8123;
+}
+
+.elemento-conhecimento .ListaCard {
+    background: #19171b;
+    border: 2px solid #9e8123;
+    box-shadow: 0 0 10px 1px #9e812344;
+}
+
+.elemento-conhecimento .ListaCard-nome {
+    color: #9e8123;
+}
+
+/* ============================================================
+   ELEMENTOS — MEDO
+   ============================================================ */
 .elemento-medo .Card-small {
     background: #011324;
     border: 2px solid #0f427e;
     box-shadow: 0 0 12px 1px #0f427e66;
 }
+
 .elemento-medo .Card-small-header {
     color: #005186;
     border-bottom-color: #0f427e;
 }
+
 .elemento-medo .Card-small-footer {
     border-top-color: #0f427e;
 }
+
 .elemento-medo .Card-expandido {
     background: #011324;
     border: 2px solid #0f427e;
     box-shadow: 0 0 12px 1px #0f427e66, 0 20px 40px -8px rgba(0, 0, 0, 0.6);
 }
+
 .elemento-medo .Card-expandido .Conteudo {
     border-top: 2px solid #0f427e;
 }
+
 .elemento-medo .Card-nome {
     color: #005186;
 }
+
 .elemento-medo .info-titulo {
     color: #0a3083;
 }
 
-/* VARIA — Animated multi-element color cycling */
+.elemento-medo .MiniCard {
+    background: #011324;
+    border: 2px solid #0f427e;
+    box-shadow: 0 0 10px 1px #0f427e44;
+}
 
+.elemento-medo .MiniCard-nome {
+    color: #005186;
+}
+
+.elemento-medo .ListaCard {
+    background: #011324;
+    border: 2px solid #0f427e;
+    box-shadow: 0 0 10px 1px #0f427e44;
+}
+
+.elemento-medo .ListaCard-nome {
+    color: #005186;
+}
+
+/* ============================================================
+   ELEMENTOS — VARIA (animações)
+   ============================================================ */
 @keyframes varia-border-glow {
-    0%   { border-color: #980100; box-shadow: 0 0 14px 2px #98010055; }
-    25%  { border-color: #42109D; box-shadow: 0 0 14px 2px #42109D55; }
-    50%  { border-color: #0f427e; box-shadow: 0 0 14px 2px #0f427e55; }
-    75%  { border-color: #9e8123; box-shadow: 0 0 14px 2px #9e812355; }
-    100% { border-color: #980100; box-shadow: 0 0 14px 2px #98010055; }
+    0% {
+        border-color: #980100;
+        box-shadow: 0 0 14px 2px #98010055;
+    }
+
+    25% {
+        border-color: #42109D;
+        box-shadow: 0 0 14px 2px #42109D55;
+    }
+
+    50% {
+        border-color: #0f427e;
+        box-shadow: 0 0 14px 2px #0f427e55;
+    }
+
+    75% {
+        border-color: #9e8123;
+        box-shadow: 0 0 14px 2px #9e812355;
+    }
+
+    100% {
+        border-color: #980100;
+        box-shadow: 0 0 14px 2px #98010055;
+    }
 }
 
 @keyframes varia-conteudo-border {
-    0%   { border-top-color: #980100; }
-    25%  { border-top-color: #42109D; }
-    50%  { border-top-color: #0f427e; }
-    75%  { border-top-color: #9e8123; }
-    100% { border-top-color: #980100; }
+    0% {
+        border-top-color: #980100;
+    }
+
+    25% {
+        border-top-color: #42109D;
+    }
+
+    50% {
+        border-top-color: #0f427e;
+    }
+
+    75% {
+        border-top-color: #9e8123;
+    }
+
+    100% {
+        border-top-color: #980100;
+    }
 }
 
 @keyframes varia-nome-color {
-    0%   { color: #b51128; }
-    25%  { color: #91207E; }
-    50%  { color: #0075c4; }
-    75%  { color: #9e8123; }
-    100% { color: #b51128; }
+    0% {
+        color: #b51128;
+    }
+
+    25% {
+        color: #91207E;
+    }
+
+    50% {
+        color: #0075c4;
+    }
+
+    75% {
+        color: #9e8123;
+    }
+
+    100% {
+        color: #b51128;
+    }
 }
 
 .elemento-varia .Card-small {
@@ -301,53 +787,263 @@
     border: 2px solid #42109D;
     animation: varia-border-glow 6s linear infinite;
 }
+
 .elemento-varia .Card-small-header {
     animation: varia-nome-color 6s linear infinite;
 }
+
 .elemento-varia .Card-expandido {
     background: #19171b;
     border: 2px solid #42109D;
     animation: varia-border-glow 6s linear infinite;
 }
+
 .elemento-varia .Card-expandido .Conteudo {
     border-top: 2px solid #9e8123;
     animation: varia-conteudo-border 6s linear infinite;
 }
+
 .elemento-varia .Card-nome {
     animation: varia-nome-color 6s linear infinite;
 }
+
 .elemento-varia .info-titulo {
     animation: varia-nome-color 6s linear infinite;
 }
 
-/* Estilos para uso no MiniCard */
-.elemento-sangue {
+.elemento-varia .MiniCard {
+    background: #19171b;
+    border: 2px solid #42109D;
+    animation: varia-border-glow 6s linear infinite;
+}
+
+.elemento-varia .MiniCard-nome {
+    animation: varia-nome-color 6s linear infinite;
+}
+
+.elemento-varia .ListaCard {
+    background: #19171b;
+    border: 2px solid #42109D;
+    animation: varia-border-glow 6s linear infinite;
+}
+
+.elemento-varia .ListaCard-nome {
+    animation: varia-nome-color 6s linear infinite;
+}
+
+/* ============================================================
+   MINICARDS STANDALONE
+   ============================================================ */
+.elemento-sangue .MiniCard,
+.elemento-sangue.MiniCard {
     background: #250814;
-    border: 1px solid #980100;
+    border: 2px solid #980100;
     box-shadow: 0 0 10px 1px #98010044;
 }
-.elemento-morte {
+
+.elemento-sangue .MiniCard-nome,
+.elemento-sangue.MiniCard .MiniCard-nome {
+    color: #b51128;
+}
+
+.elemento-morte .MiniCard,
+.elemento-morte.MiniCard {
     background: #0f131b;
-    border: 1px solid #383b42;
+    border: 2px solid #383b42;
     box-shadow: 0 0 10px 1px #383b4244;
 }
-.elemento-energia {
+
+.elemento-morte .MiniCard-nome,
+.elemento-morte.MiniCard .MiniCard-nome {
+    color: #b8bcc3;
+}
+
+.elemento-energia .MiniCard,
+.elemento-energia.MiniCard {
     background: #02022c;
-    border: 1px solid #42109D;
+    border: 2px solid #42109D;
     box-shadow: 0 0 10px 1px #42109D44;
 }
-.elemento-conhecimento {
-    background: #1a1a14;
-    border: 1px solid #9e8123;
+
+.elemento-energia .MiniCard-nome,
+.elemento-energia.MiniCard .MiniCard-nome {
+    color: #91207E;
+}
+
+.elemento-conhecimento .MiniCard,
+.elemento-conhecimento.MiniCard {
+    background: #19171b;
+    border: 2px solid #9e8123;
     box-shadow: 0 0 10px 1px #9e812344;
 }
-.elemento-medo {
+
+.elemento-conhecimento .MiniCard-nome,
+.elemento-conhecimento.MiniCard .MiniCard-nome {
+    color: #9e8123;
+}
+
+.elemento-medo .MiniCard,
+.elemento-medo.MiniCard {
     background: #011324;
-    border: 1px solid #0f427e;
+    border: 2px solid #0f427e;
     box-shadow: 0 0 10px 1px #0f427e44;
 }
-.elemento-varia {
+
+.elemento-medo .MiniCard-nome,
+.elemento-medo.MiniCard .MiniCard-nome {
+    color: #005186;
+}
+
+.elemento-varia .MiniCard,
+.elemento-varia.MiniCard {
     background: #19171b;
+    border: 2px solid #42109D;
+    animation: varia-border-glow 6s linear infinite;
+}
+
+.elemento-varia .MiniCard-nome,
+.elemento-varia.MiniCard .MiniCard-nome {
+    animation: varia-nome-color 6s linear infinite;
+}
+
+/* ============================================================
+   MINICARD LATERAL (coluna direita — MiniCard.tsx)
+   ============================================================ */
+.MiniCard-lateral {
+    background: #18181A;
+    border: 1px solid #28272B;
+    color: #dadada;
+}
+
+.elemento-sangue.MiniCard-lateral {
+    background: #250814;
+    border: 1px solid #980100;
+    box-shadow: 0 0 12px 1px #98010055;
+}
+
+.elemento-sangue.MiniCard-lateral .Card-nome {
+    color: #b51128;
+}
+
+.elemento-sangue.MiniCard-lateral .info-titulo {
+    color: #97071a;
+}
+
+.elemento-morte.MiniCard-lateral {
+    background: #0f131b;
+    border: 1px solid #383b42;
+    box-shadow: 0 0 12px 1px #383b4266;
+}
+
+.elemento-morte.MiniCard-lateral .Card-nome {
+    color: #b8bcc3;
+}
+
+.elemento-morte.MiniCard-lateral .info-titulo {
+    color: #4e4d52;
+}
+
+.elemento-energia.MiniCard-lateral {
+    background: #02022c;
+    border: 1px solid #42109D;
+    box-shadow: 0 0 12px 1px #42109D66;
+}
+
+.elemento-energia.MiniCard-lateral .Card-nome {
+    color: #91207E;
+}
+
+.elemento-energia.MiniCard-lateral .info-titulo {
+    color: #14499e;
+}
+
+.elemento-conhecimento.MiniCard-lateral {
+    background: #19171b;
+    border: 1px solid #9e8123;
+    box-shadow: 0 0 12px 1px #9e812366;
+}
+
+.elemento-conhecimento.MiniCard-lateral .Card-nome {
+    color: #9e8123;
+}
+
+.elemento-conhecimento.MiniCard-lateral .info-titulo {
+    color: #8d540f;
+}
+
+.elemento-medo.MiniCard-lateral {
+    background: #011324;
+    border: 1px solid #0f427e;
+    box-shadow: 0 0 12px 1px #0f427e66;
+}
+
+.elemento-medo.MiniCard-lateral .Card-nome {
+    color: #005186;
+}
+
+.elemento-medo.MiniCard-lateral .info-titulo {
+    color: #0a3083;
+}
+
+.elemento-varia.MiniCard-lateral {
+    background: #19171b;
+    border: 1px solid #42109D;
+    animation: varia-border-glow 6s linear infinite;
+}
+
+.elemento-varia.MiniCard-lateral .Card-nome {
+    animation: varia-nome-color 6s linear infinite;
+}
+
+.elemento-varia.MiniCard-lateral .info-titulo {
+    animation: varia-nome-color 6s linear infinite;
+}
+
+/* ============================================================
+   MINICARD MODO
+   ============================================================ */
+
+.truncate{
+    color: #c1c1c1;
+}
+.elemento-sangue.bg-zinc-900,
+.elemento-sangue[class*="rounded-xl"] {
+    background: #250814 !important;
+    border: 1px solid #980100;
+    box-shadow: 0 0 12px 1px #98010055;
+}
+
+.elemento-morte.bg-zinc-900,
+.elemento-morte[class*="rounded-xl"] {
+    background: #0f131b !important;
+    border: 1px solid #383b42;
+    box-shadow: 0 0 12px 1px #383b4266;
+}
+
+.elemento-energia.bg-zinc-900,
+.elemento-energia[class*="rounded-xl"] {
+    background: #02022c !important;
+    border: 1px solid #42109D;
+    box-shadow: 0 0 12px 1px #42109D66;
+}
+
+.elemento-conhecimento.bg-zinc-900,
+.elemento-conhecimento[class*="rounded-xl"] {
+    background: #19171b !important;
+    border: 1px solid #9e8123;
+    box-shadow: 0 0 12px 1px #9e812366;
+}
+
+.elemento-medo.bg-zinc-900,
+.elemento-medo[class*="rounded-xl"] {
+    background: #011324 !important;
+    border: 1px solid #0f427e;
+    box-shadow: 0 0 12px 1px #0f427e66;
+}
+
+.elemento-varia.bg-zinc-900,
+.elemento-varia[class*="rounded-xl"] {
+    background: #19171b !important;
     border: 1px solid #42109D;
     animation: varia-border-glow 6s linear infinite;
 }

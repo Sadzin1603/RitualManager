@@ -6,8 +6,10 @@ import "./Principal.css";
 import MiniCard from "../components/MiniCard";
 import Modal from '../components/Modal'
 
+type ViewMode = "mini" | "card" | "lista";
+
 function Principal() {
-    const [open,setOpen] = useState([false,null,null])
+    const [open, setOpen] = useState([false, null, null])
     const [rituais, setRituais] = useState([]);
     const [openList, setOpenList] = useState<string | null>(null);
     const [elemento, setElemento] = useState("Todos");
@@ -15,6 +17,7 @@ function Principal() {
     const [execucao, setExecucao] = useState("Todos");
     const [alcance, setAlcance] = useState("Todos");
     const [searchNome, setSearchNome] = useState("");
+    const [viewMode, setViewMode] = useState<ViewMode>(localStorage.getItem('ListMode') || 'card');
 
     const [rituaisDoUsuario, setRituaisDoUsuario] = useState<any[]>([]);
 
@@ -137,26 +140,26 @@ function Principal() {
         setSearchNome("");
     };
 
-    async function deletar(id,creator){
-        try{
+    async function deletar(id, creator) {
+        try {
             const token = localStorage.getItem("token");
-            const res = await fetch(`http://localhost:3000/ritual/${id}`,{
-                method:"DELETE",
+            const res = await fetch(`http://localhost:3000/ritual/${id}`, {
+                method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    Ritual:creator.id
-                    },
-                body:creator
+                    Ritual: creator.id
+                },
+                body: creator
             })
             if (!res.ok) {
-                setOpen([false,null,null])
+                setOpen([false, null, null])
                 throw new Error("Erro ao deletar")
             }
-            setRituais(rituais.filter((ritual)=>{
-                return ritual.id == id ? false :  true
+            setRituais(rituais.filter((ritual) => {
+                return ritual.id == id ? false : true
             }))
-            setOpen([false,null,null])
-        }catch (err){
+            setOpen([false, null, null])
+        } catch (err) {
             console.log(err)
         }
     }
@@ -176,6 +179,53 @@ function Principal() {
                             Limpar
                         </button>
                     </nav>
+
+                    {/* Botões de visualização */}
+                    <div className="modo view-toggle-group">
+                        <button
+                            className={`view-toggle-btn ${viewMode === "mini" ? "active" : ""}`}
+                            onClick={() =>{
+                            localStorage.setItem('ListMode', "mini")    
+                            setViewMode("mini")}}
+                            aria-pressed={viewMode === "mini"}
+                            title="Mini"
+                        >
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
+                                <rect x="3" y="7" width="9" height="10" rx="1.5" />
+                                <line x1="15" y1="9" x2="21" y2="9" />
+                                <line x1="15" y1="12" x2="21" y2="12" />
+                                <line x1="15" y1="15" x2="21" y2="15" />
+                            </svg>
+                            Mini
+                        </button>
+                        <button
+                            className={`view-toggle-btn ${viewMode === "card" ? "active" : ""}`}
+                            onClick={() =>{ 
+                                localStorage.setItem('ListMode', "card")
+                                setViewMode("card")}}
+                            aria-pressed={viewMode === "card"}
+                            title="Card"
+                        >
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
+                                <rect x="4" y="3" width="16" height="18" rx="2.5" />
+                                <rect x="7" y="6" width="10" height="6" rx="1.5" fill="currentColor" opacity={0.2} stroke="currentColor" strokeWidth={1.2} />
+                                <line x1="7" y1="15" x2="17" y2="15" />
+                                <line x1="7" y1="18" x2="12" y2="18" />
+                            </svg>
+                            Card
+                        </button>
+                        <button
+                            className={`view-toggle-btn ${viewMode === "lista" ? "active" : ""}`}
+                            onClick={() =>{ 
+                                localStorage.setItem('ListMode', "lista")
+                                setViewMode("lista")}}
+                            aria-pressed={viewMode === "lista"}
+                            title="Lista"
+                        >
+                            <i className="ti ti-list" aria-hidden="true" />
+                            Lista
+                        </button>
+                    </div>
 
                     {/* Campo de pesquisa ritual*/}
                     <div className="div_pesquisa">
@@ -294,7 +344,7 @@ function Principal() {
                                 <button type="button" onClick={() => selectAlcance("Todos")}>Todos</button>
                                 <button className="alcance_pessoal" type="button" onClick={() => selectAlcance("Pessoal")}>Pessoal</button>
                                 <button className="alcance_toque" type="button" onClick={() => selectAlcance("Toque")}>Toque</button>
-                                <button className="alcance_curto" type="button" onClick={() => selectAlcance("Curto (9m)")}>Curto (9m)</button>
+                                <button className="alcance_curto" type={() => selectAlcance("Curto (9m)")}>Curto (9m)</button>
                                 <button className="alcance_medio" type="button" onClick={() => selectAlcance("Médio (18m)")}>Médio (18m)</button>
                                 <button className="alcance_longo" type="button" onClick={() => selectAlcance("Longo (36m)")}>Longo (36m)</button>
                                 <button className="alcance_extremo" type="button" onClick={() => selectAlcance("Extremo (90m)")}>Extremo (90m)</button>
@@ -306,35 +356,67 @@ function Principal() {
                 </div>
             </div>
 
-            <div className="flex flex-col items-center gap-4 flex-1">
-                {Array.from({ length: Math.ceil(rituaisFiltrados.length / 3) }, (_, rowIndex) => {
-                    const rowItems = rituaisFiltrados.slice(rowIndex * 3, rowIndex * 3 + 3);
-                    return (
-                        <div className="flex gap-4 justify-center" key={rowIndex}>
-                            {rowItems.map((ritual: any) => <Card key={ritual.id} ritual={ritual} onConfirm={()=>setOpen([true,ritual.id,ritual.creator])} />)}
-                        </div>
-                        
-                    );
-                })}
+            <div className="flex flex-col items-center gap-4 flex-1 w-full">
+                {viewMode === "lista" ? (
+                    /* Lista: 1 coluna centralizada */
+                    <div className="flex flex-col gap-3 w-full max-w-4xl">
+                        {rituaisFiltrados.map((ritual: any) => (
+                            <Card
+                                key={ritual.id}
+                                ritual={ritual}
+                                viewMode="lista"
+                                onConfirm={() => setOpen([true, ritual.id, ritual.creator])}
+                            />
+                        ))}
+                    </div>
+                ) : viewMode === "mini" ? (
+                    /* Mini: 2 colunas centralizadas */
+                    <div className="grid grid-cols-2 gap-4 w-[670px]">
+                        {rituaisFiltrados.map((ritual: any) => (
+                            <Card
+                                key={ritual.id}
+                                ritual={ritual}
+                                viewMode="mini"
+                                onConfirm={() => setOpen([true, ritual.id, ritual.creator])}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    /* Card: 3 por linha, centralizado */
+                    Array.from({ length: Math.ceil(rituaisFiltrados.length / 3) }, (_, rowIndex) => {
+                        const rowItems = rituaisFiltrados.slice(rowIndex * 3, rowIndex * 3 + 3);
+                        return (
+                            <div className="flex gap-4 justify-center" key={rowIndex}>
+                                {rowItems.map((ritual: any) => (
+                                    <Card
+                                        key={ritual.id}
+                                        ritual={ritual}
+                                        viewMode="card"
+                                        onConfirm={() => setOpen([true, ritual.id, ritual.creator])}
+                                    />
+                                ))}
+                            </div>
+                        );
+                    })
+                )}
             </div>
+
             <Modal
-                  isOpen={open[0]}
-                  title="Deletar Ritual"
-                  message="Tem certeza que deseja deletar esse ritual?"
-                  onConfirm={()=>deletar(open[1],open[2])}
-                  onCancel={() => setOpen([false,null,null])}
-              />
+                isOpen={open[0]}
+                title="Deletar Ritual"
+                message="Tem certeza que deseja deletar esse ritual?"
+                onConfirm={() => deletar(open[1], open[2])}
+                onCancel={() => setOpen([false, null, null])}
+            />
 
             <div className="div_Lateral space-y-5">
                 <div className="div_criar_ritual">
-                    {/* Botão Perfil */}
                     <button
                         className="criar_ritual"
                         onClick={() => navigate("/profile")}
                     >
                         Meu Perfil
                     </button>
-                    {/* Botão principal */}
                     <button
                         className="criar_ritual"
                         onClick={() => navigate("/rituais")}

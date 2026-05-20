@@ -126,10 +126,10 @@ export default function Ritual() {
           <InfoCard title="Alcance" value={ritual.range} />
           <InfoCard title="Alvo" value={ritual.target} />
           <InfoCard title="Duração" value={ritual.duration} />
+          <InfoCard title="Dados" value={ritual.dices} />
           <InfoCard title="Efeito" value={ritual.effect} />
           <InfoCard title="Resistência" value={ritual.resistence} />
           <InfoCard title="Área" value={ritual.area} />
-          <InfoCard title="Dados" value={ritual.dices} />
         </div>
 
         {/* DESCRIÇÃO */}
@@ -138,8 +138,8 @@ export default function Ritual() {
         </Section>
 
         {/* DISCENTE */}
-        {ritual.dice_discent && (
-          <div className="extra-dado">
+        {ritual.discent_dices && (
+          <div className="info-grid">
             <InfoCard title="Dados Discente" value={ritual.discent_dices} />
           </div>
         )}
@@ -150,8 +150,8 @@ export default function Ritual() {
         )}
 
         {/* VERDADEIRO */}
-        {ritual.dice_truly && (
-          <div className="extra-dado">
+        {ritual.truly_dices && (
+          <div className="info-grid">
             <InfoCard title="Dados Verdadeiro" value={ritual.truly_dices} />
           </div>
         )}
