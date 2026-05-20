@@ -21,7 +21,7 @@ export const create = async (file,ritual,status) => {
 
         imageUrl = publicUrlData.publicUrl;
     }
-    console.log(ritual)
+    
     const {data2,error2} = await supabase
                     .from('Rituais')
                     .insert({...ritual,img:imageUrl,status:status.status})
