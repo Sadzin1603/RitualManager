@@ -30,8 +30,8 @@ function Profile() {
         queryFn: fetchDataMyRituais,
     })
     async function fetchDataMyRituais() {
-        const token = localStorage.getItem("token");
-        const res = await fetch(`http://localhost:3000/user/${jwtDecode(token)?.id}/rituais`, {
+        const token = localStorage.getItem("token") || '';
+        const res = await fetch(`http://localhost:3000/user/${(jwtDecode(token)as any).id}/rituais`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         return await res.json();

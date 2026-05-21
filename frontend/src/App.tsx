@@ -1,20 +1,18 @@
 import { Routes, Route, Link, Navigate } from 'react-router-dom';
-import { jwtDecode } from "jwt-decode";
-import { useState, useEffect } from 'react';
-import Cadastro from "./pages/Cadastro";
-import Login from "./pages/Login";
-import Principal from "./pages/Principal";
-import Rituais from './pages/Rituais';
-import Admin from './pages/Admin';
-import Ritual from './pages/Ritual';
-import Profile from './pages/Profile';
+import { useState, useEffect, type ReactNode } from 'react';
+import Cadastro from "./pages/Cadastro.js";
+import Login from "./pages/Login.js";
+import Principal from "./pages/Principal.js";
+import Rituais from './pages/Rituais.js';
+import Admin from './pages/Admin.js';
+import Ritual from './pages/Ritual.js';
+import Profile from './pages/Profile.js';
 import "./App.css";
 
 function App() {
-
   const [loading, setLoading] = useState(true);
   const [islogado, setLogado] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
 
@@ -71,8 +69,14 @@ function App() {
     setLogado(false);
 
   }
-
-  function PrivateRoute({ children }) {
+  interface User {
+    id: string;
+    admin: boolean; 
+  }
+  interface PrivateRouteProps {
+    children: ReactNode;
+  }
+  function PrivateRoute({ children } : PrivateRouteProps) {
 
     if (loading) {
       return <p>Carregando...</p>;
@@ -83,12 +87,12 @@ function App() {
       : <Navigate to="/login" replace />;
   }
 
-  function AdminRoute({ children }) {
+  function AdminRoute({ children } : PrivateRouteProps) {
     if (loading) return <p className='text-xl'>Carregando ...</p>
 
     if (!islogado) return <Navigate to="/login" />
 
-    if (!user.admin) return <Navigate to="/principal" />
+    if (!user?.admin) return <Navigate to="/principal" />
 
     return children
   }
@@ -133,6 +137,7 @@ function App() {
         <div className="flex items-center gap-4">
           {islogado && (
             <Link
+              to="/login"
               className='bg-red-900 px-4 py-2 rounded text-white'
               onClick={logout}
             >
@@ -140,7 +145,7 @@ function App() {
             </Link>
           )}
 
-          {islogado && user.admin ? (
+          {islogado && user?.admin ? (
             <Link
               to="/admin"
               className="bg-red-900 px-4 py-2 rounded text-white"

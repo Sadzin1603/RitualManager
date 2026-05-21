@@ -4,21 +4,21 @@ import { createClient } from "@supabase/supabase-js";
 const supabase = createClient(process.env.SUPABASE_URL,process.env.SUPABASE_KEY)
 
 export const create = async (file,ritual,status) => {
-    const imageUrl=ritual.img;
+    let imageUrl=ritual.img;
     if(file){
         const date = Date.now()
         const { data, error } = await supabase.storage
-            .from("fotos_rituais")
-            .upload(`public/${date}${file.originalname}`, file.buffer);
-
+        .from("fotos_rituais")
+        .upload(`public/${date}${file.originalname}`, file.buffer);
+        
         if (error) {
             return res.status(500).json(error);
         }
-        const { data: publicUrlData } = supabase
-            .storage
-            .from("fotos_rituais")
-            .getPublicUrl(`public/${date}${file.originalname}`);
-
+        
+        const { data: publicUrlData } = await supabase.storage
+        .from("fotos_rituais")
+        .getPublicUrl(`public/${date}${file.originalname}`);
+        
         imageUrl = publicUrlData.publicUrl;
     }
     

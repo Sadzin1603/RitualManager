@@ -3,13 +3,12 @@ import { EyeIcon, EyeOffIcon } from "lucide-react";
 import {useNavigate} from "react-router-dom"
 import Input from "../components/Input"
 
-function Login({setLogado}){
+function Login({setLogado}: { setLogado: React.Dispatch<React.SetStateAction<boolean>> }) {
     const navigate = useNavigate();
-
-    const [email,setEmail] = useState<String>("")
-    const [password,setPassword] = useState<String>("")
-
+    const [email,setEmail] = useState<string>("")
+    const [password,setPassword] = useState<string>("")
     const [show, setShow] = useState<boolean>(false);//ver a senha
+
     function mostrar() {
         setShow(!show);
     }
@@ -45,14 +44,14 @@ function Login({setLogado}){
                     type="email"
                     placeholder="E-mail"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                 />
                 <div className="relative">
                     <input
                     type={show ? "text" : "password"}
                     placeholder="senha"
                     value={password}
-                    onChange={(event) => setPassword(event.target.value)}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
                     className="input px-4 py-2 rounded-2xl placeholder-gray-400 text-white w-full"
                     />
                     <span
@@ -72,15 +71,6 @@ function Login({setLogado}){
                 >
                     Logar
                 </button>
-                {/*<button
-                    className="input px-4 py-2 rounded-2xl placeholder-gray-400 text-white cursor-pointer"
-                    type="submit"
-                    onClick={
-                        teste
-                    }
-                >
-                    acessar o desconhecido
-                </button>*/}
             </div>
         </div>
     </div>

@@ -160,7 +160,6 @@ textarea.digitacao {
     max-height: 60vh;
     margin: 0;
     border-radius: 4px;
-    vertical-align: top;
 }
 
 /* ReactCrop */

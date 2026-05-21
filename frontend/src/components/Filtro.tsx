@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-function Filtro({rituais, setRituaisFiltrados, viewMode, setViewMode}){
+function Filtro({rituais, setRituaisFiltrados, viewMode, setViewMode} : { rituais: any[]; setRituaisFiltrados: (rituais: any[]) => void; viewMode: string; setViewMode: (mode: string) => void }) {
     const [openList, setOpenList] = useState<string | null>(null);
     const [elemento, setElemento] = useState("Todos");
     const [circulo, setCirculo] = useState("Todos");

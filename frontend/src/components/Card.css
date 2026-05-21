@@ -118,7 +118,6 @@
     color: #a1a1aa;
     line-height: 1.4;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     border-top: 2px solid #28272B;
