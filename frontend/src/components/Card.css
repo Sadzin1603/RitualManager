@@ -156,6 +156,9 @@
 .Card-nome {
     color: #dadada;
     margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .info-titulo {
