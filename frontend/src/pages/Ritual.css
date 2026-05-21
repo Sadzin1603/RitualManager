@@ -299,6 +299,12 @@
     font-size: 14px;
 }
 
+/* Extra dados */
+.extra-dado{
+    margin-top: 30px;
+    width: 210px;
+}
+
 /* ── Rodapé ────────────────────────────────────────────────────────────────── */
 
 .rodape {
