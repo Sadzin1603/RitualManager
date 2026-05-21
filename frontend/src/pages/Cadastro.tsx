@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Input from "../components/Input";
+import Input from "../components/Input.js";
 import { CheckIcon, EyeIcon, EyeOffIcon, XIcon } from "lucide-react";
 
 function Cadastro( ) {
@@ -44,20 +44,20 @@ function Cadastro( ) {
         type="text"
         placeholder="Nome"
         value={nome}
-        onChange={(event) => setNome(event.target.value)}
+        onChange={(event : React.ChangeEvent<HTMLInputElement>) => setNome(event.target.value)}
       />
       <Input
         type="email"
         placeholder="E-mail"
         value={email}
-        onChange={(event) => setEmail(event.target.value)}
+        onChange={(event : React.ChangeEvent<HTMLInputElement>) => setEmail(event.target.value)}
       />
       <div className="relative">
         <input
           type={show ? "text" : "password"}
           placeholder="senha"
           value={senha}
-          onChange={(event) => setSenha(event.target.value)}
+          onChange={(event : React.ChangeEvent<HTMLInputElement>) => setSenha(event.target.value)}
           className="input px-4 py-2 rounded-2xl placeholder-gray-400 text-white w-full"
         />
         <span
@@ -71,7 +71,6 @@ function Cadastro( ) {
       <button
         className="input px-4 py-2 rounded-2xl placeholder-gray-400 text-white cursor-pointer"
         type="submit"
-        placeholder="Nome"
         value="Cadastrar"
         onClick={async () => {
           if (!nome.trim() || !senha.trim() || !email.trim()) {

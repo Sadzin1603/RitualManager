@@ -1,4 +1,4 @@
-function Input(props) {
+function Input(props : React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
       {...props}

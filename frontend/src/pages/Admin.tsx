@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import Card from "../components/Card"
-import { useEffect, useState } from "react";
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 
 function Admin() {
@@ -27,15 +26,15 @@ function Admin() {
     const {mutateAsync:mudarStatus} = useMutation({
         mutationFn:changeAproved,
         onSuccess(_, variables) {
-        queryClient.setQueryData(['rituais_pendentes'], (data) => {
+        queryClient.setQueryData(['rituais_pendentes'], (data : any) => {
             return data.filter(
-                (ritual) => ritual.id !== variables.id
+                (ritual : any) => ritual.id !== variables.id
             )
             }
         )
         }
     })
-    async function changeAproved({id, status}) {
+    async function changeAproved({id, status} : {id:number, status:string}) {
         try {
             const token = localStorage.getItem("token");
             await fetch(`http://localhost:3000/admin/ritual/${id}/${status}`, {
@@ -45,7 +44,7 @@ function Admin() {
                 },
             })
 
-        } catch (err) {
+        } catch (err : any) {
             console.log(err.message)    
         }
     }
@@ -55,7 +54,7 @@ function Admin() {
     return (
         <div className="title w-auto min-h-screen flex justify-center p-6 items-start">
             <div className="flex w-auto flex-wrap justify-center items-start gap-10">
-                {rituais?.map((ritual) => (
+                {rituais?.map((ritual : any) => (
                     <div className="flex items-center p-1" key={ritual.id}>
                         <Card key={ritual.id} ritual={ritual}></Card>
                         <div className="flex flex-col justify-center pl-4 space-y-20">

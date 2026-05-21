@@ -1,4 +1,4 @@
-function Modal({isOpen,title,message,onConfirm,onCancel}) {
+function Modal({isOpen,title,message,onConfirm,onCancel} : {isOpen:boolean, title:string, message:string, onConfirm:() => void, onCancel:() => void}) {
 
     if (!isOpen) return null
 

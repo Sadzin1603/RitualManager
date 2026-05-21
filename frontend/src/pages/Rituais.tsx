@@ -1,10 +1,10 @@
-import { ChangeEvent, useRef, useState, useCallback, useEffect } from "react";
+import { type ChangeEvent, useRef, useState, useCallback, useEffect } from "react";
 import "./Rituais.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import ReactCrop, { Crop, PixelCrop, centerCrop, makeAspectCrop } from "react-image-crop";
+import ReactCrop, { type Crop, type PixelCrop, centerCrop, makeAspectCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import { AreaSelector } from "./Area-tela.tsx";
+import { AreaSelector } from "./Area-tela";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -186,8 +186,8 @@ function Rituais() {
     const [modalSrc, setModalSrc] = useState("");
     const [originalSrc, setOriginalSrc] = useState("");
     const [showModal, setShowModal] = useState(false);
-    const [crop, setCrop] = useState<Crop>();
-    const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
+    const [crop, setCrop] = useState<Crop>({unit: 'px', x: 44, y: 6, width: 352, height: 351});
+    const [completedCrop, setCompletedCrop] = useState<PixelCrop | undefined>({unit: 'px', x: 44, y: 6, width: 352, height: 351});
 
     // Dropdown
     const [openList, setOpenList] = useState<string | null>(null);
@@ -241,9 +241,8 @@ function Rituais() {
     const handlePreviewClick = () => {
         if (!originalSrc) { uploadRef.current?.click(); return; }
         setModalSrc(`${originalSrc}#${Date.now()}`);
-        setCrop(undefined);
-        setCompletedCrop(undefined);
         setShowModal(true);
+        
     };
 
     const handleUploadChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -254,8 +253,6 @@ function Rituais() {
             const src = e.target?.result as string;
             setOriginalSrc(src);
             setModalSrc(`${src}#${Date.now()}`);
-            setCrop(undefined);
-            setCompletedCrop(undefined);
             setShowModal(true);
         };
         reader.readAsDataURL(file);
@@ -355,7 +352,7 @@ function Rituais() {
 
         formData.append("name", name);
         formData.append("element", elemento);
-        formData.append("circle", CIRCULO_TEXT[circulo]);
+        formData.append("circle", CIRCULO_TEXT[circulo] ?? circulo);
         formData.append("exec", execucao);
         formData.append("range", alcance);
         formData.append("duration", duracaoInput);
