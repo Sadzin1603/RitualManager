@@ -36,9 +36,11 @@ function Profile() {
             });
             return await res.json(); 
     }
+    //─────────────────────────────────────────────────────────────────────────
     //Configurar Filtro
     const [viewMode, setViewMode] = useState<ViewMode>(localStorage.getItem('ListMode') || 'card');
     const [rituaisDoUsuarioFiltrados,setRituaisFiltrados] = useState([])
+    //─────────────────────────────────────────────────────────────────────────
 
     return (
         <div className="title w-auto min-h-screen flex justify-around p-8 gap-3">
