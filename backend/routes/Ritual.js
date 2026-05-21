@@ -25,6 +25,6 @@ router
     .route("/:id")
     .get(verifyToken,controller.getId)//pego a porra do ritual com base no id (aprovado)
     .put(upload.single("file"),controller.put)//editar a porra do ritual
-    .delete(verifyToken,(verifyOwner||verifyAdmin),controller.delete)//deleta a porra do ritual (admin)
+    .delete(verifyToken,verifyAdmin,controller.delete)//deleta a porra do ritual (admin)
 
 export default router;
