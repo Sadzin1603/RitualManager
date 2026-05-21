@@ -188,9 +188,7 @@ function App() {
           />
 
           <Route path="/ritual/:id" element={
-            <PrivateRoute>
               <Ritual />
-            </PrivateRoute>
           }
           />
 

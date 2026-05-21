@@ -20,16 +20,19 @@ export const pegar = async (params) => {
 };
 
 export const pegarId = async (id,user) => {
-    if(id == null || !user){
+    if(id == null){
         throw new Error("Missing fields");
     }
     
     const {data ,error} = await getAll({id})
-    
-    if(data[0].status == "aprovado" || (user.admin || user.id==data[0].creator.id)){
-        
-    }else{
-        return {"message":"NotFound"};
+
+    if(data[0].status != "aprovado"){//pera
+        if(!user){
+            return {"message":"NotFound"};
+        }
+        if(!user.admin || !user.id==data[0].creator.id){
+            return {"message":"NotFound"};
+        }
     }
 
     return await data
