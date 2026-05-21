@@ -3,7 +3,7 @@ export function Loader({ loading = true, size = 80 }) {
 
     return (
         <img
-            src="src/components/loader.png"
+            src="src/assets/loader.png"
             alt="carregando"
             style={{
                 width: size,
