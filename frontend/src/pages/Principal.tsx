@@ -4,8 +4,9 @@ import { jwtDecode } from 'jwt-decode'
 import { useState } from "react";
 import "./Principal.css";
 import MiniCard from "../components/MiniCard";
-import{useQuery} from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import Filtro from '../components/Filtro'
+import { Loader } from "../components/Loader";
 
 
 type ViewMode = "mini" | "card" | "lista";
@@ -17,34 +18,33 @@ function Principal() {
     const token = localStorage.getItem("token");
     const userId = token ? (jwtDecode(token) as any)?.id : null;
 
-    const {data:rituais} = useQuery({
+    const { data: rituais, isLoading } = useQuery({
         queryKey: ['rituais_aprovados'],
         queryFn: fetchDataRituais,
     })
     async function fetchDataRituais() {
-            const res = await fetch("http://localhost:3000/ritual");
-            if (!res.ok) {
-                throw new Error("Erro ao buscar rituais");
-            }
-
-            return await res.json();
-            
+        const res = await fetch("http://localhost:3000/ritual");
+        if (!res.ok) {
+            throw new Error("Erro ao buscar rituais");
+        }
+        return await res.json();
     }
-    const {data:meus_rituais} = useQuery({
+
+    const { data: meus_rituais, isLoading: isLoadingMeus } = useQuery({
         queryKey: ['meus_rituais'],
         queryFn: fetchDataMyRituais,
     })
     async function fetchDataMyRituais() {
-            const token = localStorage.getItem("token");
-            const res = await fetch(`http://localhost:3000/user/${userId}/rituais`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            return await res.json(); 
+        const token = localStorage.getItem("token");
+        const res = await fetch(`http://localhost:3000/user/${userId}/rituais`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return await res.json();
     }
     // ─────────────────────────────────────────────────────────────────────────
     //Configurar Filtro
-    const [viewMode, setViewMode] = useState<ViewMode>(localStorage.getItem('ListMode') || 'card');
-    const [rituaisFiltrados,setRituaisFiltrados] = useState([])
+    const [viewMode, setViewMode] = useState<ViewMode>(localStorage.getItem('ListMode') as ViewMode || 'card');
+    const [rituaisFiltrados, setRituaisFiltrados] = useState([])
     // ─────────────────────────────────────────────────────────────────────────
 
     return (
@@ -52,17 +52,20 @@ function Principal() {
 
             <div className="div_Lateral">
                 {/* Filtros */}
-                <Filtro 
+                <Filtro
                     rituais={rituais}
                     setRituaisFiltrados={setRituaisFiltrados}
                     viewMode={viewMode}
                     setViewMode={setViewMode}
-
                 />
             </div>
 
             <div className="flex flex-col items-center gap-4 flex-1 w-full">
-                {viewMode === "lista" ? (
+                {isLoading ? (
+                    <div className="flex items-center justify-center w-full min-h-[400px]">
+                        <Loader loading={true} size={500} />
+                    </div>
+                ) : viewMode === "lista" ? (
                     <div className="flex flex-col gap-3 w-full max-w-4xl">
                         {rituaisFiltrados?.map((ritual: any) => (
                             <Card
@@ -116,9 +119,15 @@ function Principal() {
                     </button>
                 </div>
                 <div>
-                    {meus_rituais?.map((ritual: any) => (
-                        <MiniCard key={ritual.id} ritual={ritual} />
-                    ))}
+                    {isLoading ? (
+                        <div className="flex items-center justify-center w-full min-h-[200px]">
+                            <Loader loading={true} size={250} />
+                        </div>
+                    ) : (
+                        meus_rituais?.map((ritual: any) => (
+                            <MiniCard key={ritual.id} ritual={ritual} />
+                        ))
+                    )}
                 </div>
             </div>
         </div>
