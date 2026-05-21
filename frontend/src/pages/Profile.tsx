@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import Card from "../components/Card";
 import MiniCard from "../components/MiniCard";
 import { jwtDecode } from "jwt-decode";
@@ -10,7 +10,7 @@ import Filtro from "../components/Filtro";
 type ViewMode = "mini" | "card" | "lista";
 
 function Profile() {
-    //─────────────────────────────────────────────────────────────────────────
+    const navigate = useNavigate();
     //PEGAR RITUAIS
     const {data:rituais} = useQuery({
         queryKey: ['rituais_aprovados'],
