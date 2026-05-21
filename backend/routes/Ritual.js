@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from "multer";
 import controller from '../controllers/RitualController.js'
-import {verifyToken} from '../middlewares/AuthMiddleware.js'
+import {verifyToken,verifyTokenLite} from '../middlewares/AuthMiddleware.js'
 import {verifyAdmin} from '../middlewares/AdminMiddleware.js'
 import {verifyOwner} from '../middlewares/OwnerMiddleware.js'
 
@@ -23,8 +23,8 @@ router
 
 router
     .route("/:id")
-    .get(verifyToken,controller.getId)//pego a porra do ritual com base no id (aprovado)
-    .put(upload.single("file"),controller.put)//editar a porra do ritual
-    .delete(verifyToken,(verifyOwner||verifyAdmin),controller.delete)//deleta a porra do ritual (admin)
+    .get(verifyTokenLite,controller.getId)//pego a porra do ritual com base no id (aprovado)
+    .put(verifyToken,(verifyOwner || verifyAdmin),upload.single("file"),controller.put)//editar a porra do ritual
+    .delete(verifyToken,verifyAdmin,controller.delete)//deleta a porra do ritual (admin)
 
 export default router;

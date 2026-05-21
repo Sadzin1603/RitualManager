@@ -8,7 +8,7 @@ export const create = async (file,ritual,status) => {
     if(file){
         const date = Date.now()
         const { data, error } = await supabase.storage
-        .from("fotos_rituais")
+        .from("imgs_rituais")
         .upload(`public/${date}${file.originalname}`, file.buffer);
         
         if (error) {
@@ -16,7 +16,7 @@ export const create = async (file,ritual,status) => {
         }
         
         const { data: publicUrlData } = await supabase.storage
-        .from("fotos_rituais")
+        .from("imgs_rituais")
         .getPublicUrl(`public/${date}${file.originalname}`);
         
         imageUrl = publicUrlData.publicUrl;
@@ -62,7 +62,7 @@ export const editOne = async (file,id,ritual) => {
     if(file){
         const date = Date.now()
         const { data, error } = await supabase.storage
-            .from("fotos_rituais")
+            .from("imgs_rituais")
             .upload(`public/${date}${file.originalname}`, file.buffer);
 
         if (error) {
