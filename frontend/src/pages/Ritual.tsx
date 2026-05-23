@@ -96,6 +96,7 @@ export default function Ritual() {
     formData.append("discent_dices", ritual?.discent_dices);
     formData.append("truly_dices", ritual?.truly_dices)
     formData.append("creator", decoded.id);
+    formData.append("status", ritual?.status);
 
     formData.append("img", ritual?.img);
     try {
@@ -167,7 +168,7 @@ export default function Ritual() {
                 </button>
                 : ""}
               {/*   Botão de copiar   */}
-              {ritual?.status == 'aprovado' ?
+              {decodedToken ?
               <button className="absolute top-[-1.8rem] right-[-1.5rem] bg-[#0c0c0c] rounded-lg p-2" onClick={() => setOpen(true)}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6" >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 8.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v8.25A2.25 2.25 0 0 0 6 16.5h2.25m8.25-8.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-7.5A2.25 2.25 0 0 1 8.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 0 0-2.25 2.25v6" />

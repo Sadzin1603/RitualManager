@@ -35,12 +35,12 @@ export const verifyTokenLite = (req, res, next) => {
 
    const authHeader = req.headers.authorization;
 
-   if (!authHeader) {
+   const token = authHeader.split(" ")[1];
+
+   if (!token) {
       next();
       return;
    }
-
-   const token = authHeader.split(" ")[1];
 
    try {
 
