@@ -1,4 +1,4 @@
-import {getById,changeOne,deleteOne,getRituais} from '../services/UserServices.js'
+import {getById,changeOne,deleteOne,getRituais,getRituaisFavorites} from '../services/UserServices.js'
 
 export default {
     get: async (req,res) =>{
@@ -30,6 +30,14 @@ export default {
             const rituais = await getRituais(req.params.id)
             return res.json(rituais)
         }catch (err ){
+            return res.status(400).json({error:err.message})
+        }
+    },
+    getRituaisFavorites : async (req,res) => {
+        try{
+            const rituais = await getRituaisFavorites(req.params.id)
+            return res.json(rituais)
+        } catch ( err ){
             return res.status(400).json({error:err.message})
         }
     }
