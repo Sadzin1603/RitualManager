@@ -27,4 +27,8 @@ router
     .put(verifyToken,(verifyOwner || verifyAdmin),upload.single("file"),controller.put)//editar a porra do ritual
     .delete(verifyToken,verifyAdmin,controller.delete)//deleta a porra do ritual (admin)
 
+router
+    .route("/:id/favorite")
+    .post(verifyToken,controller.favorite)
+
 export default router;

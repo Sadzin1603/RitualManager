@@ -10,9 +10,6 @@ export default function Ritual() {
   const { id } = useParams();
   const [token, setToken] = useState<string>(localStorage.getItem('token') || '')
   const [decodedToken, setDecodedToken] = useState<any|null>(token ?jwtDecode(token) : null)
-  const [openModalDelete, setOpenModalDelete] = useState(false)
-  const [open, setOpen] = useState(false)
-  const [openModalExclude, setOpenModalExclude] = useState(false)
 
   const { data: ritual } = useQuery({
     queryKey: ['ritual', id],
@@ -64,7 +61,7 @@ export default function Ritual() {
         },
         body: formData,
       });
-      setOpenModalDelete(false)
+      setModal([false,'','',()=>{}])
       navigate("/profile")
     } catch (err) {
       console.log(err instanceof Error ? err.message : err)
@@ -96,6 +93,7 @@ export default function Ritual() {
     formData.append("discent_dices", ritual?.discent_dices);
     formData.append("truly_dices", ritual?.truly_dices)
     formData.append("creator", decoded.id);
+    formData.append("status", ritual?.status);
 
     formData.append("img", ritual?.img);
     try {
@@ -103,14 +101,14 @@ export default function Ritual() {
         method: "POST",
         body: formData,
       });
-      setOpen(false)
+      setModal([false,'','',()=>{}])
       navigate("/profile")
     } catch (err) {
       console.log(err instanceof Error ? err.message : err)
     }
   }
 
-  const { mutateAsync: exclude } = useMutation({
+  const { mutateAsync: excluir } = useMutation({
     mutationFn: excluirRitual
   })
   async function excluirRitual() {
@@ -125,6 +123,26 @@ export default function Ritual() {
     } catch (err : any) {
       console.log(err.message)
     }
+  }
+  const {mutateAsync: favoritar} = useMutation({
+    mutationFn: favoritarRitual
+  })
+  async function favoritarRitual(){
+    try {
+      const res = await fetch(`http://localhost:3000/ritual/${ritual.id}/favorite`,{
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+    }catch (err : any) {
+      console.log(err.message)
+    }
+  }
+
+  const [modal,setModal] = useState<[boolean,string,string,()=>void]>([false,'','',()=>{}])
+  function openModal(title:string,message:string,onConfirm:()=>void){
+    setModal([true,title,message,onConfirm])
   }
   return (
     <div
@@ -167,8 +185,8 @@ export default function Ritual() {
                 </button>
                 : ""}
               {/*   Botão de copiar   */}
-              {ritual?.status == 'aprovado' ?
-              <button className="absolute top-[-1.8rem] right-[-1.5rem] bg-[#0c0c0c] rounded-lg p-2" onClick={() => setOpen(true)}>
+              {decodedToken ?
+              <button className="absolute top-[-1.8rem] right-[-1.5rem] bg-[#0c0c0c] rounded-lg p-2" onClick={() => openModal("Copiar Rtual","Tem certeza que deseja copiar esse ritual?",copiar)}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6" >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 8.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v8.25A2.25 2.25 0 0 0 6 16.5h2.25m8.25-8.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-7.5A2.25 2.25 0 0 1 8.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 0 0-2.25 2.25v6" />
                 </svg>
@@ -176,40 +194,34 @@ export default function Ritual() {
               : ""}
               {/*   Botão de deletar   */}
               {ritual?.creator.id == decodedToken?.id ?
-                <button className="absolute top-[-1.8rem] right-[4.5rem] bg-[#0c0c0c] rounded-lg p-2" onClick={() => setOpenModalDelete(true)}>
+                <button className="absolute top-[-1.8rem] right-[4.5rem] bg-[#0c0c0c] rounded-lg p-2" onClick={() => openModal("Deletar Rtual","Tem certeza que deseja deletar esse ritual?",deletar)} >
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 text-red-500" >
                     <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                   </svg>
                 </button>
                 : ""}
-              <Modal
-                isOpen={open}
-                title="Copiar Ritual"
-                message="Tem certeza que deseja copiar esse ritual?"
-                onConfirm={copiar}
-                onCancel={() => setOpen(false)}
-              />
-              <Modal
-                isOpen={openModalDelete}
-                title="Deletar Ritual!!!"
-                message="Tem certeza que deseja deletar esse ritual?"
-                onConfirm={deletar}
-                onCancel={() => setOpenModalDelete(false)}
-              />
               {/*   Botão de EXCLUIR   */}
               {decodedToken?.admin ?
-                <button className="absolute top-[-1.8rem] right-[7.5rem] bg-[#ef4444] rounded-lg p-2" onClick={() => setOpenModalExclude(true)}>
+                <button className="absolute top-[-1.8rem] right-[7.5rem] bg-[#ef4444] rounded-lg p-2" onClick={() => openModal("Excluir Rtual","Tem certeza que deseja excluir esse ritual? Essa ação é irreversível!",excluir)}>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 text-[#0c0c0c]" >
                     <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                   </svg>
                 </button>
                 : ""}
+                {/*   Botão de favoritar   */}
+              {decodedToken ?
+              <button className="absolute top-[-1.8rem] right-[10.5rem] bg-[#0c0c0c] rounded-lg p-2" onClick={()=>favoritar()} >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6" >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.239-4.5-5-4.5-1.74 0-3.273.8-4 2.019-.727-1.22-2.26-2.019-4-2.019-2.761 0-5 2.015-5 4.5 0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                </svg>
+              </button>
+              : ""}
               <Modal
-                isOpen={openModalExclude}
-                title="EXCLUIR RITUAL!!!"
-                message="Tem certeza que deseja EXCLUIR PERMANENTEMENTE esse ritual?"
-                onConfirm={exclude}
-                onCancel={() => setOpenModalExclude(false)}
+                isOpen={modal[0]}
+                title={modal[1]}
+                message={modal[2]}
+                onConfirm={modal[3]}
+                onCancel={() => setModal([false,'','',()=>{}])}
               />
             </div>
           </div>

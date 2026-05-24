@@ -1,4 +1,4 @@
-import {create,pegar,pegarId,changeById,deleteById} from '../services/RitualServices.js'
+import {create,pegar,pegarId,changeById,deleteById, favoriteRitual} from '../services/RitualServices.js'
 export default {
     post: async (req,res) =>{
         try {
@@ -18,7 +18,7 @@ export default {
     },
     copy: async(req,res)=>{
         try {
-            const rituais = await create(req.body.file,req.body,{"status":"aprovado"});
+            const rituais = await create(req.body.file,req.body,{"status":req.body.status});
             return res.json({"message":"ritual copiado"});
         } catch (err) {
             return res.status(400).json({ error: err.message });
@@ -54,6 +54,14 @@ export default {
             return res.json({"message":"deleted"})
         }catch (err){
             return res.status(400).json({message:err.message})
+        }
+    },
+    favorite : async (req,res) =>{
+        try{
+            const favorito = await favoriteRitual(req.params.id,req.user.id)
+            return res.json({"message":"favorito adicionado"})
+        }catch (error){
+            return res.status(400).json({error: error.message})
         }
     }
 }

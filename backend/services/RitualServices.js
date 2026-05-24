@@ -1,4 +1,5 @@
 import {create as createRitualModel,getAll,changeOne,deleteOne,editOne} from '../models/RitualModel.js'
+import {create as createFavoriteModel} from '../models/FavoriteModel.js'
 
 export const create = async (file,ritual,status) => {
     if (!ritual) {
@@ -30,7 +31,7 @@ export const pegarId = async (id,user) => {
         if(!user){
             return {"message":"NotFound"};
         }
-        if(!user.admin || !user.id==data[0].creator.id){
+        if(user.admin == true || user.id != data[0].creator.id){
             return {"message":"NotFound"};
         }
     }
@@ -52,4 +53,12 @@ export const deleteById = async (id) => {
     }
 
     return await deleteOne(id)
+}
+
+export const favoriteRitual = async (id,userId) =>{
+    if(!id || !userId){
+        throw new Error("Missing fields")
+    }
+
+    return await createFavoriteModel(id,userId)
 }

@@ -15,4 +15,8 @@ router
     .route("/:id/rituais")
     .get(controller.getRituais)//pega os rituais feitos pela pessoa
 
+router
+    .route("/:id/rituais/favorites")
+    .get(controller.getRituaisFavorites)//pega os rituais favoritados pela pessoa
+
 export default router;
