@@ -3,8 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import Modal from '../components/Modal.js'
 import "./Ritual.css";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { queryClient } from "../lib/react-querty.js";
+import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 
 export default function Ritual() {
   const navigate = useNavigate();
@@ -135,7 +135,7 @@ export default function Ritual() {
   const { mutateAsync: favoritar } = useMutation({
     mutationFn: favoritarRitual,
     onSuccess: () => {
-    queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: ['ritual', id]
       })
     }
@@ -155,7 +155,7 @@ export default function Ritual() {
   const { mutateAsync: desfavoritar } = useMutation({
     mutationFn: desfavoritarRitual,
     onSuccess: () => {
-    queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: ['ritual', id]
       })
     }
@@ -192,27 +192,73 @@ export default function Ritual() {
       }
       return res.json()
     }
-  }) 
+  })
 
   const { mutateAsync: comentar } = useMutation({
     mutationFn: comentarRitual,
     onSuccess: () => {
-    queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: ['comments', id]
       })
     }
   })
   async function comentarRitual() {
     try {
-      if(!comment.trim()) return;
+      if (!comment.trim()) return;
       const res = await fetch(`http://localhost:3000/comments/${id}`, {
         method: "POST",
-        headers:{ 'Content-Type': 'application/json',Authorization: `Bearer ${token}` },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ comentario: comment })
       })
       setComment('')
     } catch (err: any) {
-      
+
+      console.log(err.message)
+    }
+  }
+
+  const queryClient = useQueryClient()
+
+  const { data: rituais } = useQuery({
+    queryKey: ['rituais_pendentes'],
+    queryFn: fetchData2
+  })
+
+  async function fetchData2() {
+    const token = localStorage.getItem("token");
+    const res = await fetch(
+      "http://localhost:3000/admin/rituals/pending",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    return await res.json();
+
+  }
+  const { mutateAsync: mudarStatus } = useMutation({
+    mutationFn: changeAproved,
+    onSuccess(_, variables) {
+      queryClient.setQueryData(['rituais_pendentes'], (data: any) => {
+        return data.filter(
+          (ritual: any) => ritual.id !== variables.id
+        )
+      }
+      )
+    }
+  })
+  async function changeAproved({ id, status }: { id: number, status: string }) {
+    try {
+      const token = localStorage.getItem("token");
+      await fetch(`http://localhost:3000/admin/ritual/${id}/${status}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+    } catch (err: any) {
       console.log(err.message)
     }
   }
@@ -249,9 +295,23 @@ export default function Ritual() {
               </p>
             </div>
             <div className="div-botoes absolute right-3 top-3">
+              {/*   Botão de favoritar   */}
+              {decodedToken ?
+                ritual?.favorited ?
+                  <button className="absolute top-[-1.8rem] right-[-1.5rem] bg-[#0c0c0c] rounded-lg p-2" onClick={() => desfavoritar()} >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="red" viewBox="0 0 24 24" strokeWidth={1.5} stroke="red" className="size-6" >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.239-4.5-5-4.5-1.74 0-3.273.8-4 2.019-.727-1.22-2.26-2.019-4-2.019-2.761 0-5 2.015-5 4.5 0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                    </svg>
+                  </button>
+                  : <button className="absolute top-[-1.8rem] right-[-1.5rem] bg-[#0c0c0c] rounded-lg p-2" onClick={() => favoritar()} >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6" >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.239-4.5-5-4.5-1.74 0-3.273.8-4 2.019-.727-1.22-2.26-2.019-4-2.019-2.761 0-5 2.015-5 4.5 0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                    </svg>
+                  </button>
+                : ""}
               {/* Botão de link */}
               {decodedToken ?
-                <button className="absolute top-[-1.8rem] right-[-1.5rem] bg-[#0c0c0c] rounded-lg p-2" onClick={handleShare}>
+                <button className="absolute top-[-1.8rem] right-[1.5rem] bg-[#0c0c0c] rounded-lg p-2" onClick={handleShare}>
                   {link && (
                     <span className="absolute top-[-2rem] right-[-2rem] bg-green-600 text-white text-xs px-2 py-1 rounded w-[100px]">
                       Link Copiado
@@ -264,7 +324,7 @@ export default function Ritual() {
                 : ""}
               {/*   Botão de copiar   */}
               {decodedToken ?
-                <button className="absolute top-[-1.8rem] right-[1.5rem] bg-[#0c0c0c] rounded-lg p-2" onClick={() => openModal("Copiar Rtual", "Tem certeza que deseja copiar esse ritual?", copiar)}>
+                <button className="absolute top-[-1.8rem] right-[4.5rem] bg-[#0c0c0c] rounded-lg p-2" onClick={() => openModal("Copiar Rtual", "Tem certeza que deseja copiar esse ritual?", copiar)}>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" color="blue" strokeWidth={1.5} stroke="currentColor" className="size-6" >
                     <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 8.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v8.25A2.25 2.25 0 0 0 6 16.5h2.25m8.25-8.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-7.5A2.25 2.25 0 0 1 8.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 0 0-2.25 2.25v6" />
                   </svg>
@@ -272,7 +332,7 @@ export default function Ritual() {
                 : ""}
               {/*   Botão de editar   */}
               {ritual?.creator.id == decodedToken?.id ?
-                <button className="absolute top-[-1.8rem] right-[4.5rem] bg-[#0c0c0c] rounded-lg p-2" onClick={() => navigate("/rituais", { state: ritual })} >
+                <button className="absolute top-[-1.8rem] right-[7.5rem] bg-[#0c0c0c] rounded-lg p-2" onClick={() => navigate("/rituais", { state: ritual })} >
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} color="green" stroke="currentColor" className="size-6">
                     <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                   </svg>
@@ -280,33 +340,19 @@ export default function Ritual() {
                 : ""}
               {/*   Botão de deletar   */}
               {ritual?.creator.id == decodedToken?.id ?
-                <button className="absolute top-[-1.8rem] right-[7.5rem] bg-[#0c0c0c] rounded-lg p-2" onClick={() => openModal("Deletar Rtual", "Tem certeza que deseja deletar esse ritual?", deletar)} >
+                <button className="absolute top-[-1.8rem] right-[10.5rem] bg-[#0c0c0c] rounded-lg p-2" onClick={() => openModal("Deletar Rtual", "Tem certeza que deseja deletar esse ritual?", deletar)} >
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 text-red-500" >
                     <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                   </svg>
                 </button>
                 : ""}
-              {/*   Botão de EXCLUIR   */}
+              {/*   Botão de Desaprovar   */}
               {decodedToken?.admin ?
-                <button className="absolute top-[-1.8rem] right-[10.5rem] bg-[#ef4444] rounded-lg p-2" onClick={() => openModal("Excluir Rtual", "Tem certeza que deseja excluir esse ritual? Essa ação é irreversível!", excluir)}>
+                <button className="absolute top-[-1.8rem] right-[13.5rem] bg-[#ef4444] rounded-lg p-2" onClick={() => { openModal("Desaprovar ritual", "Tem certeza que deseja desaprovar esse ritual?", () => mudarStatus({ "id": ritual.id, "status": "reprovado" })) }}>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 text-[#0c0c0c]" >
                     <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                   </svg>
                 </button>
-                : ""}
-              {/*   Botão de favoritar   */}
-              {decodedToken ?
-                  ritual?.favorited ?
-                  <button className="absolute top-[-1.8rem] right-[13.5rem] bg-[#0c0c0c] rounded-lg p-2" onClick={() => desfavoritar()} >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="red" viewBox="0 0 24 24" strokeWidth={1.5} stroke="red" className="size-6" >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.239-4.5-5-4.5-1.74 0-3.273.8-4 2.019-.727-1.22-2.26-2.019-4-2.019-2.761 0-5 2.015-5 4.5 0 7.22 9 12 9 12s9-4.78 9-12Z" />
-                    </svg>
-                  </button>
-                      : <button className="absolute top-[-1.8rem] right-[13.5rem] bg-[#0c0c0c] rounded-lg p-2" onClick={() => favoritar()} >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6" >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.239-4.5-5-4.5-1.74 0-3.273.8-4 2.019-.727-1.22-2.26-2.019-4-2.019-2.761 0-5 2.015-5 4.5 0 7.22 9 12 9 12s9-4.78 9-12Z" />
-                    </svg>
-                  </button>
                 : ""}
               <Modal
                 isOpen={modal[0]}
@@ -368,9 +414,9 @@ export default function Ritual() {
 
       </div>
       {/* COMENTARIOS */}
-      <div className=" w-[40%] max-w-2xl p-6">
+      <div className=" w-[40%] max-w-2xl ml-[2%]">
         <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
-          
+
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-bold text-white">
               Comentários
@@ -414,7 +460,7 @@ export default function Ritual() {
               rounded-xl
               font-medium
             "
-            onClick={()=>comentar()}
+            onClick={() => comentar()}
           >
             Comentar
           </button>

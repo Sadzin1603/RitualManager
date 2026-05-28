@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { jwtDecode } from 'jwt-decode';
 
 function Filtro({rituais, setRituaisFiltrados, viewMode, setViewMode} : { rituais: any[]; setRituaisFiltrados: (rituais: any[]) => void; viewMode: string; setViewMode: (mode: string) => void }) {
     const [openList, setOpenList] = useState<string | null>(null);
@@ -7,6 +9,24 @@ function Filtro({rituais, setRituaisFiltrados, viewMode, setViewMode} : { rituai
     const [execucao, setExecucao] = useState("Todos");
     const [alcance, setAlcance] = useState("Todos");
     const [searchNome, setSearchNome] = useState("");
+    const [somenteFavoritos, setSomenteFavoritos] = useState(false);
+
+    const { data: rituaisFavoritados } = useQuery({
+        queryKey: ['rituais_favoritados'],
+        queryFn: async () => {
+            const token = localStorage.getItem("token") || '';
+            const res = await fetch(`http://localhost:3000/user/${(jwtDecode(token) as any).id}/rituais/favorites`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            return res.json();
+        },
+        enabled: somenteFavoritos,
+    });
+
+    const favoritosIds = useMemo(
+        () => new Set((rituaisFavoritados || []).map((r: any) => r.id)),
+        [rituaisFavoritados]
+    );
 
     const circuloValor: Record<string, string> = {
         "1° Circulo (1 PE)": "1°",
@@ -78,6 +98,7 @@ function Filtro({rituais, setRituaisFiltrados, viewMode, setViewMode} : { rituai
         setExecucao("Todos");
         setAlcance("Todos");
         setSearchNome("");
+        setSomenteFavoritos(false);
     };
 
     useEffect(() => {
@@ -102,12 +123,16 @@ function Filtro({rituais, setRituaisFiltrados, viewMode, setViewMode} : { rituai
             alcance === "Todos" ||
             ritual.range === alcance;
 
-        return (passaNome &&passaElem &&passaCirculo &&passaExecucao &&passaAlcance
+        const passaFavoritos =
+            !somenteFavoritos ||
+            favoritosIds.has(ritual.id);
+
+        return (passaNome && passaElem && passaCirculo && passaExecucao && passaAlcance && passaFavoritos
         );
     });
 
     setRituaisFiltrados(filtrados || []);
-}, [rituais, searchNome, elemento, circulo, execucao, alcance]);
+}, [rituais, searchNome, elemento, circulo, execucao, alcance, somenteFavoritos, favoritosIds]);
     return(
         <div className="div_filtros">
                     {/* Header */}
@@ -165,6 +190,7 @@ function Filtro({rituais, setRituaisFiltrados, viewMode, setViewMode} : { rituai
                         </button>
                     </div>
 
+                    <div className='flex'>
                     {/* Campo de pesquisa ritual*/}
                     <div className="div_pesquisa">
                         <input
@@ -177,6 +203,18 @@ function Filtro({rituais, setRituaisFiltrados, viewMode, setViewMode} : { rituai
                         <button>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="icone_pesquisa">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    {/* Botão de faforitos */}
+                    <button
+                            className={`bg-[#0c0c0c] rounded-lg p-2 mt-2 ml-2 ${somenteFavoritos ? "ring-1 ring-red-500" : ""}`}
+                            onClick={() => setSomenteFavoritos((prev) => !prev)}
+                            title="Somente favoritos"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill={somenteFavoritos ? "red" : "none"} viewBox="0 0 24 24" strokeWidth={1.5} stroke={somenteFavoritos ? "red" : "currentColor"} className="size-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.239-4.5-5-4.5-1.74 0-3.273.8-4 2.019-.727-1.22-2.26-2.019-4-2.019-2.761 0-5 2.015-5 4.5 0 7.22 9 12 9 12s9-4.78 9-12Z" />
                             </svg>
                         </button>
                     </div>
