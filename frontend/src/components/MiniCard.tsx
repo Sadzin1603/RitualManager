@@ -15,7 +15,7 @@ function MiniCard({ ritual, onConfirm }: { ritual: any; onConfirm?: () => void }
     const classeElemento = elementoClasse[ritual.element?.toLowerCase()] ?? "";
 
     return (
-        <div className={`MiniCard-lateral ${classeElemento} rounded-xl p-3 w-full max-w-xl mb-[20px]`}>
+        <div className={`MiniCard-lateral ${classeElemento} rounded-xl p-3 w-full max-w-full mb-[20px]`}>
 
             {/* Nome + criador */}
             <div className="flex justify-between">

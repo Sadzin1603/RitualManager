@@ -19,7 +19,7 @@ function Card({ ritual, onConfirm, viewMode = "card" }: { ritual: any; onConfirm
     // ─── MINI ──
     if (viewMode === "mini") {
         return (
-            <div className={`${classeElemento} bg-zinc-900 rounded-xl p-3 w-full max-w-xl mb-[20px]`}>
+            <div className={`${classeElemento} bg-zinc-900 rounded-xl p-3 w-auto max-w-xl mb-[20px]`}>
 
                 {/* Nome + criador */}
                 <div className="flex justify-between">
