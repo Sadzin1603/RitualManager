@@ -14,14 +14,11 @@ function Profile() {
     const navigate = useNavigate();
     //PEGAR RITUAIS
     const { data: rituais, isLoading: isLoadingRituais } = useQuery({
-        queryKey: ['rituais_favoritados'],
+        queryKey: ['rituais_aprovados'],
         queryFn: fetchDataRituais,
     })
     async function fetchDataRituais() {
-        const token = localStorage.getItem("token") || '';
-        const res = await fetch(`http://localhost:3000/user/${(jwtDecode(token)as any).id}/rituais/favorites`, {
-            headers: { Authorization: `Bearer ${token}`}
-        });
+        const res = await fetch("http://localhost:3000/ritual");
         if (!res.ok) {
             throw new Error("Erro ao buscar rituais");
         }
@@ -34,7 +31,7 @@ function Profile() {
     })
     async function fetchDataMyRituais() {
         const token = localStorage.getItem("token") || '';
-        const res = await fetch(`http://localhost:3000/user/${(jwtDecode(token)as any).id}/rituais`, {
+        const res = await fetch(`http://localhost:3000/user/${(jwtDecode(token) as any).id}/rituais`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         return await res.json();
