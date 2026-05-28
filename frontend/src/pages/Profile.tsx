@@ -43,7 +43,7 @@ function Profile() {
     //─────────────────────────────────────────────────────────────────────────
 
     return (
-        <div className="title w-auto min-h-screen flex justify-around p-8 gap-3">
+        <div className="title w-auto min-h-screen flex justify-around items-start p-8 gap-3">
 
             {/* Coluna lateral esquerda — filtros */}
             <div className="div_Lateral">
@@ -108,7 +108,7 @@ function Profile() {
                 <div>
                     {isLoadingRituais ? (
                         <div className="flex items-center justify-center w-full min-h-[200px]">
-                            <Loader loading={true} size={150} />
+                            <Loader loading={true} size={250} />
                         </div>
                     ) : (
                         rituais?.map((ritual: any) => (

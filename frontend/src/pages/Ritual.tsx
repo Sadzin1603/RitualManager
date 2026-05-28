@@ -23,6 +23,7 @@ export default function Ritual() {
       }
     });
     const ritual = await res.json()
+    console.log(await ritual)
     return await ritual[0]
   }
 
