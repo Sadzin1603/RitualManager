@@ -179,10 +179,10 @@ export default function Ritual() {
   }
   return (
     <div
-      className="pagina"
+      className="pagina flex justify-around"
       data-element={ritual?.element.toLowerCase()}
     >
-      <div className="conteudo">
+      <div className="conteudo w-[60%]">
 
         {/* HEADER */}
         <div className="header">
@@ -326,6 +326,102 @@ export default function Ritual() {
           <p>Criado em {new Date(ritual?.created_at).toLocaleDateString("pt-BR")}</p>
         </div>
 
+      </div>
+      <div className=" w-[40%] max-w-2xl p-6">
+        <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
+          
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-2xl font-bold text-white">
+              Comentários
+            </h1>
+
+            <span className="text-sm text-zinc-400">
+              {/*comments.length*/} comentários
+            </span>
+          </div>
+
+          <textarea
+            placeholder="Escreva um comentário..."
+            className="
+              w-full
+              min-h-[120px]
+              bg-zinc-950
+              border
+              border-zinc-800
+              rounded-xl
+              p-4
+              text-white
+              placeholder:text-zinc-500
+              resize-none
+              outline-none
+              focus:border-violet-500
+              transition
+            "
+          />
+
+          <button
+            className="
+              mt-4
+              bg-violet-600
+              hover:bg-violet-500
+              transition
+              text-white
+              px-5
+              py-2
+              rounded-xl
+              font-medium
+            "
+          >
+            Comentar
+          </button>
+
+          <div className="mt-8 flex flex-col gap-4">
+            {/*comments.map((comment) => (
+              <div
+                key={comment.id}
+                className="
+                  bg-zinc-950
+                  border
+                  border-zinc-800
+                  rounded-xl
+                  p-4
+                "
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div
+                    className="
+                      w-10
+                      h-10
+                      rounded-full
+                      bg-violet-600
+                      flex
+                      items-center
+                      justify-center
+                      font-bold
+                      text-white
+                    "
+                  >
+                    {comment.sender[0]}
+                  </div>
+
+                  <div>
+                    <strong className="text-white block">
+                      {comment.sender}
+                    </strong>
+
+                    <span className="text-xs text-zinc-500">
+                      agora mesmo
+                    </span>
+                  </div>
+                </div>
+
+                <p className="text-zinc-300 leading-relaxed">
+                  {comment.text}
+                </p>
+              </div>
+            ))*/}
+          </div>
+        </div>
       </div>
     </div>
   );
