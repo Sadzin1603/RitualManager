@@ -28,7 +28,11 @@ router
     .delete(verifyToken,verifyAdmin,controller.delete)//deleta a porra do ritual (admin)
 
 router
-    .route("/:id/favorite")
+    .route("/:id/favorite")//favorita o ritual
     .post(verifyToken,controller.favorite)
+
+router
+    .route("/:id/desfavorite")//desfavorita o ritual
+    .post(verifyToken,controller.desfavorite)
 
 export default router;

@@ -4,6 +4,7 @@ import { jwtDecode } from "jwt-decode";
 import Modal from '../components/Modal.js'
 import "./Ritual.css";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { queryClient } from "../lib/react-querty.js";
 
 export default function Ritual() {
   const navigate = useNavigate();
@@ -132,11 +133,36 @@ export default function Ritual() {
     }
   }
   const { mutateAsync: favoritar } = useMutation({
-    mutationFn: favoritarRitual
+    mutationFn: favoritarRitual,
+    onSuccess: () => {
+    queryClient.invalidateQueries({
+        queryKey: ['ritual', id]
+      })
+    }
   })
   async function favoritarRitual() {
     try {
       const res = await fetch(`http://localhost:3000/ritual/${ritual.id}/favorite`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+    } catch (err: any) {
+      console.log(err.message)
+    }
+  }
+  const { mutateAsync: desfavoritar } = useMutation({
+    mutationFn: desfavoritarRitual,
+    onSuccess: () => {
+    queryClient.invalidateQueries({
+        queryKey: ['ritual', id]
+      })
+    }
+  })
+  async function desfavoritarRitual() {
+    try {
+      const res = await fetch(`http://localhost:3000/ritual/${ritual.id}/desfavorite`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`
@@ -151,12 +177,52 @@ export default function Ritual() {
   function openModal(title: string, message: string, onConfirm: () => void) {
     setModal([true, title, message, onConfirm])
   }
+  //COMENTARIOS
+  const [comment, setComment] = useState('')
+  const { data: comments } = useQuery({
+    queryKey: ['comments', id],
+    queryFn: async () => {
+      const res = await fetch(`http://localhost:3000/comments/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      if (!res.ok) {
+        throw new Error("Failed to fetch comments")
+      }
+      return res.json()
+    }
+  }) 
+
+  const { mutateAsync: comentar } = useMutation({
+    mutationFn: comentarRitual,
+    onSuccess: () => {
+    queryClient.invalidateQueries({
+        queryKey: ['comments', id]
+      })
+    }
+  })
+  async function comentarRitual() {
+    try {
+      if(!comment.trim()) return;
+      const res = await fetch(`http://localhost:3000/comments/${id}`, {
+        method: "POST",
+        headers:{ 'Content-Type': 'application/json',Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ comentario: comment })
+      })
+      setComment('')
+    } catch (err: any) {
+      
+      console.log(err.message)
+    }
+  }
+
   return (
     <div
-      className="pagina"
+      className="pagina flex justify-around"
       data-element={ritual?.element.toLowerCase()}
     >
-      <div className="conteudo">
+      <div className="conteudo w-[60%]">
 
         {/* HEADER */}
         <div className="header">
@@ -230,11 +296,17 @@ export default function Ritual() {
                 : ""}
               {/*   Botão de favoritar   */}
               {decodedToken ?
-                <button className="absolute top-[-1.8rem] right-[13.5rem] bg-[#0c0c0c] rounded-lg p-2" onClick={() => favoritar()} >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6" >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.239-4.5-5-4.5-1.74 0-3.273.8-4 2.019-.727-1.22-2.26-2.019-4-2.019-2.761 0-5 2.015-5 4.5 0 7.22 9 12 9 12s9-4.78 9-12Z" />
-                  </svg>
-                </button>
+                  ritual?.favorited ?
+                  <button className="absolute top-[-1.8rem] right-[13.5rem] bg-[#0c0c0c] rounded-lg p-2" onClick={() => desfavoritar()} >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="red" viewBox="0 0 24 24" strokeWidth={1.5} stroke="red" className="size-6" >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.239-4.5-5-4.5-1.74 0-3.273.8-4 2.019-.727-1.22-2.26-2.019-4-2.019-2.761 0-5 2.015-5 4.5 0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                    </svg>
+                  </button>
+                      : <button className="absolute top-[-1.8rem] right-[13.5rem] bg-[#0c0c0c] rounded-lg p-2" onClick={() => favoritar()} >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6" >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.239-4.5-5-4.5-1.74 0-3.273.8-4 2.019-.727-1.22-2.26-2.019-4-2.019-2.761 0-5 2.015-5 4.5 0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                    </svg>
+                  </button>
                 : ""}
               <Modal
                 isOpen={modal[0]}
@@ -294,6 +366,97 @@ export default function Ritual() {
           <p>Criado em {new Date(ritual?.created_at).toLocaleDateString("pt-BR")}</p>
         </div>
 
+      </div>
+      {/* COMENTARIOS */}
+      <div className=" w-[40%] max-w-2xl p-6">
+        <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
+          
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-2xl font-bold text-white">
+              Comentários
+            </h1>
+
+            <span className="text-sm text-zinc-400">
+              {comments?.length} comentários
+            </span>
+          </div>
+
+          <textarea
+            placeholder="Escreva um comentário..."
+            className="
+              w-full
+              min-h-[120px]
+              bg-zinc-950
+              border
+              border-zinc-800
+              rounded-xl
+              p-4
+              text-white
+              placeholder:text-zinc-500
+              resize-none
+              outline-none
+              focus:border-violet-500
+              transition
+            "
+            onChange={(e) => setComment(e.target.value)}
+            value={comment}
+          />
+
+          <button
+            className="
+              mt-4
+              bg-violet-600
+              hover:bg-violet-500
+              transition
+              text-white
+              px-5
+              py-2
+              rounded-xl
+              font-medium
+            "
+            onClick={()=>comentar()}
+          >
+            Comentar
+          </button>
+
+          <div className="mt-8 flex flex-col gap-4">
+            {comments?.map((comment) => (
+              <div
+                key={comment.id}
+                className="
+                  bg-zinc-950
+                  border
+                  border-zinc-800
+                  rounded-xl
+                  p-4
+                "
+              >
+                <div className="flex items-center gap-3 mb-3">
+
+                  <div>
+                    <strong className="text-white block">
+                      {comment.creator.name}
+                    </strong>
+
+                    <span className="text-xs text-zinc-500">
+                      {comment.created_at && new Date(comment.created_at).toLocaleDateString("pt-BR", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "2-digit",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
+                  </div>
+                </div>
+
+                <p className="text-zinc-300 leading-relaxed">
+                  {comment.comentario}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

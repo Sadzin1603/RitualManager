@@ -23,3 +23,15 @@ export const getFavoritesByUserId = async (user_id) => {
     }
     return data.map(favorite => favorite.Rituais)
 }
+
+export const remove = async (ritual_id,user_id) => {
+    const {data,error} = await supabase
+                    .from('Favoritos')
+                    .delete()
+                    .eq('ritual_id',ritual_id)
+                    .eq('user_id',user_id)
+    if(error){
+        throw new Error(error.message)
+    }
+    return {"message":"Ritual desfavoritado"}
+}

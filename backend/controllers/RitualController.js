@@ -1,4 +1,4 @@
-import {create,pegar,pegarId,changeById,deleteById, favoriteRitual} from '../services/RitualServices.js'
+import {create,pegar,pegarId,changeById,deleteById, favoriteRitual,desfavoriteRitual} from '../services/RitualServices.js'
 export default {
     post: async (req,res) =>{
         try {
@@ -60,6 +60,14 @@ export default {
         try{
             const favorito = await favoriteRitual(req.params.id,req.user.id)
             return res.json({"message":"favorito adicionado"})
+        }catch (error){
+            return res.status(400).json({error: error.message})
+        }
+    },
+    desfavorite : async (req,res) =>{
+        try{
+            const favorito = await desfavoriteRitual(req.params.id,req.user.id)
+            return res.json({"message":"favorito removido"})
         }catch (error){
             return res.status(400).json({error: error.message})
         }
