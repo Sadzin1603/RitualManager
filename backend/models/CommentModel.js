@@ -16,7 +16,7 @@ export const create = async (ritualId,userId,comment) =>{
 export const getCommentsByRitualId = async (ritualId) => {
     const {data,error} = await supabase
                         .from("Comentarios")
-                        .select("*")
+                        .select("*,creator:Clients (id,name)")
                         .eq("ritual_id",ritualId)
     
     if(error){

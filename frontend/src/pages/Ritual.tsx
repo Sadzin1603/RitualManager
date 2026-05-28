@@ -177,6 +177,46 @@ export default function Ritual() {
   function openModal(title: string, message: string, onConfirm: () => void) {
     setModal([true, title, message, onConfirm])
   }
+  //COMENTARIOS
+  const [comment, setComment] = useState('')
+  const { data: comments } = useQuery({
+    queryKey: ['comments', id],
+    queryFn: async () => {
+      const res = await fetch(`http://localhost:3000/comments/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      if (!res.ok) {
+        throw new Error("Failed to fetch comments")
+      }
+      return res.json()
+    }
+  }) 
+
+  const { mutateAsync: comentar } = useMutation({
+    mutationFn: comentarRitual,
+    onSuccess: () => {
+    queryClient.invalidateQueries({
+        queryKey: ['comments', id]
+      })
+    }
+  })
+  async function comentarRitual() {
+    try {
+      if(!comment.trim()) return;
+      const res = await fetch(`http://localhost:3000/comments/${id}`, {
+        method: "POST",
+        headers:{ 'Content-Type': 'application/json',Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ comentario: comment })
+      })
+      setComment('')
+    } catch (err: any) {
+      
+      console.log(err.message)
+    }
+  }
+
   return (
     <div
       className="pagina flex justify-around"
@@ -327,6 +367,7 @@ export default function Ritual() {
         </div>
 
       </div>
+      {/* COMENTARIOS */}
       <div className=" w-[40%] max-w-2xl p-6">
         <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
           
@@ -336,7 +377,7 @@ export default function Ritual() {
             </h1>
 
             <span className="text-sm text-zinc-400">
-              {/*comments.length*/} comentários
+              {comments?.length} comentários
             </span>
           </div>
 
@@ -357,6 +398,8 @@ export default function Ritual() {
               focus:border-violet-500
               transition
             "
+            onChange={(e) => setComment(e.target.value)}
+            value={comment}
           />
 
           <button
@@ -371,12 +414,13 @@ export default function Ritual() {
               rounded-xl
               font-medium
             "
+            onClick={()=>comentar()}
           >
             Comentar
           </button>
 
           <div className="mt-8 flex flex-col gap-4">
-            {/*comments.map((comment) => (
+            {comments?.map((comment) => (
               <div
                 key={comment.id}
                 className="
@@ -388,38 +432,29 @@ export default function Ritual() {
                 "
               >
                 <div className="flex items-center gap-3 mb-3">
-                  <div
-                    className="
-                      w-10
-                      h-10
-                      rounded-full
-                      bg-violet-600
-                      flex
-                      items-center
-                      justify-center
-                      font-bold
-                      text-white
-                    "
-                  >
-                    {comment.sender[0]}
-                  </div>
 
                   <div>
                     <strong className="text-white block">
-                      {comment.sender}
+                      {comment.creator.name}
                     </strong>
 
                     <span className="text-xs text-zinc-500">
-                      agora mesmo
+                      {comment.created_at && new Date(comment.created_at).toLocaleDateString("pt-BR", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "2-digit",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
                     </span>
                   </div>
                 </div>
 
                 <p className="text-zinc-300 leading-relaxed">
-                  {comment.text}
+                  {comment.comentario}
                 </p>
               </div>
-            ))*/}
+            ))}
           </div>
         </div>
       </div>

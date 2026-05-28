@@ -3,6 +3,7 @@ import { createComment,getComments } from '../services/CommentService.js';
 export default {
     post: async (req,res) =>{
         try{
+            console.log(req.body)
             const comment = await createComment(req.params.id,req.user.id,req.body)
             return res.json(comment)
         }catch (err){
