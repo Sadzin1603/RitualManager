@@ -260,7 +260,8 @@ export default function Ritual() {
   async function changeAproved({ id, status }: { id: number, status: string }) {
     try {
       const token = localStorage.getItem("token");
-      await fetch(`http://localhost:3000/admin/ritual/${id}/${status}`, {
+      const API_URL = import.meta.env.VITE_API_URL;
+      await fetch(`${API_URL}/admin/ritual/${id}/${status}`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,

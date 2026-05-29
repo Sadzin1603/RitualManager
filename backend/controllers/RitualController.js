@@ -18,7 +18,7 @@ export default {
     },
     copy: async(req,res)=>{
         try {
-            const rituais = await create(req.body.file,req.body,{"status":req.body.status});
+            const rituais = await create(req.body.file,req.body,{"status":"reprovado"});
             return res.json({"message":"ritual copiado"});
         } catch (err) {
             return res.status(400).json({ error: err.message });
