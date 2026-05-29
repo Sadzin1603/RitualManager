@@ -27,9 +27,9 @@ function App() {
       }
 
       try {
-
+        const API_URL = import.meta.env.VITE_API_URL
         const response = await fetch(
-          "http://localhost:3000/auth/me",
+          `${API_URL}/auth/me`,
           {
             headers: {
               Authorization: `Bearer ${token}`
