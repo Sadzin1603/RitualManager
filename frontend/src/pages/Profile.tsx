@@ -18,7 +18,11 @@ function Profile() {
         queryFn: fetchDataRituais,
     })
     async function fetchDataRituais() {
-        const res = await fetch("http://localhost:3000/ritual");
+        const token = localStorage.getItem("token") || '';
+        const API_URL = import.meta.env.VITE_API_URL;
+        const res = await fetch(`${API_URL}/user/${(jwtDecode(token)as any).id}/rituais/favorites`, {
+            headers: { Authorization: `Bearer ${token}`}
+        });
         if (!res.ok) {
             throw new Error("Erro ao buscar rituais");
         }
@@ -31,7 +35,8 @@ function Profile() {
     })
     async function fetchDataMyRituais() {
         const token = localStorage.getItem("token") || '';
-        const res = await fetch(`http://localhost:3000/user/${(jwtDecode(token) as any).id}/rituais`, {
+        const API_URL = import.meta.env.VITE_API_URL;
+        const res = await fetch(`${API_URL}/user/${(jwtDecode(token)as any).id}/rituais`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         return await res.json();
