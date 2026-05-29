@@ -23,7 +23,8 @@ function Principal() {
         queryFn: fetchDataRituais,
     })
     async function fetchDataRituais() {
-        const res = await fetch("http://localhost:3000/ritual");
+        const API_URL = import.meta.env.VITE_API_URL;
+        const res = await fetch(`${API_URL}/ritual`);
         if (!res.ok) {
             throw new Error("Erro ao buscar rituais");
         }
@@ -35,8 +36,9 @@ function Principal() {
         queryFn: fetchDataMyRituais,
     })
     async function fetchDataMyRituais() {
+        const API_URL = import.meta.env.VITE_API_URL;
         const token = localStorage.getItem("token");
-        const res = await fetch(`http://localhost:3000/user/${userId}/rituais`, {
+        const res = await fetch(`${API_URL}/user/${userId}/rituais`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         return await res.json();
