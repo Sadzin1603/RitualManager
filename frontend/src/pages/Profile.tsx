@@ -19,7 +19,8 @@ function Profile() {
     })
     async function fetchDataRituais() {
         const token = localStorage.getItem("token") || '';
-        const res = await fetch(`http://localhost:3000/user/${(jwtDecode(token)as any).id}/rituais/favorites`, {
+        const API_URL = import.meta.env.VITE_API_URL;
+        const res = await fetch(`${API_URL}/user/${(jwtDecode(token)as any).id}/rituais/favorites`, {
             headers: { Authorization: `Bearer ${token}`}
         });
         if (!res.ok) {
@@ -34,7 +35,8 @@ function Profile() {
     })
     async function fetchDataMyRituais() {
         const token = localStorage.getItem("token") || '';
-        const res = await fetch(`http://localhost:3000/user/${(jwtDecode(token)as any).id}/rituais`, {
+        const API_URL = import.meta.env.VITE_API_URL;
+        const res = await fetch(`${API_URL}/user/${(jwtDecode(token)as any).id}/rituais`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         return await res.json();

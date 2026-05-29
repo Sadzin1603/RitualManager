@@ -17,7 +17,8 @@ export default function Ritual() {
     queryFn: fetchData
   })
   async function fetchData() {
-    const res = await fetch(`http://localhost:3000/ritual/${id}`, {
+    const API_URL = import.meta.env.VITE_API_URL;
+    const res = await fetch(`${API_URL}/ritual/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -54,7 +55,8 @@ export default function Ritual() {
     formData.append("img", ritual?.img);
 
     try {
-      const res = await fetch(`http://localhost:3000/ritual/delete/${ritual?.id}`, {
+      const API_URL = import.meta.env.VITE_API_URL;
+      const res = await fetch(`${API_URL}/ritual/delete/${ritual?.id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -105,7 +107,8 @@ export default function Ritual() {
 
     formData.append("img", ritual?.img);
     try {
-      await fetch("http://localhost:3000/ritual/copy", {
+      const API_URL = import.meta.env.VITE_API_URL;
+      await fetch(`${API_URL}/ritual/copy`, {
         method: "POST",
         body: formData,
       });
@@ -121,7 +124,8 @@ export default function Ritual() {
   })
   async function excluirRitual() {
     try {
-      const res = await fetch(`http://localhost:3000/ritual/${ritual.id}`, {
+      const API_URL = import.meta.env.VITE_API_URL;
+      const res = await fetch(`${API_URL}/ritual/${ritual.id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`
@@ -142,7 +146,8 @@ export default function Ritual() {
   })
   async function favoritarRitual() {
     try {
-      const res = await fetch(`http://localhost:3000/ritual/${ritual.id}/favorite`, {
+      const API_URL = import.meta.env.VITE_API_URL;
+      const res = await fetch(`${API_URL}/ritual/${ritual.id}/favorite`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`
@@ -162,7 +167,8 @@ export default function Ritual() {
   })
   async function desfavoritarRitual() {
     try {
-      const res = await fetch(`http://localhost:3000/ritual/${ritual.id}/desfavorite`, {
+      const API_URL = import.meta.env.VITE_API_URL;
+      const res = await fetch(`${API_URL}/ritual/${ritual.id}/desfavorite`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`
@@ -182,7 +188,8 @@ export default function Ritual() {
   const { data: comments } = useQuery({
     queryKey: ['comments', id],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:3000/comments/${id}`, {
+      const API_URL = import.meta.env.VITE_API_URL;
+      const res = await fetch(`${API_URL}/comments/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -205,7 +212,8 @@ export default function Ritual() {
   async function comentarRitual() {
     try {
       if(!comment.trim()) return;
-      const res = await fetch(`http://localhost:3000/comments/${id}`, {
+      const API_URL = import.meta.env.VITE_API_URL;
+      const res = await fetch(`${API_URL}/comments/${id}`, {
         method: "POST",
         headers:{ 'Content-Type': 'application/json',Authorization: `Bearer ${token}` },
         body: JSON.stringify({ comentario: comment })

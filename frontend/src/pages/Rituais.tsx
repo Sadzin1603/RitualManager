@@ -308,7 +308,8 @@ function Rituais() {
 
             try {
                 const token = localStorage.getItem("token");
-                const res = await fetch(`http://localhost:3000/ritual/${ritualState.id}`, {
+                const API_URL = import.meta.env.VITE_API_URL;
+                const res = await fetch(`${API_URL}/ritual/${ritualState.id}`, {
                     method: "PUT",
                     headers: { Authorization: `Bearer ${token}` },
                     body: formData,
@@ -373,7 +374,8 @@ function Rituais() {
         formData.append("creator", decoded.id);
 
         try {
-            const res = await fetch("http://localhost:3000/ritual", {
+            const API_URL = import.meta.env.VITE_API_URL;
+            const res = await fetch(`${API_URL}/ritual`, {
                 method: "POST",
                 body: formData,
             });
