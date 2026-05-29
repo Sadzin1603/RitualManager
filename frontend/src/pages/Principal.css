@@ -11,6 +11,8 @@
 
 .div_Lateral {
     width: 400px;
+    min-width: 0;       
+    overflow: hidden;   
     display: flex;
     flex-direction: column;
     color: white;
@@ -55,13 +57,14 @@
 }
 
 /* Botão de modo de card */
-.modo button{
+.modo button {
     color: #fff;
     background-color: #0f2792;
     font-size: 14px;
     margin: 8px 0px 0px 0px
 }
-.modo button:hover{
+
+.modo button:hover {
     background-color: #0f2792;
 }
 
@@ -76,6 +79,7 @@
 
 .div_pesquisa {
     position: relative;
+    width: 310px;
 }
 
 .pesquisa {
