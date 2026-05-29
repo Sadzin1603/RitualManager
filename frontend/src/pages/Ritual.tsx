@@ -24,7 +24,7 @@ export default function Ritual() {
       }
     });
     const ritual = await res.json()
-    console.log(await ritual)
+    console.log(API_URL)
     return await ritual[0]
   }
 
@@ -228,24 +228,6 @@ export default function Ritual() {
 
   const queryClient = useQueryClient()
 
-  const { data: rituais } = useQuery({
-    queryKey: ['rituais_pendentes'],
-    queryFn: fetchData2
-  })
-
-  async function fetchData2() {
-    const token = localStorage.getItem("token");
-    const res = await fetch(
-      "http://localhost:3000/admin/rituals/pending",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    );
-    return await res.json();
-
-  }
   const { mutateAsync: mudarStatus } = useMutation({
     mutationFn: changeAproved,
     onSuccess(_, variables) {
@@ -260,7 +242,8 @@ export default function Ritual() {
   async function changeAproved({ id, status }: { id: number, status: string }) {
     try {
       const token = localStorage.getItem("token");
-      await fetch(`http://localhost:3000/admin/ritual/${id}/${status}`, {
+      const API_URL = import.meta.env.VITE_API_URL;
+      await fetch(`${API_URL}/admin/ritual/${id}/${status}`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
