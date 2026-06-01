@@ -44,7 +44,7 @@ export const verify = async ({ email,password }) => {
         },
         process.env.JWT_SECRET,
         { 
-            expiresIn: "1d" 
+            expiresIn: "7d" 
         }
     );
     
