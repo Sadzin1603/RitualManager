@@ -2,6 +2,8 @@ import { useState } from "react"
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import {useNavigate} from "react-router-dom"
 import Input from "../components/Input"
+import {GoogleLogin} from "@react-oauth/google"
+import { jwtDecode } from 'jwt-decode'
 
 function Login({setLogado}: { setLogado: React.Dispatch<React.SetStateAction<boolean>> }) {
     const navigate = useNavigate();
@@ -12,7 +14,6 @@ function Login({setLogado}: { setLogado: React.Dispatch<React.SetStateAction<boo
     function mostrar() {
         setShow(!show);
     }
-    
     
     async function logar(){
         try{
@@ -72,6 +73,9 @@ function Login({setLogado}: { setLogado: React.Dispatch<React.SetStateAction<boo
                 >
                     Logar
                 </button>
+                <GoogleLogin 
+                onSuccess={(credentialResponse) => console.log(jwtDecode(credentialResponse.credential))}
+                onError={()=>console.log("Login Falhou")} />
             </div>
         </div>
     </div>
