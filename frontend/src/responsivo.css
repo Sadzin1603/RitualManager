@@ -1,0 +1,523 @@
+/* ============================================================
+   RitualManager — Mobile Responsive
+   Importe no App.tsx: import './mobile-responsive.css';
+   ============================================================ */
+
+/* ── DESKTOP: esconde elementos exclusivos mobile ─────────── */
+.mobile-only        { display: none !important; }
+.filtro-fab         { display: none; }
+.filtro-drawer-overlay { display: none; }
+.mobile-action-bar  { display: none; }
+.div-botoes--mobile  { display: none; }
+
+/* ── HEADER ─────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    header.w-auto {
+        height: auto !important;
+        min-height: 56px;
+        padding: 10px 16px;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: space-between !important;
+    }
+
+    header nav.space-x-10 {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 14px;
+        font-size: 14px;
+    }
+
+    /* Esconde "Criar Ritual" e "Perfil" da nav do header no mobile
+       (ficam na mobile-action-bar abaixo dos cards) */
+    header nav a[href="/rituais"],
+    header nav a[href="/profile"] {
+        display: none !important;
+    }
+
+    header .flex.items-center.gap-4 {
+        gap: 8px;
+    }
+
+    header .flex.items-center.gap-4 a {
+        padding: 6px 10px;
+        font-size: 13px;
+    }
+}
+
+/* ── LOGIN / CADASTRO ──────────────────────────────────────── */
+@media (max-width: 768px) {
+    .title.min-h-screen.flex.justify-center {
+        padding: 16px !important;
+        align-items: flex-start;
+    }
+    .title .w-\[500px\] {
+        width: 100% !important;
+        max-width: 100%;
+    }
+    .input {
+        font-size: 16px !important;
+        padding: 12px 16px !important;
+    }
+    .input[type="submit"], button.input {
+        min-height: 48px;
+        font-size: 16px !important;
+    }
+}
+
+/* ── PÁGINA PRINCIPAL — LAYOUT ─────────────────────────────── */
+/* Layout principal: coluna apenas no mobile */
+@media (max-width: 768px) {
+    .title.min-h-screen.flex.justify-around.items-start {
+        flex-direction: column !important;
+        padding: 12px !important;
+        gap: 16px !important;
+        align-items: stretch !important;
+    }
+    .div_Lateral {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+    .div_Lateral--filtro  { display: none !important; }
+    .div_Lateral--direita { display: none !important; }
+}
+
+/* ── BARRA DE AÇÕES MOBILE (Perfil + Criar + modos) ─────────── */
+@media (max-width: 768px) {
+    .mobile-action-bar {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
+        margin-bottom: 4px;
+    }
+
+    /* Botões Perfil e +Criar Ritual: usam o estilo .criar_ritual original */
+    .mobile-action-bar .criar_ritual {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-align: center;
+        background-color: rgb(49, 35, 179);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-size: 15px;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .mobile-action-bar .criar_ritual:hover,
+    .mobile-action-bar .criar_ritual:active {
+        background-color: rgb(39, 27, 150);
+    }
+
+    /* Linha dos botões de modo (mini / card / lista) lado a lado */
+    .mobile-view-toggle {
+        display: flex;
+        flex-direction: row;
+        gap: 6px;
+        width: 100%;
+    }
+
+    .mobile-view-toggle .view-toggle-btn {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        padding: 8px 4px;
+        font-size: 12px;
+        color: #fff;
+        background-color: #0f2792;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        transition: background-color 0.2s;
+    }
+
+    .mobile-view-toggle .view-toggle-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .mobile-view-toggle .view-toggle-btn.active {
+        background: #0b1c69;
+        border: 1px solid #383b42;
+    }
+}
+
+/* ── BOTÃO FLUTUANTE DE FILTRO ─────────────────────────────── */
+@media (max-width: 768px) {
+    .filtro-fab {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        bottom: 20px;           /* canto inferior esquerdo */
+        left: 16px;
+        z-index: 90;
+        background: #0c0c0c;   /* mesmo fundo dos botões de Ritual.tsx */
+        border: none;
+        border-radius: 10px;
+        padding: 10px;
+        cursor: pointer;
+        color: #e4e4e7;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+        transition: background 0.15s, transform 0.15s;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .filtro-fab:hover,
+    .filtro-fab:active {
+        background: #1a1a1a;
+        transform: scale(1.07);
+    }
+
+    .filtro-fab svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* ── DRAWER DE FILTROS MOBILE ──────────────────────────────── */
+@media (max-width: 768px) {
+    .filtro-drawer-overlay {
+        display: flex;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        z-index: 200;
+        align-items: flex-end;
+        animation: fadeInOverlay 0.2s ease;
+    }
+
+    @keyframes fadeInOverlay {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
+
+    .filtro-drawer {
+        width: 100%;
+        max-height: 85dvh;
+        overflow-y: auto;
+        background: #18181b;
+        border-radius: 20px 20px 0 0;
+        padding: 20px 16px 32px;
+        border: 1px solid #27272a;
+        border-bottom: none;
+        animation: slideUpDrawer 0.28s ease;
+    }
+
+    /* Pesquisa: força cores originais (evita override do browser) */
+    .filtro-drawer .pesquisa,
+    .filtro-drawer input {
+        background-color: #292524 !important;
+        border-color: #27272a !important;
+        color: #e4e4e7 !important;
+    }
+
+    .filtro-drawer .pesquisa::placeholder {
+        color: #71717a !important;
+    }
+
+    /* Título "Filtros" e ícones: força branco */
+    .filtro-drawer .header_filtros h1 {
+        color: #ffffff !important;
+    }
+
+    .filtro-drawer .icone_pesquisa {
+        color: #bdbdc9 !important;
+    }
+
+    @keyframes slideUpDrawer {
+        from { transform: translateY(100%); }
+        to   { transform: translateY(0); }
+    }
+
+
+
+
+    /* Dentro do drawer: esconde os botões de modo (ficam na action bar) */
+    .filtro-drawer .modo,
+    .filtro-drawer .view-toggle-group {
+        display: none !important;
+    }
+
+    /* Pesquisa full width dentro do drawer */
+    .filtro-drawer .div_pesquisa {
+        width: 100% !important;
+    }
+
+    .filtro-drawer .pesquisa {
+        width: 100% !important;
+        font-size: 16px;
+    }
+}
+
+/* ── GRID MODO CARD ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+    /* Linhas de 3 somem — cards sobem pro container pai */
+    .title .flex.gap-4.justify-center {
+        display: contents !important;
+    }
+
+    /* Container vira grid de 2 colunas */
+    .title .flex.flex-col.items-center.gap-4.flex-1 {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+        justify-items: center;
+    }
+
+    /* Elementos que ocupam linha inteira */
+    .title .flex.flex-col.items-center.gap-4.flex-1 > .mobile-action-bar,
+    .title .flex.flex-col.items-center.gap-4.flex-1 > .grid,
+    .title .flex.flex-col.items-center.gap-4.flex-1 > .flex.flex-col.gap-3,
+    .title .flex.flex-col.items-center.gap-4.flex-1 > .flex.items-center.justify-center {
+        grid-column: 1 / -1;
+    }
+
+    .title .flex.flex-col.items-center.gap-4.flex-1 > .mobile-action-bar {
+        order: -1;
+    }
+
+    /* Card-wrapper ocupa a célula do grid */
+    .title .flex.flex-col.items-center.gap-4.flex-1 > .Card-wrapper {
+        width: 100% !important;
+    }
+
+    .title .flex.flex-col.items-center.gap-4.flex-1 > .Card-wrapper .Card-small {
+        width: 100% !important;
+    }
+
+    /* Esconde expandido — toque navega direto */
+    .Card-expandido { display: none !important; }
+}
+
+
+/* ── GRID MODO MINI ─────────────────────────────────────────── */
+/* No mobile: w-[670px] → 100%, 1 coluna abaixo de 500px */
+@media (max-width: 768px) {
+    .grid.grid-cols-2.gap-4.w-\[670px\] {
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 500px) {
+    .grid.grid-cols-2.gap-4.w-\[670px\] {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* ── MODO LISTA ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .flex.flex-col.gap-3.w-full.max-w-4xl {
+        max-width: 100% !important;
+    }
+}
+
+/* ── PÁGINA DE RITUAL ──────────────────────────────────────── */
+@media (max-width: 768px) {
+    .pagina.flex.justify-around {
+        flex-direction: column !important;
+        padding: 12px !important;
+        gap: 0;
+    }
+    .pagina .conteudo.w-\[60\%\] { width: 100% !important; }
+    .pagina .w-\[40\%\] {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: 0 !important;
+        margin-top: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .pagina { padding: 12px !important; }
+
+    /* Header: mantém row igual ao web, só reduz tamanhos */
+    .header-layout {
+        flex-direction: row !important;
+        align-items: flex-start !important;
+        gap: 16px !important;
+    }
+
+    .header-imagem-wrap {
+        width: 100px !important;
+        height: 100px !important;
+        flex-shrink: 0;
+    }
+
+    .header-info {
+        min-height: 100px !important;
+        gap: 6px !important;
+    }
+
+    .header-titulo {
+        font-size: 18px !important;
+        line-height: 1.3 !important;
+    }
+
+    .header-criador {
+        font-size: 12px !important;
+    }
+
+    .badge {
+        font-size: 11px !important;
+        padding: 3px 10px !important;
+    }
+
+    .info-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+        margin-top: 16px !important;
+    }
+    .info-card { padding: 12px !important; }
+    .info-card-titulo { font-size: 11px !important; }
+    .info-card-valor  { font-size: 14px !important; }
+
+    .secao { margin-top: 16px !important; padding: 16px !important; }
+    .secao-titulo { font-size: 18px !important; margin-bottom: 10px !important; }
+
+    .extra-dado { width: 100% !important; margin-top: 16px !important; }
+    .rodape { margin-top: 24px !important; padding-top: 12px !important; font-size: 12px !important; }
+
+    .pagina .bg-zinc-900.rounded-2xl { padding: 16px !important; }
+    .pagina .bg-zinc-900 textarea { min-height: 90px !important; font-size: 15px; }
+}
+
+
+/* ── BOTÕES RITUAL MOBILE ──────────────────────────────────── */
+@media (max-width: 768px) {
+    /* Esconde botões desktop, mostra mobile */
+    .div-botoes--desktop { display: none !important; }
+
+    .div-botoes--mobile {
+        display: flex !important;
+        flex-direction: row;
+        gap: 8px;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    /* Overlay do drawer de ações */
+    .acoes-drawer-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        z-index: 200;
+        display: flex;
+        align-items: flex-end;
+        animation: fadeInOverlay 0.2s ease;
+    }
+
+    /* Drawer de ações: slide from bottom */
+    .acoes-drawer {
+        width: 100%;
+        background: #18181b;
+        border-radius: 20px 20px 0 0;
+        padding: 20px 16px 32px;
+        border: 1px solid #27272a;
+        border-bottom: none;
+        animation: slideUpDrawer 0.28s ease;
+    }
+
+    /* Botões em linha dentro do drawer */
+    .acoes-drawer-lista {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
+    }
+
+    .acoes-drawer-lista button {
+        padding: 10px !important;
+        border-radius: 10px !important;
+    }
+}
+/* ── CRIAR/EDITAR RITUAL ───────────────────────────────────── */
+@media (max-width: 768px) {
+    .editor.editor_principal { padding: 14px !important; margin: 0 !important; }
+    .div_visual { flex-direction: column !important; gap: 16px !important; }
+    .div_dropdowns, .div_imagem { width: 100% !important; }
+    .preview { width: 100% !important; aspect-ratio: 1 / 1 !important; }
+    .preview_img { width: 100% !important; height: 100% !important; object-fit: cover !important; }
+    .div_info { grid-template-columns: 1fr !important; gap: 8px 0 !important; padding-top: 12px !important; }
+    .digitacao_info { width: 100% !important; }
+    .input_botao { width: 100% !important; }
+    .div_area { width: 100% !important; }
+    .area-selector-wrap,
+    .area-input-row,
+    .area-selector-input { width: 100% !important; box-sizing: border-box; }
+    label { max-width: 100% !important; margin: 14px 0 8px 0 !important; }
+    .digitacao { font-size: 16px !important; }
+    .modal.show { padding: 8px !important; }
+    .modal-content { max-width: 100% !important; padding: 16px !important; max-height: 95vh; overflow-y: auto; }
+    #modal-img { max-height: 50vh !important; }
+    .botao.salvar { padding: 14px !important; font-size: 16px !important; margin-top: 20px !important; }
+}
+
+/* ── MODAL ─────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .fixed.inset-0.bg-black\/50 { align-items: flex-end !important; }
+    .fixed.inset-0 .bg-zinc-900.p-6.rounded-xl {
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 20px 20px 0 0 !important;
+        padding: 24px 20px !important;
+        animation: slideUpDrawer 0.25s ease;
+    }
+    .fixed.inset-0 .flex.justify-end.gap-2 { flex-direction: column-reverse !important; }
+    .fixed.inset-0 .flex.justify-end.gap-2 button { width: 100%; min-height: 48px; font-size: 16px; }
+}
+
+/* ── ADMIN ─────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .title.min-h-screen.flex.justify-center.p-6 > .flex.w-auto.flex-wrap {
+        flex-direction: column !important;
+        align-items: center !important;
+        width: 100% !important;
+    }
+    .title .flex.items-center.p-1 {
+        flex-direction: column !important;
+        width: 100% !important;
+        max-width: 340px;
+        padding: 12px 8px !important;
+        gap: 12px;
+    }
+    .title .flex.flex-col.justify-center.pl-4.space-y-20 {
+        flex-direction: row !important;
+        padding-left: 0 !important;
+        gap: 12px;
+        width: 100%;
+    }
+    .title .flex.flex-col.justify-center.pl-4.space-y-20 button {
+        flex: 1;
+        min-height: 44px;
+        font-size: 14px;
+        margin: 0 !important;
+    }
+}
+
+/* ── UTILITÁRIOS ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    button, a, [role="button"] {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+    html { scroll-behavior: smooth; }
+    body { overflow-x: hidden; }
+}
+
+@supports (padding: max(0px)) {
+    @media (max-width: 768px) {
+        body { padding-bottom: env(safe-area-inset-bottom); }
+    }
+}
