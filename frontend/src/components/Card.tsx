@@ -133,8 +133,8 @@ function Card({ ritual, onConfirm, viewMode = "card" }: { ritual: any; onConfirm
     return (
         <div className={`Card-wrapper ${classeElemento}`}>
 
-            {/* Versão pequena (sempre visível) */}
-            <div className="Card-small">
+            {/* Versão pequena (sempre visível) — no mobile navega direto */}
+            <div className="Card-small" onClick={() => navigate(`/ritual/${ritual?.id}`)}>
                 <div className="Card-small-header">
                     {ritual?.name}
                 </div>
