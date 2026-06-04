@@ -402,8 +402,8 @@
         gap: 8px;
         align-items: center;
         position: absolute;
-        top: 0;
-        right: 0;
+        top: 5rem;
+        right: -1rem;
     }
 
     /* Overlay do drawer de ações */
