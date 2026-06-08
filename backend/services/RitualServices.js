@@ -31,7 +31,9 @@ export const pegarId = async (id,user) => {
         if(!user){
             return {"message":"NotFound"};
         }
-        if(user.admin != true || user.id != data[0].creator.id){
+        if(user.admin == true || user.id == data[0].creator.id){
+            
+        }else{
             return {"message":"NotFound"};
         }
     }
