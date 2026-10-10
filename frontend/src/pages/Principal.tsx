@@ -109,7 +109,7 @@ function Principal() {
                     ))
                 )}
             </div>
-
+            {/* Comentario super legal */}
             {/* Coluna lateral direita — oculta no mobile via CSS */}
             <div className="div_Lateral div_Lateral--direita space-y-5">
                 <div className="div_criar_ritual">
