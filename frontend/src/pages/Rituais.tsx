@@ -311,7 +311,10 @@ function Rituais() {
                 const API_URL = import.meta.env.VITE_API_URL;
                 const res = await fetch(`${API_URL}/ritual/${ritualState.id}`, {
                     method: "PUT",
-                    headers: { Authorization: `Bearer ${token}` },
+                    headers: { 
+                        Authorization: `Bearer ${token}` ,
+                        ritual:ritualState.creator.id
+                    },
                     body: formData,
                 });
 
